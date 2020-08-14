@@ -1,0 +1,159 @@
+{
+  "project_info": {
+    "project_number": "8284394379",
+    "firebase_url": "https://sarvogyan-course-platform.firebaseio.com",
+    "project_id": "sarvogyan-course-platform",
+    "storage_bucket": "sarvogyan-course-platform.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:8284394379:android:9dc90236fbaa045860558e",
+        "android_client_info": {
+          "package_name": "com.brickviewstudios.sarvogyan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "8284394379-qfeten8pu44jhpog7kha607cn0i1n4gk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.brickviewstudios.sarvogyan",
+            "certificate_hash": "2cefd9b3c6668b5d316dad8d0ee0171224cc7124"
+          }
+        },
+        {
+          "client_id": "8284394379-st1d8s5t09mtu0fid4amgud8j72agp6t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjx-p_lJ47RTlwgeZnGCwQwAwICErehuk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "8284394379-st1d8s5t09mtu0fid4amgud8j72agp6t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:8284394379:android:6a087d315bfe784f60558e",
+        "android_client_info": {
+          "package_name": "com.jasjotsingh.sarvogyan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "8284394379-thkad0t74ght7engtp1cjbifmgmjlm5q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jasjotsingh.sarvogyan",
+            "certificate_hash": "3602d92994bcc0bd775f4cc7272fb16d250550e8"
+          }
+        },
+        {
+          "client_id": "8284394379-st1d8s5t09mtu0fid4amgud8j72agp6t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjx-p_lJ47RTlwgeZnGCwQwAwICErehuk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "8284394379-st1d8s5t09mtu0fid4amgud8j72agp6t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:8284394379:android:a60f2691581a24e660558e",
+        "android_client_info": {
+          "package_name": "com.sarvogyan.sarvogyan_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "8284394379-6kbm46uaukkciqpma2ovl959lufjt6g2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sarvogyan.sarvogyan_app",
+            "certificate_hash": "2cefd9b3c6668b5d316dad8d0ee0171224cc7124"
+          }
+        },
+        {
+          "client_id": "8284394379-st1d8s5t09mtu0fid4amgud8j72agp6t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjx-p_lJ47RTlwgeZnGCwQwAwICErehuk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "8284394379-st1d8s5t09mtu0fid4amgud8j72agp6t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:8284394379:android:5a5f9f1d994de77f60558e",
+        "android_client_info": {
+          "package_name": "sarvogyan.sarvogyan.sarvogyan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "8284394379-uvvrump10vu4srgsisda5teli13540fp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sarvogyan.sarvogyan.sarvogyan",
+            "certificate_hash": "2cefd9b3c6668b5d316dad8d0ee0171224cc7124"
+          }
+        },
+        {
+          "client_id": "8284394379-st1d8s5t09mtu0fid4amgud8j72agp6t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjx-p_lJ47RTlwgeZnGCwQwAwICErehuk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "8284394379-st1d8s5t09mtu0fid4amgud8j72agp6t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
