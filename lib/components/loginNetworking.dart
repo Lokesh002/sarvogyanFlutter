@@ -65,7 +65,8 @@ class LoginUserNetworking {
         }
         await savedData.setCourse(courses);
         if (decodedData['balance'] != null) {
-          await savedData.setBalance(decodedData['balance']);
+          await savedData.setBalance(
+              decodedData['balance'] == null ? 0 : decodedData['balance']);
           print(await savedData.getBalance());
         } else {
           await savedData.setBalance(0);

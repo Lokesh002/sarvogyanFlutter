@@ -15,8 +15,11 @@ class UpdateBalance {
     if (response2.statusCode == 200) {
       var data = response2.body;
       var decodedData = convert.jsonDecode(data);
-      savedData.setBalance(decodedData['balance']);
-      print("New balance: " + decodedData['balance'].toString());
+      savedData.setBalance(
+          decodedData['balance'] == null ? 0 : decodedData['balance']);
+      print("New balance: " + decodedData['balance'] == null
+          ? 0
+          : decodedData['balance'].toString());
     } else {
       print(response2.statusCode);
     }

@@ -51,7 +51,6 @@ class _ExamListLoadingScreenState extends State<ExamListLoadingScreen> {
     if (mounted) setState(() {});
   }
 
-  void getLocation() async {}
   @override
   void initState() {
     super.initState();

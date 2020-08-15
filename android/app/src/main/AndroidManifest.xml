@@ -1,14 +1,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="sarvogyan.sarvogyan.sarvogyan">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
          In most cases you can leave this as-is, but you if you want to provide
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
     <application
+        android:requestLegacyExternalStorage="true"
         android:name="io.flutter.app.FlutterApplication"
         android:label="sarvogyan"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        >
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -33,6 +40,8 @@
               android:name="io.flutter.embedding.android.SplashScreenDrawable"
               android:resource="@drawable/launch_background"
               />
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -43,5 +52,7 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+
     </application>
 </manifest>

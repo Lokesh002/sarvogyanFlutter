@@ -135,6 +135,8 @@ class _EnterMobileNoScreenState extends State<EnterMobileNoScreen> {
         },
         verificationFailed: (AuthException exception) {
           print(exception.message);
+          Navigator.of(context).pop();
+          Fluttertoast.showToast(msg: "Please Try Again");
         },
         codeSent: (String verificationId, [int forceResendingToken]) async {
           print("opening OTP Screen");
@@ -198,6 +200,8 @@ class _EnterMobileNoScreenState extends State<EnterMobileNoScreen> {
               }
             } catch (e) {
               print(e);
+              Navigator.of(context).pop();
+              Fluttertoast.showToast(msg: "Error");
             }
           } else {
             Fluttertoast.showToast(msg: "Please Enter OTP");

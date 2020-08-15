@@ -65,11 +65,16 @@ class _CourseViewScreenState extends State<CourseViewScreen> {
                     height: screenSize.screenHeight * 10,
                     width: screenSize.screenWidth * 80,
                     child: Center(
-                      child: Text(
-                          (index1 + 1).toString() +
-                              " " +
-                              lessList[index1].lessonName,
-                          style: TextStyle(color: Colors.white)),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            left: screenSize.screenWidth * 3,
+                            right: screenSize.screenWidth * 3),
+                        child: Text(
+                            (index1 + 1).toString() +
+                                " " +
+                                lessList[index1].lessonName,
+                            style: TextStyle(color: Colors.white)),
+                      ),
                     ),
                   ),
                   height: screenSize.screenHeight * 10,
@@ -94,7 +99,7 @@ class _CourseViewScreenState extends State<CourseViewScreen> {
                           child: ReusableOptionCard(
                             cardChild: Center(
                                 child: Container(
-                              height: screenSize.screenHeight * 7,
+                              height: screenSize.screenHeight * 10,
                               width: screenSize.screenWidth * 80,
                               child: Center(
                                 child: Row(
@@ -108,16 +113,19 @@ class _CourseViewScreenState extends State<CourseViewScreen> {
                                     SizedBox(
                                       width: screenSize.screenWidth * 2,
                                     ),
-                                    Text(
-                                      (index1 + 1).toString() +
-                                          "." +
-                                          (index2 + 1).toString() +
-                                          " " +
-                                          lessList[index1]
-                                              .lessonParts[index2]
-                                              .partName,
-                                      style: TextStyle(color: Colors.black),
-                                      overflow: TextOverflow.fade,
+                                    Container(
+                                      width: screenSize.screenWidth * 70,
+                                      child: Text(
+                                        (index1 + 1).toString() +
+                                            "." +
+                                            (index2 + 1).toString() +
+                                            " " +
+                                            lessList[index1]
+                                                .lessonParts[index2]
+                                                .partName,
+                                        style: TextStyle(color: Colors.black),
+                                        overflow: TextOverflow.fade,
+                                      ),
                                     ),
                                   ],
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -127,7 +135,7 @@ class _CourseViewScreenState extends State<CourseViewScreen> {
                             elevation: 2,
                             color: Theme.of(context).accentColor,
                             width: screenSize.screenWidth * 80,
-                            height: screenSize.screenHeight * 7,
+                            height: screenSize.screenHeight * 10,
                           ),
                           onTap: () {
                             print(

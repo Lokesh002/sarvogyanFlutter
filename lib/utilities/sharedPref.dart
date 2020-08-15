@@ -87,14 +87,15 @@ class SavedData {
 
   setBalance(int name) async {
     final savedUserName = await SharedPreferences.getInstance();
-    await savedUserName.setInt('Balance', name);
+
+    await savedUserName.setInt('Balance', name == null ? 0 : name);
   }
 
   Future<int> getBalance() async {
     final savedUserName = await SharedPreferences.getInstance();
     final name = savedUserName.getInt('Balance');
     if (name == null) {
-      return null;
+      return 0;
     } else
       return name;
   }
