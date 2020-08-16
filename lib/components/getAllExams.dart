@@ -22,7 +22,7 @@ class GetAllExams {
       exam.examDescription = data[i]['examDescription'];
       exam.examTime = data[i]['examTime'];
       exam.examType = data[i]['examType'];
-      exam.totalQuestions = data[i]['totalQuestions'];
+      exam.totalQuestions = data[i]['totalQuestions'].toString();
       List categ = data[i]['courseCategory'];
       for (int j = 0; j < categ.length; j++) {
         exam.courseCategory.add(categ[j]);
@@ -43,7 +43,7 @@ class Exam {
   String examDescription;
   String examType;
   int examTime;
-  int totalQuestions;
+  String totalQuestions;
   List<String> courseCategory = List<String>();
   List<String> courseSubCategory = List<String>();
 }

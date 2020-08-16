@@ -8,7 +8,7 @@ class ReusableExamCard extends StatelessWidget {
   final String examName;
   final int examTime;
   final String examType;
-  final int totalQuestion;
+  final String totalQuestion;
   final String examDesc;
 
   final Function onTap;

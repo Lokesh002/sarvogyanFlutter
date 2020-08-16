@@ -8,12 +8,13 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
 import 'package:sarvogyan/utilities/sharedPref.dart';
+import 'package:sarvogyan/utilities/userData.dart';
 
 class ResultScreen extends StatefulWidget {
-  int score;
+  var answers;
   int totalQues;
   String examId;
-  ResultScreen(this.score, this.totalQues, this.examId);
+  ResultScreen(this.answers, this.totalQues, this.examId);
   @override
   _ResultScreenState createState() => _ResultScreenState();
 }
@@ -22,38 +23,70 @@ class _ResultScreenState extends State<ResultScreen> {
   SizeConfig screenSize;
   bool isReady = false;
   SavedData savedData = SavedData();
-
+  int score = 0;
+  int total = 0;
   @override
   void initState() {
     super.initState();
+    print("reached result screen with ${convert.jsonEncode(widget.answers)}");
     saveResult();
   }
 
   void saveResult() async {
     String authAccessToken = await savedData.getAccessToken();
 
-    String url =
-        'https://us-central1-sarvogyan-course-platform.cloudfunctions.net/api/exam/setResults';
-    http.Response response = await http.post(url,
+    print(
+        "the access token is $authAccessToken and answers are: ${convert.jsonEncode(widget.answers)} with ${convert.jsonEncode(widget.examId)} and ${widget.totalQues}");
+    String url1 =
+        "https://us-central1-sarvogyan-course-platform.cloudfunctions.net/api/exam/calculateResult";
+
+    String examID = widget.examId;
+    var ans = widget.answers;
+    http.Response response1 = await http.post(url1,
         headers: {
           "Content-Type": "application/json",
           "x-auth-token": authAccessToken
         },
         body: convert.jsonEncode({
-          'exam_id': widget.examId,
-          'totalMarks': widget.totalQues,
-          'marks': widget.score
+          "exam_id": examID,
+          "answer": ans,
         }));
 
-    if (response.statusCode == 200) {
-      var decodedData = convert.jsonDecode(response.body);
+    if (response1.statusCode == 200) {
+      widget.answers.clear();
+      var decodedData = convert.jsonDecode(response1.body);
+      total = decodedData["total"];
+      score = decodedData["marks"];
 
-      print(decodedData);
       isReady = true;
       setState(() {});
     } else {
-      print(response.statusCode);
+      print(response1.statusCode);
+      print(response1.reasonPhrase);
     }
+
+//    String url =
+//        'https://us-central1-sarvogyan-course-platform.cloudfunctions.net/api/exam/setResults';
+//    http.Response response = await http.post(url,
+//        headers: {
+//          "Content-Type": "application/json",
+//          "x-auth-token": authAccessToken
+//        },
+//        body: convert.jsonEncode({
+//          'exam_id': widget.examId,
+//          'totalMarks': widget.totalQues,
+//          'marks': widget.score
+//        }));
+//
+//    if (response.statusCode == 200) {
+//      var decodedData = convert.jsonDecode(response.body);
+//
+//      print(decodedData);
+//      isReady = true;
+//      setState(() {});
+//    } else {
+//      print(response.statusCode);
+//    }
   }
 
   Widget showScreen() {
@@ -146,7 +179,7 @@ class _ResultScreenState extends State<ResultScreen> {
                           ),
                           Center(
                             child: Text(
-                              "You Scored ${widget.score} out of ${widget.totalQues}",
+                              "You Scored ${score} out of ${total}",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: screenSize.screenHeight * 3.5,

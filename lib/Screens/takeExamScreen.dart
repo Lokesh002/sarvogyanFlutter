@@ -103,21 +103,20 @@ class _ExamScreenState extends State<ExamScreen> {
     int score = 0;
     print('answer');
     print(answers);
-    Map getAnswer = answers;
-    Function unOrdDeepEq = const DeepCollectionEquality.unordered().equals;
+//    Map getAnswer = answers;
+//    Function unOrdDeepEq = const DeepCollectionEquality.unordered().equals;
+//
+//    for (int i = 0; i < getAnswer.length; i++) {
+//      if (unOrdDeepEq(
+//          getAnswer['${(i + 1).toString()}'], questionList[i].answer)) score++;
+//    }
+//    print('get');
+//    print(getAnswer);
 
-    for (int i = 0; i < getAnswer.length; i++) {
-      if (unOrdDeepEq(
-          getAnswer['${(i + 1).toString()}'], questionList[i].answer)) score++;
-    }
-    print('get');
-    print(getAnswer);
-
-    answers.clear();
-    print(score);
+//    print(score);
     //countDownTimer.cancel();
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-      return ResultScreen(score, questionList.length, widget.exam.examId);
+      return ResultScreen(answers, questionList.length, widget.exam.examId);
     }));
   }
 

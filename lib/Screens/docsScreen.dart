@@ -8,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:sarvogyan/Screens/login.dart';
 import 'package:sarvogyan/components/DocsCard.dart';
 import 'package:sarvogyan/components/ReusableButton.dart';
 import 'package:sarvogyan/components/getAllDocs.dart';
@@ -47,7 +48,7 @@ class _DocsScreenState extends State<DocsScreen> {
   String downloadMessage = 'Initializing...';
   bool isDownloading = false;
   List<Docs> docsList;
-
+  String accessTKN;
   Future download(String url, String name) async {
     String path = await ExtStorage.getExternalStoragePublicDirectory(
         ExtStorage.DIRECTORY_MUSIC);
@@ -121,6 +122,7 @@ class _DocsScreenState extends State<DocsScreen> {
 
   Future getPermission() async {
     print("permission");
+    accessTKN = await savedData.getAccessToken();
     var status = await Permission.storage.status;
     if (!status.isGranted) {
       await Permission.storage.request();
@@ -128,7 +130,43 @@ class _DocsScreenState extends State<DocsScreen> {
   }
 
   Widget ShowScreen(bool isReady) {
-    if (!isReady) {
+    if (accessTKN == null) {
+      return Scaffold(
+        body: Container(
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: screenSize.screenHeight * 10,
+              ),
+              Container(
+                height: screenSize.screenHeight * 20,
+                child: SvgPicture.asset('svg/pleaseLogin.svg',
+                    semanticsLabel: 'A red up arrow'),
+              ),
+              SizedBox(
+                height: screenSize.screenHeight * 5,
+              ),
+              Text(
+                "Please Login First",
+              ),
+              SizedBox(
+                height: screenSize.screenHeight * 20,
+              ),
+              ReusableButton(
+                onPress: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return Login(true);
+                  }));
+                },
+                height: screenSize.screenHeight * 7,
+                width: screenSize.screenWidth * 30,
+                content: "Login",
+              )
+            ],
+          ),
+        ),
+      );
+    } else if (!isReady) {
       return Scaffold(
         backgroundColor: Color(0xffffffff),
         body: SpinKitWanderingCubes(
