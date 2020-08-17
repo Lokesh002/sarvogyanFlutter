@@ -12,6 +12,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sarvogyan/lists/allCoursesList.dart';
 import 'package:sarvogyan/utilities/userData.dart';
 import 'package:sarvogyan/utilities/sharedPref.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Login extends StatefulWidget {
   bool fromAllCourses = true;
@@ -77,20 +78,19 @@ class _LoginState extends State<Login> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: ListView(
-        padding: EdgeInsets.all(8),
         children: <Widget>[
           Container(
             child: Column(children: <Widget>[
-              SizedBox(
-                height: screenSize.screenHeight * 10,
-              ),
               Container(
-                height: screenSize.screenHeight * 20,
-                child: SvgPicture.asset('svg/login.svg',
-                    semanticsLabel: 'A red up arrow'),
+                width: screenSize.screenWidth * 100,
+                height: screenSize.screenHeight * 25,
+                child: Image.asset(
+                  "images/logo.png",
+                  fit: BoxFit.fitWidth,
+                ),
               ),
               SizedBox(
-                height: screenSize.screenHeight * 5,
+                height: screenSize.screenHeight * 4,
               ),
 
               Column(
@@ -98,141 +98,104 @@ class _LoginState extends State<Login> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      SizedBox(
-                        width: screenSize.screenWidth * 10,
-                      ),
                       Text(
-                        "Login",
+                        "Sign In",
                         style: TextStyle(
-                          color: Colors.black,
-                          fontSize: screenSize.screenHeight * 3.5,
-                          fontFamily: "Roboto",
-                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor,
+                          fontSize: screenSize.screenHeight * 4,
+                          fontWeight: FontWeight.normal,
                         ),
                       ),
                     ],
+                  ),
+                  SizedBox(
+                    height: screenSize.screenHeight * 2,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: screenSize.screenWidth * 15,
+                        right: screenSize.screenWidth * 15,
+                        top: screenSize.screenHeight * 2),
+                    child: Stack(
+                      children: <Widget>[
+                        Container(
+                          padding:
+                              EdgeInsets.only(top: screenSize.screenHeight * 0),
+                          child: TextFormField(
+                            validator: (val) =>
+                                val.isEmpty ? 'Enter your email' : null,
+                            controller: emailcontroller,
+                            keyboardType: TextInputType.text,
+                            textAlign: TextAlign.start,
+                            onChanged: (name) {
+                              this.email = name;
+                              print(this.email);
+                            },
+
+                            style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: screenSize.screenHeight * 1.5,
+                                fontFamily: "Montserrat"),
+                            // focusNode: focusNode
+                            decoration: InputDecoration(
+                              hintText: "Email ID",
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      screenSize.screenHeight * 2)),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: screenSize.screenWidth * 15,
+                        right: screenSize.screenWidth * 15,
+                        top: screenSize.screenHeight * 2),
+                    child: Stack(
+                      children: <Widget>[
+                        Container(
+                          padding:
+                              EdgeInsets.only(top: screenSize.screenHeight * 0),
+                          child: TextFormField(
+                            validator: (val) =>
+                                val.isEmpty ? 'Enter your password' : null,
+                            controller: passwordcontroller,
+                            keyboardType: TextInputType.text,
+                            textAlign: TextAlign.start,
+                            onChanged: (name) {
+                              this.password = name;
+                              print(this.password);
+                            },
+
+                            style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: screenSize.screenHeight * 1.5,
+                                fontFamily: "Montserrat"),
+                            // focusNode: focusNode
+
+                            decoration: InputDecoration(
+                              hintText: "Password",
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      screenSize.screenHeight * 2)),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: screenSize.screenHeight * 4,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(
-                        width: screenSize.screenWidth * 10,
-                      ),
-                      Text("Please enter your Email Address & Password",
-                          style: const TextStyle(
-                              color: const Color(0xff7f7f7f),
-                              fontWeight: FontWeight.w500,
-                              fontFamily: "Roboto",
-                              fontStyle: FontStyle.normal,
-                              fontSize: 14.0),
-                          textAlign: TextAlign.left)
-                    ],
-                  ),
-                  SizedBox(
-                    height: screenSize.screenWidth * 6,
-                  ),
-                  Center(
-                    child: ReusableCard(
-                      width: screenSize.screenWidth * 80,
-                      height: screenSize.screenHeight * 6,
-                      cardChild: Center(
-                        child: TextField(
-                          controller: emailcontroller,
-                          keyboardType: TextInputType.emailAddress,
-                          textAlign: TextAlign.center,
-                          onChanged: (email) {
-                            this.email = email;
-                          },
-                          style: TextStyle(
-                              color: Colors.black87,
-                              fontSize: screenSize.screenHeight * 1.5),
-                          decoration: InputDecoration(
-                            hintText: 'email@abc.com',
-                            hintStyle: TextStyle(
-                              color: Color(0xff4f4f4f),
-                            ),
-                            fillColor: Color(0xff009679),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(screenSize.screenHeight * 1)),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color(0xfffafafa), width: 1.0),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(screenSize.screenHeight * 2)),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Color(0xfffafafa), width: 1.0),
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(screenSize.screenHeight * 2)),
-                            ),
-                          ),
-                        ),
-                      ),
-//
-                    ),
-                  ),
-                  SizedBox(
-                    height: screenSize.screenWidth * 6,
-                  ),
-                  Center(
-                    child: ReusableCard(
-                      height: screenSize.screenHeight * 6,
-                      width: screenSize.screenWidth * 80,
-                      cardChild: TextField(
-                        controller: passwordcontroller,
-                        obscureText: true,
-                        keyboardType: TextInputType.text,
-                        textAlign: TextAlign.center,
-                        onChanged: (password) {
-                          this.password = password;
-                        },
-                        style: TextStyle(
-                            color: Colors.black87,
-                            fontSize: screenSize.screenHeight * 1.5),
-                        decoration: InputDecoration(
-                          hintText: 'Password',
-                          hintStyle: TextStyle(
-                            color: Color(0xff4f4f4f),
-                          ),
-                          fillColor: Color(0xff009679),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(screenSize.screenHeight * 1)),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color(0xfffafafa), width: 1.0),
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(screenSize.screenHeight * 2)),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color(0xfffafafa), width: 1.0),
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(screenSize.screenHeight * 2)),
-                          ),
-                        ),
-                      ),
-//
-                    ),
-                  ),
-                  SizedBox(
-                    height: screenSize.screenWidth * 6,
-                  ),
                   Center(
                     child: ReusableButton(
-                        height: screenSize.screenHeight * 8,
-                        width: screenSize.screenWidth * 71,
+                        height: screenSize.screenHeight * 6,
+                        width: screenSize.screenWidth * 50,
                         content: login,
                         onPress: () async {
                           showAlertDialog(context);
@@ -274,7 +237,7 @@ class _LoginState extends State<Login> {
                         }),
                   ),
                   SizedBox(
-                    height: screenSize.screenWidth * 10,
+                    height: screenSize.screenHeight * 2,
                   ),
                   Center(
                     child: GestureDetector(
@@ -288,31 +251,150 @@ class _LoginState extends State<Login> {
                       child: Text("Login through Phone Number",
                           style: TextStyle(
                               color: Theme.of(context).primaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "Roboto",
+                              fontWeight: FontWeight.normal,
+                              fontFamily: "Montserrat",
                               fontStyle: FontStyle.normal,
                               fontSize: 14.0),
                           textAlign: TextAlign.left),
                     ),
                   ),
                   SizedBox(
-                    height: screenSize.screenWidth * 10,
+                    height: screenSize.screenHeight * 3,
                   ),
-                  Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushReplacementNamed(
-                            context, '/registerUser');
-                      },
-                      child: Text("New User? Sign Up Now !",
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "Roboto",
-                              fontStyle: FontStyle.normal,
-                              fontSize: 14.0),
-                          textAlign: TextAlign.left),
-                    ),
+                  Stack(
+                    children: <Widget>[
+                      Column(
+                        children: <Widget>[
+                          SizedBox(
+                            height: screenSize.screenHeight * 2,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            height: screenSize.screenHeight * 25,
+                            color: Color(0xffdfdffa),
+                            child: Column(
+                              children: <Widget>[
+                                SizedBox(
+                                  height: screenSize.screenHeight * 5,
+                                ),
+                                Text("Sign in With",
+                                    style: TextStyle(
+                                        color: Colors.black54,
+                                        fontWeight: FontWeight.normal,
+                                        fontFamily: "Montserrat",
+                                        fontStyle: FontStyle.normal,
+                                        fontSize: 14.0),
+                                    textAlign: TextAlign.left),
+                                SizedBox(
+                                  height: screenSize.screenHeight * 2,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    CircleAvatar(
+                                      child: CircleAvatar(
+                                        radius: screenSize.screenHeight * 2.5,
+                                        child: FaIcon(
+                                          FontAwesomeIcons.google,
+                                          color: Colors.white,
+                                        ),
+                                        backgroundColor:
+                                            Theme.of(context).primaryColor,
+                                      ),
+                                      radius: screenSize.screenHeight * 2.8,
+                                      backgroundColor: Colors.white,
+                                    ),
+                                    SizedBox(
+                                      width: screenSize.screenWidth * 2,
+                                    ),
+                                    Text("--or--",
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontWeight: FontWeight.normal,
+                                            fontFamily: "Montserrat",
+                                            fontStyle: FontStyle.normal,
+                                            fontSize:
+                                                screenSize.screenHeight * 2),
+                                        textAlign: TextAlign.left),
+                                    SizedBox(
+                                      width: screenSize.screenWidth * 2,
+                                    ),
+                                    CircleAvatar(
+                                      radius: screenSize.screenHeight * 2.7,
+                                      backgroundColor: Colors.white,
+                                      child: Center(
+                                        child: FaIcon(
+                                          FontAwesomeIcons.facebook,
+                                          color: Theme.of(context).primaryColor,
+                                          size: screenSize.screenHeight * 5,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: screenSize.screenWidth * 5,
+                                ),
+                                Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Text("New User? ",
+                                          style: TextStyle(
+                                              color: Colors.black54,
+                                              fontWeight: FontWeight.normal,
+                                              fontFamily: "Montserrat",
+                                              fontStyle: FontStyle.normal,
+                                              fontSize: 14.0),
+                                          textAlign: TextAlign.left),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.pushReplacementNamed(
+                                              context, '/registerUser');
+                                        },
+                                        child: Text("Sign Up ",
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                fontWeight: FontWeight.normal,
+                                                fontFamily: "Montserrat",
+                                                fontStyle: FontStyle.normal,
+                                                fontSize: 14.0),
+                                            textAlign: TextAlign.left),
+                                      ),
+                                      Text("Now ! ",
+                                          style: TextStyle(
+                                              color: Colors.black54,
+                                              fontWeight: FontWeight.normal,
+                                              fontFamily: "Montserrat",
+                                              fontStyle: FontStyle.normal,
+                                              fontSize: 14.0),
+                                          textAlign: TextAlign.left),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Center(
+                        child: CircleAvatar(
+                          radius: screenSize.screenHeight * 3 + 1,
+                          child: CircleAvatar(
+                            radius: screenSize.screenHeight * 3,
+                            child: Text(
+                              "OR",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: "Montserrat"),
+                            ),
+                            backgroundColor: Colors.white,
+                          ),
+                          backgroundColor: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                    ],
                   )
                 ],
               ),

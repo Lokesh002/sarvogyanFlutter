@@ -42,7 +42,7 @@ class _RegisterUserState extends State<RegisterUser> {
   String smsOTP;
   String verificationId;
   String errorMessage = '';
-  FirebaseAuth _auth = FirebaseAuth.instance;
+
   FirebaseAuth auth = FirebaseAuth.instance;
   AuthResult result;
 
@@ -130,62 +130,37 @@ class _RegisterUserState extends State<RegisterUser> {
         children: <Widget>[
           Container(
             child: Column(children: <Widget>[
-              SizedBox(
-                height: screenSize.screenHeight * 7,
-              ),
               Container(
-                height: screenSize.screenHeight * 20,
-                child: SvgPicture.asset('svg/register.svg',
-                    semanticsLabel: 'A red up arrow'),
+                width: screenSize.screenWidth * 100,
+                height: screenSize.screenHeight * 25,
+                child: Image.asset(
+                  "images/logo.png",
+                  fit: BoxFit.fitWidth,
+                ),
               ),
               SizedBox(
                 height: screenSize.screenHeight * 2,
               ),
               Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(
-                        width: screenSize.screenWidth * 10,
-                      ),
-                      Text(
-                        "Register User",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: screenSize.screenHeight * 3.5,
-                          fontFamily: "Roboto",
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    "Sign Up",
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: screenSize.screenHeight * 3.5,
+                      fontFamily: "Montserrat",
+                      fontWeight: FontWeight.normal,
+                    ),
                   ),
                   SizedBox(
                     height: screenSize.screenHeight * 2,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(
-                        width: screenSize.screenWidth * 10,
-                      ),
-                      Text("Please enter your details.",
-                          style: TextStyle(
-                              color: const Color(0xff7f7f7f),
-                              fontWeight: FontWeight.w500,
-                              fontFamily: "Roboto",
-                              fontStyle: FontStyle.normal,
-                              fontSize: screenSize.screenHeight * 2.5),
-                          textAlign: TextAlign.left)
-                    ],
-                  ),
-                  SizedBox(
-                    height: screenSize.screenWidth * 3,
-                  ),
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[]),
                   Form(
                     key: _formKey,
                     child: Column(
@@ -205,7 +180,7 @@ class _RegisterUserState extends State<RegisterUser> {
                                       val.isEmpty ? 'Enter your name' : null,
                                   controller: namecontroller,
                                   keyboardType: TextInputType.text,
-                                  textAlign: TextAlign.center,
+                                  textAlign: TextAlign.start,
                                   onChanged: (name) {
                                     this.name = name;
                                     print(this.name);
@@ -213,25 +188,13 @@ class _RegisterUserState extends State<RegisterUser> {
 
                                   style: TextStyle(
                                       color: Colors.black87,
-                                      fontSize: screenSize.screenHeight * 2.5),
+                                      fontSize: screenSize.screenHeight * 2),
                                   // focusNode: focusNode,
                                   decoration: InputDecoration(
+                                    hintText: "Name",
                                     border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(
-                                            screenSize.screenHeight * 6)),
-                                  ),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.topCenter,
-                                child: Container(
-                                  color: Colors.white,
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: screenSize.screenWidth),
-                                    child: Text(
-                                      'Name',
-                                    ),
+                                            screenSize.screenHeight * 2)),
                                   ),
                                 ),
                               ),
@@ -252,35 +215,21 @@ class _RegisterUserState extends State<RegisterUser> {
                                       val.isEmpty ? 'Enter an Email' : null,
                                   controller: emailcontroller,
                                   keyboardType: TextInputType.emailAddress,
-                                  textAlign: TextAlign.center,
+                                  textAlign: TextAlign.start,
                                   onChanged: (name) {
                                     this.email = name;
                                     print(this.email);
                                   },
                                   style: TextStyle(
                                       color: Colors.black87,
-                                      fontSize: screenSize.screenHeight * 2.5),
+                                      fontSize: screenSize.screenHeight * 2),
                                   // focusNode: focusNode,
 
                                   decoration: InputDecoration(
+                                    hintText: "Email",
                                     border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(
-                                            screenSize.screenHeight * 6)),
-                                  ),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.topCenter,
-                                child: Container(
-                                  color: Colors.white,
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: screenSize.screenWidth),
-                                    child: Text(
-                                      'E-mail',
-                                      // style:
-                                      // isFocused ? TextStyle(color: Colors.blue[800]) : null,
-                                    ),
+                                            screenSize.screenHeight * 2)),
                                   ),
                                 ),
                               ),
@@ -303,34 +252,20 @@ class _RegisterUserState extends State<RegisterUser> {
                                   obscureText: true,
                                   controller: passwordcontroller,
                                   keyboardType: TextInputType.text,
-                                  textAlign: TextAlign.center,
+                                  textAlign: TextAlign.start,
                                   onChanged: (pass) {
                                     this.password = pass;
                                     print(this.password);
                                   },
                                   style: TextStyle(
                                       color: Colors.black87,
-                                      fontSize: screenSize.screenHeight * 2.5),
+                                      fontSize: screenSize.screenHeight * 2),
                                   // focusNode: focusNode,
                                   decoration: InputDecoration(
+                                    hintText: "Password",
                                     border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(
-                                            screenSize.screenHeight * 6)),
-                                  ),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.topCenter,
-                                child: Container(
-                                  color: Colors.white,
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: screenSize.screenWidth),
-                                    child: Text(
-                                      'Password',
-                                      // style:
-                                      // isFocused ? TextStyle(color: Colors.blue[800]) : null,
-                                    ),
+                                            screenSize.screenHeight * 2)),
                                   ),
                                 ),
                               ),
@@ -355,34 +290,20 @@ class _RegisterUserState extends State<RegisterUser> {
                                   },
                                   controller: phoneNocontroller,
                                   keyboardType: TextInputType.number,
-                                  textAlign: TextAlign.center,
+                                  textAlign: TextAlign.start,
                                   onChanged: (phone) {
                                     this.phoneNo = phone;
                                     print(this.phoneNo);
                                   },
                                   style: TextStyle(
                                       color: Colors.black87,
-                                      fontSize: screenSize.screenHeight * 2.5),
+                                      fontSize: screenSize.screenHeight * 2),
                                   // focusNode: focusNode,
                                   decoration: InputDecoration(
+                                    hintText: "Phone Number",
                                     border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(
-                                            screenSize.screenHeight * 6)),
-                                  ),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.topCenter,
-                                child: Container(
-                                  color: Colors.white,
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: screenSize.screenWidth),
-                                    child: Text(
-                                      'Phone Number',
-                                      // style:
-                                      // isFocused ? TextStyle(color: Colors.blue[800]) : null,
-                                    ),
+                                            screenSize.screenHeight * 2)),
                                   ),
                                 ),
                               ),
@@ -399,38 +320,26 @@ class _RegisterUserState extends State<RegisterUser> {
                               Container(
                                 padding: const EdgeInsets.only(top: 10),
                                 child: TextFormField(
+                                  minLines: 3,
+                                  maxLines: 5,
                                   validator: (val) =>
                                       val.isEmpty ? 'Enter an address' : null,
                                   controller: addresscontroller,
-                                  keyboardType: TextInputType.text,
-                                  textAlign: TextAlign.center,
+                                  keyboardType: TextInputType.emailAddress,
+                                  textAlign: TextAlign.start,
                                   onChanged: (address) {
                                     this.address = address;
                                     print(this.address);
                                   },
                                   style: TextStyle(
                                       color: Colors.black87,
-                                      fontSize: screenSize.screenHeight * 2.5),
+                                      fontSize: screenSize.screenHeight * 2),
                                   // focusNode: focusNode,
                                   decoration: InputDecoration(
+                                    hintText: "Address",
                                     border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(
-                                            screenSize.screenHeight * 6)),
-                                  ),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.topCenter,
-                                child: Container(
-                                  color: Colors.white,
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: screenSize.screenWidth),
-                                    child: Text(
-                                      'Address',
-                                      // style:
-                                      // isFocused ? TextStyle(color: Colors.blue[800]) : null,
-                                    ),
+                                            screenSize.screenHeight * 2)),
                                   ),
                                 ),
                               ),
@@ -444,10 +353,10 @@ class _RegisterUserState extends State<RegisterUser> {
                     height: screenSize.screenWidth * 6,
                   ),
                   Center(
-                    child: ReusableCard(
+                    child: Container(
                       height: screenSize.screenHeight * 10,
                       width: screenSize.screenWidth * 80,
-                      cardChild: Column(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           SizedBox(
@@ -556,7 +465,7 @@ class _RegisterUserState extends State<RegisterUser> {
                   Center(
                     child: ReusableButton(
                         height: screenSize.screenHeight * 8,
-                        width: screenSize.screenWidth * 71,
+                        width: screenSize.screenWidth * 50,
                         content: "Register",
                         onPress: () async {
                           if (_formKey.currentState.validate()) {
@@ -595,7 +504,7 @@ class _RegisterUserState extends State<RegisterUser> {
                           style: TextStyle(
                               color: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.bold,
-                              fontFamily: "Roboto",
+                              fontFamily: "Montserrat",
                               fontStyle: FontStyle.normal,
                               fontSize: 14.0),
                           textAlign: TextAlign.left),

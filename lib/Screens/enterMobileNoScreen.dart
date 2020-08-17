@@ -224,56 +224,44 @@ class _EnterMobileNoScreenState extends State<EnterMobileNoScreen> {
               child: Column(children: <Widget>[
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(
-                      height: screenSize.screenHeight * 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(
-                          width: screenSize.screenWidth * 10,
-                        ),
-                        Text(
-                          "Enter Mobile Number",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: screenSize.screenHeight * 3.5,
-                            fontFamily: "Roboto",
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: screenSize.screenHeight * 10,
-                    ),
                     Container(
-                      height: screenSize.screenHeight * 20,
-                      child: SvgPicture.asset('svg/phoneLogin.svg',
-                          semanticsLabel: 'A red up arrow'),
+                      width: screenSize.screenWidth * 100,
+                      height: screenSize.screenHeight * 30,
+                      child: Image.asset(
+                        "images/logo.png",
+                        fit: BoxFit.fitWidth,
+                      ),
                     ),
                     SizedBox(
-                      height: screenSize.screenHeight * 10,
+                      height: screenSize.screenHeight * 3,
+                    ),
+                    Text(
+                      "Enter Mobile Number",
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontSize: screenSize.screenHeight * 3.5,
+                        fontFamily: "Montserrat",
+                        fontWeight: FontWeight.normal,
+                      ),
                     ),
                     SizedBox(
                       height: screenSize.screenHeight * 5,
                     ),
                     Center(
-                      child: ReusableCard(
+                      child: Container(
                         height: screenSize.screenHeight * 7,
                         width: screenSize.screenWidth * 80,
-                        cardChild: Row(
+                        child: Row(
                           children: <Widget>[
-                            Text("  +91- "),
+                            Text("  +91-   "),
                             Container(
                               width: screenSize.screenWidth * 68,
                               child: TextField(
                                 controller: _controller,
                                 keyboardType: TextInputType.phone,
-                                textAlign: TextAlign.center,
+                                textAlign: TextAlign.start,
                                 onChanged: (value) {
                                   mobileNo = value;
                                 },
@@ -317,7 +305,7 @@ class _EnterMobileNoScreenState extends State<EnterMobileNoScreen> {
                           },
                           content: button,
                           height: screenSize.screenHeight * 8,
-                          width: screenSize.screenWidth * 71),
+                          width: screenSize.screenWidth * 50),
                     ),
                   ],
                 ),

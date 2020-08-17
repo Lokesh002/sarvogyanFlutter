@@ -26,7 +26,7 @@ class ReusableButton extends StatelessWidget {
         content,
         style: TextStyle(
             color: Colors.white,
-            fontSize: screenSize.screenHeight * 1.5,
+            fontSize: screenSize.screenHeight * 2,
             fontFamily: "Roboto"),
       ),
       elevation: elev,
