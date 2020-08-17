@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sarvogyan/Screens/ResultScreen.dart';
+import 'package:sarvogyan/components/ReusableCard.dart';
 import 'package:sarvogyan/components/getAllExams.dart';
 import 'package:sarvogyan/components/getExamQuestions.dart';
 import 'package:collection/collection.dart';
@@ -22,7 +23,12 @@ class ExamScreen extends StatefulWidget {
 class _ExamScreenState extends State<ExamScreen> {
   SizeConfig screenSize;
   List<Question> questionList;
-  PageController controller;
+  double x = 0.0;
+  PageController pageViewController =
+      PageController(viewportFraction: 1, keepPage: true);
+  ScrollController scrollController = ScrollController();
+  Color colour = Colors.white;
+  double ind = 0;
   var sub;
   int _start;
   int _hours;
@@ -124,6 +130,8 @@ class _ExamScreenState extends State<ExamScreen> {
   void dispose() {
     //countDownTimer.cancel();
     super.dispose();
+    scrollController.dispose();
+    pageViewController.dispose();
     if (widget.exam.examType == 'timed') sub.cancel();
   }
 
@@ -140,6 +148,7 @@ class _ExamScreenState extends State<ExamScreen> {
   @override
   Widget build(BuildContext context) {
     questionList = widget.questionList;
+
     screenSize = SizeConfig(context);
     return WillPopScope(
       onWillPop: () async {
@@ -217,34 +226,108 @@ class _ExamScreenState extends State<ExamScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: screenSize.screenHeight * 1.7,
+                  height: screenSize.screenHeight * 1,
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  height: screenSize.screenHeight * 8,
+                  width: screenSize.screenWidth * 100,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        left: screenSize.screenWidth * 2.5,
+                        right: screenSize.screenWidth * 2.5),
+                    child: ListView.builder(
+                        controller: scrollController,
+                        //shrinkWrap: true,
+                        itemBuilder: (BuildContext cntxt, int index) {
+                          return Center(
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  left: screenSize.screenWidth * 2.5,
+                                  right: screenSize.screenWidth * 2.5),
+                              child: GestureDetector(
+                                onTap: () {
+                                  pageViewController.jumpToPage(index);
+                                  colour = Theme.of(context).primaryColor;
+                                  setState(() {});
+                                  ind = pageViewController.page;
+                                },
+                                child: Material(
+                                  color: index.toDouble() == ind
+                                      ? Theme.of(context).primaryColor
+                                      : Colors.white,
+                                  elevation: 3,
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    width: screenSize.screenWidth * 10,
+                                    height: screenSize.screenHeight * 8,
+                                    child: Center(child: Text("${index + 1}")),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                        scrollDirection: Axis.horizontal,
+                        itemCount: questionList.length,
+                        padding: EdgeInsets.fromLTRB(
+                            0,
+                            screenSize.screenHeight * 1,
+                            0,
+                            screenSize.screenHeight * 1)),
+                  ),
+                ),
+                SizedBox(
+                  height: screenSize.screenHeight * 1,
                 ),
                 Container(
                   width: double.infinity,
-                  height: screenSize.screenHeight * 80,
-                  child: PageIndicatorContainer(
-                    key: key,
-                    child: PageView.builder(
-                      controller: controller,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ReusableQuestionScreen1(
-                          onTap: () {},
-                          questionNo: questionList[index].questionNo,
-                          question: questionList[index].question,
-                          option1: questionList[index].option1,
-                          option2: questionList[index].option2,
-                          option3: questionList[index].option3,
-                          option4: questionList[index].option4,
-                          answer: questionList[index].answer,
-                        );
-                      },
-                      itemCount: questionList.length,
-                    ),
-                    align: IndicatorAlign.bottom,
-                    length: questionList.length,
-                    indicatorSpace: screenSize.screenWidth * 2,
-                    indicatorColor: Colors.grey,
-                    indicatorSelectorColor: Theme.of(context).primaryColor,
+                  height: screenSize.screenHeight * 72.5,
+                  child: PageView.builder(
+                    controller: pageViewController,
+                    onPageChanged: (value) {
+                      setState(() {
+                        ind = value.toDouble();
+                        print(ind);
+
+                        print('ind: $ind');
+                        print('x: $x');
+                        if ((ind) > (x + 5.0)) {
+                          if (ind < x + 5.0) {
+                            x = x + 5.0;
+                            print('x changed to: $x');
+                          }
+                          if (ind > x + 5.0) {
+                            int quotient = (ind / 5.0).floor();
+                            x = 5.0 * quotient;
+                            print('x changed to: $x');
+                          }
+                          scrollController
+                              .jumpTo((x) * screenSize.screenWidth * 15);
+                        }
+                        if ((ind) < (x)) {
+                          int quotient = (ind / 5.0).floor();
+                          x = 5.0 * quotient;
+                          scrollController
+                              .jumpTo((x) * screenSize.screenWidth * 15);
+
+                          print('x changed to: $x');
+                        }
+                      });
+                    },
+                    itemBuilder: (BuildContext context, int index) {
+                      return ReusableQuestionScreen1(
+                        onTap: () {},
+                        questionNo: questionList[index].questionNo,
+                        question: questionList[index].question,
+                        option1: questionList[index].option1,
+                        option2: questionList[index].option2,
+                        option3: questionList[index].option3,
+                        option4: questionList[index].option4,
+                        answer: questionList[index].answer,
+                      );
+                    },
+                    itemCount: questionList.length,
                   ),
                 ),
                 GestureDetector(

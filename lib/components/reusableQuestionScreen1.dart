@@ -88,7 +88,7 @@ class _ReusableQuestionScreen1State extends State<ReusableQuestionScreen1> {
           children: <Widget>[
             ReusableCard(
               width: screenSize.screenWidth * 80,
-              height: screenSize.screenHeight * 78,
+              height: screenSize.screenHeight * 68,
               cardChild: Container(
                 color: Theme.of(context).accentColor,
                 child: Row(
@@ -101,18 +101,18 @@ class _ReusableQuestionScreen1State extends State<ReusableQuestionScreen1> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         SizedBox(
-                          height: screenSize.screenHeight * 2.3,
+                          height: screenSize.screenHeight * 1,
                         ),
                         Container(
                           width: screenSize.screenWidth * 72,
-                          height: screenSize.screenHeight * 25,
+                          height: screenSize.screenHeight * 27,
                           child: ListView(
                             children: <Widget>[
                               Text(
                                 'Q${widget.questionNo}. ${widget.question}',
                                 softWrap: true,
                                 style: TextStyle(
-                                    fontSize: screenSize.screenHeight * 3,
+                                    fontSize: screenSize.screenHeight * 2.5,
                                     fontWeight: FontWeight.bold),
                               ),
                             ],
@@ -157,7 +157,7 @@ class _ReusableQuestionScreen1State extends State<ReusableQuestionScreen1> {
                                         fontSize:
                                             screenSize.screenHeight * 2.5),
                                   )),
-                                  height: screenSize.screenHeight * 10,
+                                  height: screenSize.screenHeight * 8,
                                 )
                               ],
                             ),
@@ -202,7 +202,7 @@ class _ReusableQuestionScreen1State extends State<ReusableQuestionScreen1> {
                                         fontSize:
                                             screenSize.screenHeight * 2.5),
                                   )),
-                                  height: screenSize.screenHeight * 10,
+                                  height: screenSize.screenHeight * 8,
                                 )
                               ],
                             ),
@@ -247,7 +247,7 @@ class _ReusableQuestionScreen1State extends State<ReusableQuestionScreen1> {
                                         fontSize:
                                             screenSize.screenHeight * 2.5),
                                   )),
-                                  height: screenSize.screenHeight * 10,
+                                  height: screenSize.screenHeight * 8,
                                 )
                               ],
                             ),
@@ -292,7 +292,7 @@ class _ReusableQuestionScreen1State extends State<ReusableQuestionScreen1> {
                                         fontSize:
                                             screenSize.screenHeight * 2.5),
                                   )),
-                                  height: screenSize.screenHeight * 10,
+                                  height: screenSize.screenHeight * 8,
                                 ),
                                 SizedBox(
                                   height: screenSize.screenHeight * 1,

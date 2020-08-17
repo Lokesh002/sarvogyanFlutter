@@ -165,6 +165,7 @@ class _LoginState extends State<Login> {
                             validator: (val) =>
                                 val.isEmpty ? 'Enter your password' : null,
                             controller: passwordcontroller,
+                            obscureText: true,
                             keyboardType: TextInputType.text,
                             textAlign: TextAlign.start,
                             onChanged: (name) {
