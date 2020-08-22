@@ -15,9 +15,10 @@ class ReusableQuestionScreen1 extends StatefulWidget {
 
   final Function onTap;
   final Function onChangeTap;
-
+  final String questionTyp;
   ReusableQuestionScreen1(
       {this.questionNo,
+      this.questionTyp,
       this.question,
       this.option1,
       this.option2,
@@ -76,8 +77,26 @@ class _ReusableQuestionScreen1State extends State<ReusableQuestionScreen1> {
     }
   }
 
+  bool pic = false;
+  Widget getpic() {
+    if (widget.questionTyp != null)
+      return Image.network(widget.question);
+    else {
+      print("No Pic present");
+      return SizedBox(
+        width: 10,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (widget.questionTyp == 'picture') {
+      pic = true;
+      print("pic present ${widget.questionTyp}");
+      setState(() {});
+    }
+
     SizeConfig screenSize = SizeConfig(context);
     return Row(
       children: <Widget>[
@@ -109,12 +128,15 @@ class _ReusableQuestionScreen1State extends State<ReusableQuestionScreen1> {
                           child: ListView(
                             children: <Widget>[
                               Text(
-                                'Q${widget.questionNo}. ${widget.question}',
+                                widget.questionTyp == 'picture'
+                                    ? 'Q${widget.questionNo}.'
+                                    : 'Q${widget.questionNo}. ${widget.question}',
                                 softWrap: true,
                                 style: TextStyle(
                                     fontSize: screenSize.screenHeight * 2.5,
                                     fontWeight: FontWeight.bold),
                               ),
+                              Visibility(visible: pic, child: getpic()),
                             ],
                           ),
                         ),

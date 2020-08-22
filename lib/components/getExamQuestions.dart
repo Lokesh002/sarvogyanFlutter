@@ -27,6 +27,18 @@ class GetExamQuestions {
         String a = (i + 1).toString();
         print(decodedData);
         question.questionNo = a;
+        try {
+          question.questiontype = decodedData[a]['questionType'].toString();
+        } catch (e) {
+          question.questiontype = null;
+          print(e);
+        }
+        if (question.questiontype != null) {
+          question.link = decodedData[a]['link'].toString();
+        } else {
+          question.link = null;
+        }
+
         question.question = decodedData[a]['question'].toString();
         question.option1 = decodedData[a]['option1'].toString();
         question.option2 = decodedData[a]['option2'].toString();
@@ -53,5 +65,7 @@ class Question {
   String option2;
   String option3;
   String option4;
+  String questiontype;
+  String link;
   List<dynamic> answer = List<dynamic>();
 }

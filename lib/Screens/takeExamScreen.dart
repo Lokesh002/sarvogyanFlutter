@@ -319,7 +319,10 @@ class _ExamScreenState extends State<ExamScreen> {
                       return ReusableQuestionScreen1(
                         onTap: () {},
                         questionNo: questionList[index].questionNo,
-                        question: questionList[index].question,
+                        question: questionList[index].questiontype == 'picture'
+                            ? questionList[index].link
+                            : questionList[index].question,
+                        questionTyp: questionList[index].questiontype,
                         option1: questionList[index].option1,
                         option2: questionList[index].option2,
                         option3: questionList[index].option3,
