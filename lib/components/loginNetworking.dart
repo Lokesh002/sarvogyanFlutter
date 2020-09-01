@@ -57,6 +57,17 @@ class LoginUserNetworking {
         print(await savedData.getPhone());
         await savedData.setEmail(decodedData["email"]);
         await savedData.setUserSubsLevel(decodedData["subscription"]);
+
+        if (decodedData["isStudent"] == null ||
+            decodedData["isStudent"] == false) {
+          await savedData.setIsStudent(decodedData["isStudent"]);
+          await savedData.setBoard(null);
+          await savedData.setClass(null);
+        } else {
+          await savedData.setIsStudent(decodedData["isStudent"]);
+          await savedData.setBoard(decodedData["board"]);
+          await savedData.setClass(decodedData["studentClass"]);
+        }
         print(await savedData.getUserSubsLevel());
         List dt = decodedData['courses'];
         for (int i = 0; i < dt.length; i++) {

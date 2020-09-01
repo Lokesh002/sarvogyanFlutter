@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sarvogyan/Screens/EnterBoardClassScreen.dart';
 import 'package:sarvogyan/Screens/login.dart';
 import 'package:sarvogyan/components/loginPhoneNetworking.dart';
 import 'package:sarvogyan/components/phoneCheck.dart';
@@ -11,6 +13,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sarvogyan/components/ReusableCard.dart';
 import 'package:sarvogyan/components/ReusableButton.dart';
 import 'package:sarvogyan/components/registerUserNetworking.dart';
+import 'package:sarvogyan/components/updateProfileSupport.dart';
 import 'package:sarvogyan/lists/allCoursesList.dart';
 
 class RegisterUser extends StatefulWidget {
@@ -506,7 +509,7 @@ class _RegisterUserState extends State<RegisterUser> {
                               fontWeight: FontWeight.bold,
                               fontFamily: "Montserrat",
                               fontStyle: FontStyle.normal,
-                              fontSize: 14.0),
+                              fontSize: screenSize.screenHeight * 1.7),
                           textAlign: TextAlign.left),
                     ),
                   ),
@@ -583,22 +586,39 @@ class _RegisterUserState extends State<RegisterUser> {
 //                      result.user.email);
 
                   registerUserNetworking = RegisterUserNetworking(
-                      name, email, password, this.phoneNo, address, age, UId);
+                      name,
+                      email,
+                      password,
+                      this.phoneNo,
+                      address,
+                      age,
+                      UId,
+                      FireAccessToken);
 
                   int aT = await registerUserNetworking.postData();
+                  print("VALUE OF at : " + aT.toString());
                   if (aT == 200) {
                     Fluttertoast.showToast(msg: "Registered Successfully");
-                    LoginPhoneNetworking loginPhoneNetworking =
-                        LoginPhoneNetworking(
-                            phone: this.phoneNo, accessToken: FireAccessToken);
-                    print('sending data');
-                    int status = await loginPhoneNetworking.postData();
-                    if (status == 200) {
-                      Fluttertoast.showToast(msg: "Login Successfully");
-                      //FirebaseAuth.instance.signOut();
-                      Navigator.pop(context);
-                      signedIn = true;
-                      Navigator.pop(context);
+                  }
+                  LoginPhoneNetworking loginPhoneNetworking =
+                      LoginPhoneNetworking(
+                          phone: this.phoneNo, accessToken: FireAccessToken);
+                  print('sending data');
+                  int status = await loginPhoneNetworking.postData();
+                  if (status == 200) {
+                    Fluttertoast.showToast(msg: "Login Successfully");
+                    //FirebaseAuth.instance.signOut();
+                    Navigator.pop(context);
+                    signedIn = true;
+                    Navigator.pop(context);
+                    if (age == "a") {
+                      await Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        //Here DecodedData is a locally saved variable containing selected course data
+                        return EnterBoardClassScreen(
+                            name: name, address: address, age: age);
+                      }));
+
                       Navigator.pushReplacementNamed(context, '/homeScreen');
                     } else {
                       setState(() {
@@ -619,6 +639,7 @@ class _RegisterUserState extends State<RegisterUser> {
                       age2selected = false;
                       age3selected = false;
                       Fluttertoast.showToast(msg: "Error!");
+                      Navigator.pop(context);
                     });
                   }
                 } else {

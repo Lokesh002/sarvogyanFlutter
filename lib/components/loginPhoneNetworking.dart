@@ -56,10 +56,30 @@ class LoginPhoneNetworking {
         await savedData.setAddress(decodedData["address"]);
         await savedData.setAge(decodedData["age"]);
         await savedData.setPhone(decodedData["phone"]);
-        print(await savedData.getPhone());
-        await savedData.setUserSubsLevel(decodedData["subscription"]);
-        print(await savedData.getUserSubsLevel());
+
+        if (decodedData["isStudent"] == null ||
+            decodedData["isStudent"] == false) {
+          await savedData.setIsStudent(decodedData["isStudent"]);
+          await savedData.setBoard(null);
+          await savedData.setClass(null);
+        } else {
+          await savedData.setIsStudent(decodedData["isStudent"]);
+          await savedData.setBoard(decodedData["board"]);
+          await savedData.setClass(decodedData["studentClass"]);
+        }
+
         await savedData.setEmail(decodedData["email"]);
+
+        print(await savedData.getUserSubsLevel());
+        print(await savedData.getAccessToken());
+        print(await savedData.getName());
+        print(await savedData.getAddress());
+        print(await savedData.getAge());
+        print(await savedData.getPhone());
+        print(await savedData.getIsStudent());
+        print(await savedData.getBoard());
+        print(await savedData.getClass());
+
         List dt = decodedData['courses'];
         for (int i = 0; i < dt.length; i++) {
           String a = dt[i]['course'];
@@ -82,7 +102,7 @@ class LoginPhoneNetworking {
         await savedData.setLoggedIn(true);
         return response.statusCode;
       } else
-        print(response.statusCode);
+        print("printing eror 1 " + response.statusCode.toString());
     } else {
       print('error ${response1.statusCode}');
     }

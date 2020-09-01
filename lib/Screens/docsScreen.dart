@@ -51,7 +51,7 @@ class _DocsScreenState extends State<DocsScreen> {
   String accessTKN;
   Future download(String url, String name) async {
     String path = await ExtStorage.getExternalStoragePublicDirectory(
-        ExtStorage.DIRECTORY_MUSIC);
+        ExtStorage.DIRECTORY_DOWNLOADS);
     String fullPath = "$path/$name";
 
     try {

@@ -8,6 +8,7 @@ import 'package:sarvogyan/Screens/applyCouponCode.dart';
 import 'package:sarvogyan/Screens/buySubscription.dart';
 import 'package:sarvogyan/Screens/login.dart';
 import 'package:sarvogyan/Screens/myResultScreen.dart';
+import 'file:///D:/Projects/Flutter/sarvogyan/sarvogyan/lib/Screens/updateProfile.dart';
 import 'package:sarvogyan/lists/allCoursesList.dart';
 
 import 'package:sarvogyan/utilities/userData.dart';
@@ -53,6 +54,8 @@ class _ProfileViewState extends State<ProfileView> {
   String password = '';
   String phoneNo = '';
   String address = '';
+  String board = "";
+  String studentClass = "";
   String age = '';
   String photo =
       'https://firebasestorage.googleapis.com/v0/b/sarvogyan-course-platform.appspot.com/o/sarvogyan-logo.jpg?alt=media&token=57068781-79f3-4f3c-b3e2-8be92c43e9a8';
@@ -391,6 +394,88 @@ class _ProfileViewState extends State<ProfileView> {
                                           width: screenSize.screenWidth * 5,
                                         ),
                                         Text(
+                                          "Board: ",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize:
+                                                screenSize.screenHeight * 2,
+                                            fontFamily: "Roboto",
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        Text(
+                                          board.toString(),
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize:
+                                                screenSize.screenHeight * 2,
+                                            fontFamily: "Roboto",
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: screenSize.screenWidth * 5,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: screenSize.screenHeight * 1,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Row(
+                                      children: <Widget>[
+                                        SizedBox(
+                                          width: screenSize.screenWidth * 5,
+                                        ),
+                                        Text(
+                                          "Class: ",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize:
+                                                screenSize.screenHeight * 2,
+                                            fontFamily: "Roboto",
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        Text(
+                                          studentClass.toString(),
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize:
+                                                screenSize.screenHeight * 2,
+                                            fontFamily: "Roboto",
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: screenSize.screenWidth * 5,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: screenSize.screenHeight * 1,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Row(
+                                      children: <Widget>[
+                                        SizedBox(
+                                          width: screenSize.screenWidth * 5,
+                                        ),
+                                        Text(
                                           "Balance: ",
                                           style: TextStyle(
                                             color: Colors.black,
@@ -420,7 +505,24 @@ class _ProfileViewState extends State<ProfileView> {
                                   ],
                                 ),
                                 SizedBox(
-                                  height: screenSize.screenHeight * 10,
+                                  height: screenSize.screenHeight * 1,
+                                ),
+                                ReusableButton(
+                                    onPress: () {
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) {
+                                        return UpdateProfile();
+                                      })).then((v) {
+                                        print("hello");
+                                        getData();
+                                        setState(() {});
+                                      });
+                                    },
+                                    content: "Update Profile",
+                                    height: screenSize.screenHeight * 5,
+                                    width: screenSize.screenWidth * 30),
+                                SizedBox(
+                                  height: screenSize.screenHeight * 1,
                                 ),
                                 Row(
                                   mainAxisAlignment:
@@ -443,7 +545,7 @@ class _ProfileViewState extends State<ProfileView> {
                                           });
                                         },
                                         content: "Apply Coupon Code",
-                                        height: screenSize.screenHeight * 7,
+                                        height: screenSize.screenHeight * 5,
                                         width: screenSize.screenWidth * 30),
 //                                  SizedBox(
 //                                    width: screenSize.screenWidth * 10,
@@ -463,12 +565,12 @@ class _ProfileViewState extends State<ProfileView> {
                                           });
                                         },
                                         content: "Add Money",
-                                        height: screenSize.screenHeight * 7,
+                                        height: screenSize.screenHeight * 5,
                                         width: screenSize.screenWidth * 30),
                                   ],
                                 ),
                                 SizedBox(
-                                  height: screenSize.screenHeight * 2,
+                                  height: screenSize.screenHeight * 1,
                                 ),
                                 Row(
                                   mainAxisAlignment:
@@ -491,7 +593,7 @@ class _ProfileViewState extends State<ProfileView> {
                                           });
                                         },
                                         content: "Subscribe",
-                                        height: screenSize.screenHeight * 7,
+                                        height: screenSize.screenHeight * 5,
                                         width: screenSize.screenWidth * 30),
                                     ReusableButton(
                                         onPress: () {
@@ -502,12 +604,12 @@ class _ProfileViewState extends State<ProfileView> {
                                           }));
                                         },
                                         content: "See Result",
-                                        height: screenSize.screenHeight * 7,
+                                        height: screenSize.screenHeight * 5,
                                         width: screenSize.screenWidth * 30),
                                   ],
                                 ),
                                 SizedBox(
-                                  height: screenSize.screenHeight * 2,
+                                  height: screenSize.screenHeight * 1,
                                 ),
                                 Center(
                                   child: ReusableButton(
@@ -535,7 +637,7 @@ class _ProfileViewState extends State<ProfileView> {
                                         }));
                                       },
                                       content: "Log Out",
-                                      height: screenSize.screenHeight * 7,
+                                      height: screenSize.screenHeight * 5,
                                       width: screenSize.screenWidth * 30),
                                 ),
                                 SizedBox(
@@ -563,6 +665,8 @@ class _ProfileViewState extends State<ProfileView> {
     age = await savedData.getAge();
     balance = await savedData.getBalance();
     photo = await savedData.getProfileImage();
+    board = await savedData.getBoard();
+    studentClass = await savedData.getClass();
     setState(() {});
   }
 }

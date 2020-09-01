@@ -255,84 +255,84 @@ class _LoginState extends State<Login> {
                               fontWeight: FontWeight.normal,
                               fontFamily: "Montserrat",
                               fontStyle: FontStyle.normal,
-                              fontSize: 14.0),
+                              fontSize: screenSize.screenHeight * 1.7),
                           textAlign: TextAlign.left),
                     ),
                   ),
                   SizedBox(
-                    height: screenSize.screenHeight * 3,
+                    height: screenSize.screenHeight * 10,
                   ),
                   Stack(
                     children: <Widget>[
                       Column(
                         children: <Widget>[
                           SizedBox(
-                            height: screenSize.screenHeight * 2,
+                            height: screenSize.screenHeight * 3,
                           ),
                           Container(
                             width: double.infinity,
-                            height: screenSize.screenHeight * 25,
+                            height: screenSize.screenHeight * 19,
                             color: Color(0xffdfdffa),
                             child: Column(
                               children: <Widget>[
                                 SizedBox(
                                   height: screenSize.screenHeight * 5,
                                 ),
-                                Text("Sign in With",
-                                    style: TextStyle(
-                                        color: Colors.black54,
-                                        fontWeight: FontWeight.normal,
-                                        fontFamily: "Montserrat",
-                                        fontStyle: FontStyle.normal,
-                                        fontSize: 14.0),
-                                    textAlign: TextAlign.left),
-                                SizedBox(
-                                  height: screenSize.screenHeight * 2,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    CircleAvatar(
-                                      child: CircleAvatar(
-                                        radius: screenSize.screenHeight * 2.5,
-                                        child: FaIcon(
-                                          FontAwesomeIcons.google,
-                                          color: Colors.white,
-                                        ),
-                                        backgroundColor:
-                                            Theme.of(context).primaryColor,
-                                      ),
-                                      radius: screenSize.screenHeight * 2.8,
-                                      backgroundColor: Colors.white,
-                                    ),
-                                    SizedBox(
-                                      width: screenSize.screenWidth * 2,
-                                    ),
-                                    Text("--or--",
-                                        style: TextStyle(
-                                            color: Colors.black54,
-                                            fontWeight: FontWeight.normal,
-                                            fontFamily: "Montserrat",
-                                            fontStyle: FontStyle.normal,
-                                            fontSize:
-                                                screenSize.screenHeight * 2),
-                                        textAlign: TextAlign.left),
-                                    SizedBox(
-                                      width: screenSize.screenWidth * 2,
-                                    ),
-                                    CircleAvatar(
-                                      radius: screenSize.screenHeight * 2.7,
-                                      backgroundColor: Colors.white,
-                                      child: Center(
-                                        child: FaIcon(
-                                          FontAwesomeIcons.facebook,
-                                          color: Theme.of(context).primaryColor,
-                                          size: screenSize.screenHeight * 5,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+//                                Text("Sign in With",
+//                                    style: TextStyle(
+//                                        color: Colors.black54,
+//                                        fontWeight: FontWeight.normal,
+//                                        fontFamily: "Montserrat",
+//                                        fontStyle: FontStyle.normal,
+//                                        fontSize: 14.0),
+//                                    textAlign: TextAlign.left),
+//                                SizedBox(
+//                                  height: screenSize.screenHeight * 2,
+//                                ),
+//                                Row(
+//                                  mainAxisAlignment: MainAxisAlignment.center,
+//                                  children: <Widget>[
+//                                    CircleAvatar(
+//                                      child: CircleAvatar(
+//                                        radius: screenSize.screenHeight * 2.5,
+//                                        child: FaIcon(
+//                                          FontAwesomeIcons.google,
+//                                          color: Colors.white,
+//                                        ),
+//                                        backgroundColor:
+//                                            Theme.of(context).primaryColor,
+//                                      ),
+//                                      radius: screenSize.screenHeight * 2.8,
+//                                      backgroundColor: Colors.white,
+//                                    ),
+//                                    SizedBox(
+//                                      width: screenSize.screenWidth * 2,
+//                                    ),
+//                                    Text("--or--",
+//                                        style: TextStyle(
+//                                            color: Colors.black54,
+//                                            fontWeight: FontWeight.normal,
+//                                            fontFamily: "Montserrat",
+//                                            fontStyle: FontStyle.normal,
+//                                            fontSize:
+//                                                screenSize.screenHeight * 2),
+//                                        textAlign: TextAlign.left),
+//                                    SizedBox(
+//                                      width: screenSize.screenWidth * 2,
+//                                    ),
+//                                    CircleAvatar(
+//                                      radius: screenSize.screenHeight * 2.7,
+//                                      backgroundColor: Colors.white,
+//                                      child: Center(
+//                                        child: FaIcon(
+//                                          FontAwesomeIcons.facebook,
+//                                          color: Theme.of(context).primaryColor,
+//                                          size: screenSize.screenHeight * 5,
+//                                        ),
+//                                      ),
+//                                    ),
+//                                  ],
+//                                ),
                                 SizedBox(
                                   height: screenSize.screenWidth * 5,
                                 ),
@@ -360,7 +360,9 @@ class _LoginState extends State<Login> {
                                                 fontWeight: FontWeight.normal,
                                                 fontFamily: "Montserrat",
                                                 fontStyle: FontStyle.normal,
-                                                fontSize: 14.0),
+                                                fontSize:
+                                                    screenSize.screenHeight *
+                                                        1.7),
                                             textAlign: TextAlign.left),
                                       ),
                                       Text("Now ! ",

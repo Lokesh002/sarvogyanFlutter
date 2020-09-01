@@ -10,9 +10,10 @@ class RegisterUserNetworking {
   String address;
   String age;
   String accessToken;
+  String UId;
   String FirebaseAccessToken;
   RegisterUserNetworking(this.name, this.email, this.password, this.phoneNo,
-      this.address, this.age, this.FirebaseAccessToken);
+      this.address, this.age, this.UId, this.FirebaseAccessToken);
 
   String url =
       "http://us-central1-sarvogyan-course-platform.cloudfunctions.net/api/user";
@@ -29,7 +30,7 @@ class RegisterUserNetworking {
           'address': address,
           'phone': phoneNo,
           'age': age,
-          'id': FirebaseAccessToken,
+          'id': UId,
         }));
 
     if (response1.statusCode == 200) {
@@ -38,6 +39,7 @@ class RegisterUserNetworking {
           body: convert.jsonEncode({
             "email": email,
             "password": password,
+            "token": FirebaseAccessToken,
           }));
       if (response.statusCode == 200) {
         String data = response.body;
@@ -49,9 +51,11 @@ class RegisterUserNetworking {
             "the details are: $name has $email and $phoneNo with age $age and address: $address");
         return response.statusCode;
       } else
-        print(response.statusCode);
+        print("register error code: " + response.statusCode.toString());
+      return 400;
     } else {
-      print('status code: ${response1.statusCode}');
+      print('status code of registerNetworking: ${response1.statusCode}');
+      return 400;
     }
   }
 }

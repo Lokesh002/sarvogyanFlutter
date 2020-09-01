@@ -140,7 +140,7 @@ class _ListLoadingScreenState extends State<ListLoadingScreen> {
                               Navigator.pushNamed(
                                   context, '/filterLoadingScreen');
                             },
-                            elevation: 5,
+                            elevation: screenSize.screenHeight * 1,
                             backgroundColor: Theme.of(context).primaryColor,
                             child: Icon(
                               Icons.search,
@@ -176,7 +176,7 @@ class _ListLoadingScreenState extends State<ListLoadingScreen> {
                           Visibility(
                             visible: !signedIn,
                             child: Material(
-                              elevation: 10,
+                              elevation: screenSize.screenHeight * 1,
                               child: Container(
                                 height: screenSize.screenHeight * 7,
                                 child: Center(

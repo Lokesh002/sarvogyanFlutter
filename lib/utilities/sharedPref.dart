@@ -184,4 +184,46 @@ class SavedData {
     } else
       return name;
   }
+
+  setBoard(String name) async {
+    final savedUserName = await SharedPreferences.getInstance();
+    await savedUserName.setString('board', name);
+  }
+
+  Future<String> getBoard() async {
+    final savedUserName = await SharedPreferences.getInstance();
+    final name = savedUserName.getString('board');
+    if (name == null) {
+      return "Not Selected";
+    } else
+      return name;
+  }
+
+  setClass(String name) async {
+    final savedUserName = await SharedPreferences.getInstance();
+    await savedUserName.setString('class', name);
+  }
+
+  Future<String> getClass() async {
+    final savedUserName = await SharedPreferences.getInstance();
+    final name = savedUserName.getString('class');
+    if (name == null) {
+      return "Not Selected";
+    } else
+      return name;
+  }
+
+  setIsStudent(bool name) async {
+    final savedUserName = await SharedPreferences.getInstance();
+    await savedUserName.setBool('isStudent', name);
+  }
+
+  Future<bool> getIsStudent() async {
+    final savedUserName = await SharedPreferences.getInstance();
+    final name = savedUserName.getBool('isStudent');
+    if (name == null) {
+      return null;
+    } else
+      return name;
+  }
 }

@@ -255,9 +255,16 @@ class _EnterMobileNoScreenState extends State<EnterMobileNoScreen> {
                         width: screenSize.screenWidth * 80,
                         child: Row(
                           children: <Widget>[
-                            Text("  +91-   "),
                             Container(
-                              width: screenSize.screenWidth * 68,
+                              width: screenSize.screenWidth * 15,
+                              child: Text(
+                                "  +91-   ",
+                                style: TextStyle(
+                                    fontSize: screenSize.screenHeight * 2),
+                              ),
+                            ),
+                            Container(
+                              width: screenSize.screenWidth * 65,
                               child: TextField(
                                 controller: _controller,
                                 keyboardType: TextInputType.phone,
