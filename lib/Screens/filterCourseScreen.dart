@@ -182,10 +182,8 @@ class _FilterCourseScreenState extends State<FilterCourseScreen> {
                         print('selected1: $selectedCourse');
                         filteredListNetworking =
                             FilteredListNetworking(selectedCourse);
-
                         var decodedData =
                             await filteredListNetworking.postData();
-
                         filteredCourses_list =
                             FilteredCourses_list(decodedData, selectedCourse);
                         print(veh);

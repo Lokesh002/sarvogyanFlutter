@@ -513,7 +513,6 @@ class _ProfileViewState extends State<ProfileView> {
                                           MaterialPageRoute(builder: (context) {
                                         return UpdateProfile();
                                       })).then((v) {
-                                        print("hello");
                                         getData();
                                         setState(() {});
                                       });

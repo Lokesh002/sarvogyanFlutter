@@ -62,7 +62,7 @@ class _DocsScreenState extends State<DocsScreen> {
         var percentage = (actualbytes / totalbytes) * 100;
 
         setState(() {
-          downloadMessage = 'Downoading....  ${percentage.floor()}%';
+          downloadMessage = 'Downloading....  ${percentage.floor()}%';
           if (percentage == 100) {
             downloadComplete = true;
             setState(() {
