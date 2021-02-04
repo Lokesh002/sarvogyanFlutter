@@ -33,7 +33,7 @@ dependencies:
   youtube_player_flutter: ^7.0.0+5
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  flutter_svg:
+  flutter_svg: ^0.18.1
   fluttertoast:
   shared_preferences: ^0.5.7+3
   razorpay_flutter:
