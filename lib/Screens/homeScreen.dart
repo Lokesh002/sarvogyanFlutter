@@ -1,11 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sarvogyan/Screens/ListloadingScreen.dart';
-import 'package:sarvogyan/Screens/allCourses.dart';
-import 'package:sarvogyan/Screens/docsScreen.dart';
-import 'package:sarvogyan/Screens/examListLoadingScreen.dart';
-import 'package:sarvogyan/Screens/myCourses.dart';
-import 'package:sarvogyan/Screens/myResultScreen.dart';
+import 'package:sarvogyan/Screens/course/ListloadingScreen.dart';
+import 'package:sarvogyan/Screens/course/allCoursesScreen.dart';
+
+import 'package:sarvogyan/Screens/docs/docsScreen.dart';
+import 'package:sarvogyan/Screens/exams/examListLoadingScreen.dart';
+import 'package:sarvogyan/Screens/course/myCourses/myCourses.dart';
+import 'package:sarvogyan/Screens/NavDrawer.dart';
+import 'package:sarvogyan/components/courseTree.dart';
 import 'package:sarvogyan/components/sizeConfig.dart';
 import 'package:sarvogyan/lists/allCoursesList.dart';
 import 'package:sarvogyan/utilities/sharedPref.dart';
@@ -18,8 +21,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<Widget> _widgets = <Widget>[];
   int _defaultIndex = 0;
+  GetCourseClass getCourseClass = GetCourseClass();
+  CourseTreeNode sarvogyan;
   int _selectedIndex;
-
+  NavDrawer navDrawer = NavDrawer('homeScreen');
   void _onTapHandler(int index) {
     setState(() {
       _selectedIndex = index;
@@ -44,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    sarvogyan = getCourseClass.process();
     _selectedIndex = _defaultIndex;
   }
 
@@ -56,12 +61,13 @@ class _HomeScreenState extends State<HomeScreen> {
     return WillPopScope(
       onWillPop: onWillPop,
       child: DefaultTabController(
-        length: 4,
+        length: 5,
         child: Scaffold(
+          drawer: navDrawer.getNavDrawer(context, sarvogyan),
           appBar: AppBar(
             actions: <Widget>[
               Visibility(
-                visible: signedIn,
+                visible: true,
                 child: GestureDetector(
                     child: Row(
                       children: <Widget>[
@@ -77,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     }),
               ),
               SizedBox(
-                width: 20,
+                width: screenSize.screenWidth * 3,
               )
             ],
             title: Row(
@@ -112,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Tab(
                   child: Container(
                     child: Text(
-                      "All Courses",
+                      "Search",
                       textAlign: TextAlign.center,
                       style: TextStyle(),
                     ),
@@ -122,6 +128,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Container(
                     child: Text(
                       "My Courses",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(),
+                    ),
+                  ),
+                ),
+                Tab(
+                  child: Container(
+                    child: Text(
+                      "Courses",
                       textAlign: TextAlign.center,
                       style: TextStyle(),
                     ),
@@ -153,6 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
           body: TabBarView(children: [
             ListLoadingScreen(),
             MyCourses(),
+            AllCoursesScreen(sarvogyan, sarvogyan.children[0], 'images/media/'),
             ExamListLoadingScreen(),
             DocsScreen(),
           ]),

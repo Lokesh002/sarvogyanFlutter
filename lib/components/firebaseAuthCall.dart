@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sarvogyan/Screens/courseRegistrationLoadingScreen.dart';
-import 'package:sarvogyan/Screens/enterOtpScreen.dart';
+import 'package:sarvogyan/Screens/course/courseRegistrationLoadingScreen.dart';
+import 'package:sarvogyan/Screens/userAuth/enterOtpScreen.dart';
 import 'package:sarvogyan/components/loginPhoneNetworking.dart';
 import 'package:sarvogyan/utilities/userData.dart';
 

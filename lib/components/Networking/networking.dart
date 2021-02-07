@@ -1,5 +1,5 @@
 import 'package:http/http.dart' as http;
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 import 'dart:convert' as convert;
 
 import 'package:sarvogyan/components/Constants/constants.dart';
@@ -33,16 +33,11 @@ class Networking {
 
     if (postResponse.statusCode == 200) {
       String data = postResponse.body;
-
       var decodedData = convert.jsonDecode(data);
       return decodedData;
-    } else if (postResponse.statusCode == 404) {
-      print(postResponse.statusCode);
-      return postResponse.body;
     } else {
       print(postResponse.statusCode);
     }
-
     return null;
   }
 
@@ -53,15 +48,11 @@ class Networking {
 
     if (postResponse.statusCode == 200) {
       String data = postResponse.body;
-
-      return data;
-    } else if (postResponse.statusCode == 404) {
-      print(postResponse.statusCode);
-      return postResponse.body;
+      var decodedData = convert.jsonDecode(data);
+      return decodedData;
     } else {
       print(postResponse.statusCode);
     }
-
     return null;
   }
 }

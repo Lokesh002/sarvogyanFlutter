@@ -13,8 +13,8 @@ class LoginUserNetworking {
   List<String> courses = List<String>();
   String accessToken;
   SavedData savedData = SavedData();
-
-  LoginUserNetworking(this.email, this.password);
+  String firetoken;
+  LoginUserNetworking(this.email, this.password, this.firetoken);
 
   String url =
       "https://us-central1-sarvogyan-course-platform.cloudfunctions.net/api/user/";
@@ -27,10 +27,8 @@ class LoginUserNetworking {
     http.Response response1 = await http.post(
         "https://us-central1-sarvogyan-course-platform.cloudfunctions.net/api/user/auth/user",
         headers: {"Content-Type": "application/json"},
-        body: convert.jsonEncode({
-          'email': email,
-          'password': password,
-        }));
+        body: convert.jsonEncode(
+            {'email': email, 'password': password, 'token': firetoken}));
 
     if (response1.statusCode == 200) {
       String data = response1.body;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sarvogyan/Screens/readCourseDocScreen.dart';
+import 'package:sarvogyan/Screens/course/readCourseDocScreen.dart';
 import 'package:sarvogyan/components/fetchLessonsData.dart';
-import 'package:sarvogyan/components/reusableOptionCard.dart';
+import 'package:sarvogyan/components/Cards/reusableOptionCard.dart';
 import 'package:sarvogyan/components/sizeConfig.dart';
 import 'package:sarvogyan/utilities/sharedPref.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
