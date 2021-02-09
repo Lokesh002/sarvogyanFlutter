@@ -103,12 +103,20 @@ class _ProfileViewState extends State<ProfileView> {
     }
   }
 
+  final ImagePicker _picker = ImagePicker();
   getImageFromGallery(BuildContext cntext) async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = image;
-      print("image path: $image");
-    });
+    try {
+      var image = await _picker.getImage(
+        source: ImageSource.gallery,
+        imageQuality: 50,
+        maxHeight: screenSize.screenHeight * 50,
+        maxWidth: screenSize.screenWidth * 100,
+      );
+      setState(() {
+        _image = File(image.path);
+        print("image path: $image");
+      });
+    } catch (e) {}
     if (_image != null) {
       final response = await uploadImage(_image, cntext);
       print('asa' + response.toString());
@@ -148,9 +156,10 @@ class _ProfileViewState extends State<ProfileView> {
     return (response.data);
   }
 
+  SizeConfig screenSize;
   @override
   Widget build(BuildContext context) {
-    SizeConfig screenSize = SizeConfig(context);
+    screenSize = SizeConfig(context);
 
     return Scaffold(
         backgroundColor: Theme.of(context).accentColor,
@@ -640,7 +649,7 @@ class _ProfileViewState extends State<ProfileView> {
                                       width: screenSize.screenWidth * 30),
                                 ),
                                 SizedBox(
-                                  height: screenSize.screenHeight * 5,
+                                  height: screenSize.screenHeight * 1,
                                 ),
                               ],
                             ),

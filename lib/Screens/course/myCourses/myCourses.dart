@@ -141,7 +141,7 @@ class _MyCoursesState extends State<MyCourses> {
                                       Navigator.push(context,
                                           MaterialPageRoute(builder: (context) {
                                         return CourseSelectedLoadingScreen(
-                                            courseList[index].id);
+                                            courseList[index]);
                                       }));
                                     });
                                   },

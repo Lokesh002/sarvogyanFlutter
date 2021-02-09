@@ -49,7 +49,7 @@ class RegisterForCourseNetworking {
         print(savedData.getCourses());
       }
 
-      updatebalance.update();
+      // updatebalance.update();
       return "Registered";
     } else {
       print('status code during registering: ${response1.statusCode}');

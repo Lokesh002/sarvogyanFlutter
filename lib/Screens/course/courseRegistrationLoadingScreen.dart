@@ -7,10 +7,12 @@ import 'package:sarvogyan/Screens/course/registerForCourse.dart';
 import 'package:sarvogyan/components/verifyIsUserRegistered.dart';
 import 'package:sarvogyan/components/registerForCourseNetworking.dart';
 import 'package:sarvogyan/components/fetchLessonsData.dart';
+import 'package:sarvogyan/lists/course_List.dart';
 
 class CourseRegistrationLoadingScreen extends StatefulWidget {
   bool fromRegistrationScreen;
   var courseData;
+
   CourseRegistrationLoadingScreen(this.courseData, this.fromRegistrationScreen);
   @override
   _CourseRegistrationLoadingScreenState createState() =>

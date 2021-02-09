@@ -6,11 +6,13 @@ import 'package:sarvogyan/Screens/course/courseRegistrationLoadingScreen.dart';
 import 'package:sarvogyan/Screens/userAuth/login.dart';
 import 'package:sarvogyan/components/Cards/ReusableButton.dart';
 import 'package:sarvogyan/components/sizeConfig.dart';
+import 'package:sarvogyan/lists/course_List.dart';
 import 'package:sarvogyan/utilities/sharedPref.dart';
 import 'package:sarvogyan/utilities/userData.dart';
 
 class CourseSelected extends StatefulWidget {
   var decodedData;
+  //CourseData courseSelected;
   CourseSelected(this.decodedData);
   @override
   _CourseSelectedState createState() => _CourseSelectedState();

@@ -61,7 +61,7 @@ class UpdateProfileSave {
         await savedData.setClass(studentClass);
         await savedData.setAddress(address);
         await savedData.setBoard(board);
-        await savedData.setIsStudent(isStudent);
+        await savedData.setIsStudent(isStudent ? 'yes' : 'no');
         return true;
       } else {
         print("problem in updating profile. post request sending error");

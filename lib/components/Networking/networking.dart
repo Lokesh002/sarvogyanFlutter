@@ -27,6 +27,7 @@ class Networking {
 
   Future postData(String url, var body) async {
     String fullURL = ip + url;
+
     http.Response postResponse = await http.post(fullURL,
         headers: {"Content-Type": "application/json"},
         body: convert.jsonEncode(body));
@@ -34,6 +35,7 @@ class Networking {
     if (postResponse.statusCode == 200) {
       String data = postResponse.body;
       var decodedData = convert.jsonDecode(data);
+
       return decodedData;
     } else {
       print(postResponse.statusCode);
@@ -41,10 +43,34 @@ class Networking {
     return null;
   }
 
-  Future deleteData(String url) async {
+  Future postDataByUser(String url, var body, var accessToken) async {
     String fullURL = ip + url;
-    http.Response postResponse = await http
-        .delete(fullURL, headers: {"Content-Type": "application/json"});
+    print('fullurl: $fullURL');
+    print(body.toString());
+    http.Response postResponse = await http.post(fullURL,
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": accessToken
+        },
+        body: convert.jsonEncode(body));
+
+    if (postResponse.statusCode == 200) {
+      String data = postResponse.body;
+      var decodedData = convert.jsonDecode(data);
+      print(decodedData);
+      return decodedData;
+    } else {
+      print(postResponse.statusCode);
+    }
+    return null;
+  }
+
+  Future getDataWithoutDecode(String url, String accessToken) async {
+    String fullURL = ip + url;
+    http.Response postResponse = await http.get(fullURL, headers: {
+      "Content-Type": "application/json",
+      "x-auth-token": accessToken
+    });
 
     if (postResponse.statusCode == 200) {
       String data = postResponse.body;

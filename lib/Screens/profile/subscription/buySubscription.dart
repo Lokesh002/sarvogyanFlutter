@@ -25,6 +25,29 @@ class BuySubscription extends StatefulWidget {
   _BuySubscriptionState createState() => _BuySubscriptionState();
 }
 
+showAlertDialog(BuildContext context) {
+  AlertDialog alert = AlertDialog(
+    content: new Row(
+      children: [
+        CircularProgressIndicator(
+          backgroundColor: Theme.of(context).primaryColor,
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        Container(margin: EdgeInsets.only(left: 5), child: Text("Loading")),
+      ],
+    ),
+  );
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
 class _BuySubscriptionState extends State<BuySubscription> {
   SizeConfig screenSize;
   String time;
@@ -83,7 +106,7 @@ class _BuySubscriptionState extends State<BuySubscription> {
     }
 
     var options = {
-      'key': 'rzp_test_xasNNrw9VXtsnF',
+      'key': 'rzp_live_c6cRqluwJOv6by',
       'amount': totalAmount * 100,
       'name': 'Sarvogyan',
       'description': 'Test Payment',
@@ -256,53 +279,6 @@ class _BuySubscriptionState extends State<BuySubscription> {
         });
   }
 
-  onPressPremium(int time) async {
-    subscription = 'c';
-    bool sure;
-    this.time = time.toString();
-    bool x = await shouldSubscribe(subscription);
-    print(x);
-    if (x) {
-      await sureDialog(context).then((value) {
-        sure = value;
-      });
-      if (sure) {
-        int balance = await savedData.getBalance();
-        if (time == 3) {
-          cost = 800;
-        } else if (time == 6) {
-          cost = 1200;
-        } else if (time == 12) {
-          cost = 2000;
-        }
-        print("cost $cost");
-        if (balance < cost) {
-          int remaining = cost - balance;
-          addAmount = remaining;
-          print("remaining $remaining");
-          await openCheckout(remaining);
-        } else {
-          await getSubscription(null);
-        }
-      } else {
-        Fluttertoast.showToast(msg: "You can subscribe any time you want.");
-      }
-    } else {
-      String level = await savedData.getUserSubsLevel();
-      String lev;
-      if (level == 'a') {
-        lev = "Free user";
-      } else if (level == 'b') {
-        lev = "Basic user";
-      } else if (level == 'c') {
-        lev = "Premium user";
-      } else {
-        lev = "Unauthorized";
-      }
-      Fluttertoast.showToast(msg: "Already a " + lev + " subscriber.");
-    }
-  }
-
   onPressBasic(int time) async {
     subscription = 'b';
     bool sure;
@@ -313,13 +289,14 @@ class _BuySubscriptionState extends State<BuySubscription> {
         sure = value;
       });
       if (sure) {
+        showAlertDialog(context);
         int balance = await savedData.getBalance();
         if (time == 3) {
-          cost = 400;
+          cost = 399;
         } else if (time == 6) {
-          cost = 800;
+          cost = 499;
         } else if (time == 12) {
-          cost = 1200;
+          cost = 699;
         }
         print("cost $cost");
         if (balance < cost) {
@@ -377,7 +354,7 @@ class _BuySubscriptionState extends State<BuySubscription> {
                 Container(
                   color: Theme.of(context).primaryColor,
                   width: screenSize.screenWidth * 100,
-                  height: screenSize.screenHeight * 50,
+                  height: screenSize.screenHeight * 55,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: <Widget>[
@@ -385,7 +362,7 @@ class _BuySubscriptionState extends State<BuySubscription> {
                         padding: const EdgeInsets.all(8.0),
                         child: ReusableOptionCard(
                           width: screenSize.screenWidth * 40,
-                          height: screenSize.screenHeight * 40,
+                          height: screenSize.screenHeight * 50,
                           elevation: 5,
                           color: Colors.white70,
                           cardChild: Column(
@@ -424,7 +401,7 @@ class _BuySubscriptionState extends State<BuySubscription> {
                                 height: screenSize.screenHeight * 2,
                               ),
                               Text(
-                                'Rs. 400',
+                                'Rs. 399',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: Colors.black54,
@@ -490,7 +467,7 @@ class _BuySubscriptionState extends State<BuySubscription> {
                                 height: screenSize.screenHeight * 2,
                               ),
                               Text(
-                                'Rs. 800',
+                                'Rs. 499',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: Colors.black54,
@@ -556,7 +533,7 @@ class _BuySubscriptionState extends State<BuySubscription> {
                                 height: screenSize.screenHeight * 2,
                               ),
                               Text(
-                                'Rs. 1200',
+                                'Rs. 999',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: Colors.black54,
@@ -573,204 +550,6 @@ class _BuySubscriptionState extends State<BuySubscription> {
                                 content: "Buy",
                                 onPress: () async {
                                   await onPressBasic(12);
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ReusableOptionCard(
-                          width: screenSize.screenWidth * 40,
-                          height: screenSize.screenHeight * 40,
-                          elevation: 5,
-                          color: Colors.blueGrey,
-                          cardChild: Column(
-                            children: <Widget>[
-                              SizedBox(
-                                height: screenSize.screenHeight * 2,
-                              ),
-                              Image.asset(
-                                'images/logo.png',
-                              ),
-                              SizedBox(
-                                height: screenSize.screenHeight * 2,
-                              ),
-                              Text(
-                                'Premium\nSubscription',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: screenSize.screenHeight * 2,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Roboto"),
-                              ),
-                              SizedBox(
-                                height: screenSize.screenHeight * 2,
-                              ),
-                              Text(
-                                '3 Months',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: screenSize.screenHeight * 2,
-                                    fontWeight: FontWeight.normal,
-                                    fontFamily: "Roboto"),
-                              ),
-                              SizedBox(
-                                height: screenSize.screenHeight * 2,
-                              ),
-                              Text(
-                                'Rs. 800',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: screenSize.screenHeight * 2,
-                                    fontWeight: FontWeight.normal,
-                                    fontFamily: "Roboto"),
-                              ),
-                              SizedBox(
-                                height: screenSize.screenHeight * 2,
-                              ),
-                              ReusableButton(
-                                height: screenSize.screenHeight * 7,
-                                width: screenSize.screenWidth * 30,
-                                content: "Buy",
-                                onPress: () async {
-                                  await onPressPremium(3);
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ReusableOptionCard(
-                          width: screenSize.screenWidth * 40,
-                          height: screenSize.screenHeight * 40,
-                          elevation: 5,
-                          color: Colors.blueGrey,
-                          cardChild: Column(
-                            children: <Widget>[
-                              SizedBox(
-                                height: screenSize.screenHeight * 2,
-                              ),
-                              Image.asset(
-                                'images/logo.png',
-                              ),
-                              SizedBox(
-                                height: screenSize.screenHeight * 2,
-                              ),
-                              Text(
-                                'Premium\nSubscription',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: screenSize.screenHeight * 2,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Roboto"),
-                              ),
-                              SizedBox(
-                                height: screenSize.screenHeight * 2,
-                              ),
-                              Text(
-                                '6 Months',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: screenSize.screenHeight * 2,
-                                    fontWeight: FontWeight.normal,
-                                    fontFamily: "Roboto"),
-                              ),
-                              SizedBox(
-                                height: screenSize.screenHeight * 2,
-                              ),
-                              Text(
-                                'Rs. 1200',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: screenSize.screenHeight * 2,
-                                    fontWeight: FontWeight.normal,
-                                    fontFamily: "Roboto"),
-                              ),
-                              SizedBox(
-                                height: screenSize.screenHeight * 2,
-                              ),
-                              ReusableButton(
-                                height: screenSize.screenHeight * 7,
-                                width: screenSize.screenWidth * 30,
-                                content: "Buy",
-                                onPress: () async {
-                                  await onPressPremium(6);
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ReusableOptionCard(
-                          width: screenSize.screenWidth * 40,
-                          height: screenSize.screenHeight * 40,
-                          elevation: 5,
-                          color: Colors.blueGrey,
-                          cardChild: Column(
-                            children: <Widget>[
-                              SizedBox(
-                                height: screenSize.screenHeight * 2,
-                              ),
-                              Image.asset(
-                                'images/logo.png',
-                              ),
-                              SizedBox(
-                                height: screenSize.screenHeight * 2,
-                              ),
-                              Text(
-                                'Premium\nSubscription',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: screenSize.screenHeight * 2,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Roboto"),
-                              ),
-                              SizedBox(
-                                height: screenSize.screenHeight * 2,
-                              ),
-                              Text(
-                                '12 Months',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: screenSize.screenHeight * 2,
-                                    fontWeight: FontWeight.normal,
-                                    fontFamily: "Roboto"),
-                              ),
-                              SizedBox(
-                                height: screenSize.screenHeight * 2,
-                              ),
-                              Text(
-                                'Rs. 2000',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: screenSize.screenHeight * 2,
-                                    fontWeight: FontWeight.normal,
-                                    fontFamily: "Roboto"),
-                              ),
-                              SizedBox(
-                                height: screenSize.screenHeight * 2,
-                              ),
-                              ReusableButton(
-                                height: screenSize.screenHeight * 7,
-                                width: screenSize.screenWidth * 30,
-                                content: "Buy",
-                                onPress: () async {
-                                  await onPressPremium(12);
                                 },
                               ),
                             ],

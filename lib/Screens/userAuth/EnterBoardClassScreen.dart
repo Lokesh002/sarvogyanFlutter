@@ -60,7 +60,7 @@ class _EnterBoardClassScreenState extends State<EnterBoardClassScreen> {
     address = widget.address;
     age = widget.age;
 
-    isStudent = await savedData.getIsStudent();
+    isStudent = await savedData.getIsStudent()=="yes"?true:false;
 
     setState(() {});
   }

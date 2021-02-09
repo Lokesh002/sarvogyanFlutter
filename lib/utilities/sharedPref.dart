@@ -71,6 +71,20 @@ class SavedData {
       return name;
   }
 
+  setUserId(String name) async {
+    final savedUserName = await SharedPreferences.getInstance();
+    await savedUserName.setString('userId', name);
+  }
+
+  Future<String> getUserId() async {
+    final savedUserName = await SharedPreferences.getInstance();
+    final name = savedUserName.getString('userId');
+    if (name == null) {
+      return null;
+    } else
+      return name;
+  }
+
   setAccessToken(String name) async {
     final savedUserName = await SharedPreferences.getInstance();
     await savedUserName.setString('AccessToken', name);
@@ -213,14 +227,14 @@ class SavedData {
       return name;
   }
 
-  setIsStudent(bool name) async {
+  setIsStudent(String name) async {
     final savedUserName = await SharedPreferences.getInstance();
-    await savedUserName.setBool('isStudent', name);
+    await savedUserName.setString('isStudent', name);
   }
 
-  Future<bool> getIsStudent() async {
+  Future<String> getIsStudent() async {
     final savedUserName = await SharedPreferences.getInstance();
-    final name = savedUserName.getBool('isStudent');
+    final name = savedUserName.getString('isStudent');
     if (name == null) {
       return null;
     } else

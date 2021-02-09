@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sarvogyan/Screens/course/courseRegistrationLoadingScreen.dart';
 import 'package:sarvogyan/Screens/course/courseSelected.dart';
 import 'package:sarvogyan/Screens/userAuth/enterOtpScreen.dart';
+import 'package:sarvogyan/components/Networking/firebaseNetworking.dart';
 
 import 'package:sarvogyan/components/phoneCheck.dart';
 import 'package:sarvogyan/components/sizeConfig.dart';
@@ -88,51 +89,7 @@ class _EnterMobileNoScreenState extends State<EnterMobileNoScreen> {
     _auth.verifyPhoneNumber(
         phoneNumber: phone,
         timeout: Duration(seconds: 60),
-        verificationCompleted: (AuthCredential credential) async {
-//          AuthResult authResult = await _auth.signInWithCredential(credential);
-//          FirebaseUser user = authResult.user;
-//          if (user != null) {
-//            setState(() {
-//              button = 'Send OTP';
-//            });
-//            var u = await user.getIdToken();
-//
-//            LoginPhoneNetworking loginPhoneNetworking =
-//                LoginPhoneNetworking(phone: mobileNo, accessToken: u.token);
-//            print('sending data');
-//            int status = await loginPhoneNetworking.postData();
-//            if (status == 200) {
-//              Fluttertoast.showToast(msg: "Login Successfully");
-//              print('fromAllCourse ' + widget.fromAllCourses.toString());
-//              if (widget.fromAllCourses) {
-//                print('going to Loading screen');
-//                Navigator.pushReplacement(context,
-//                    MaterialPageRoute(builder: (context) {
-//                  return ListLoadingScreen();
-//                }));
-//              } else {
-//                Navigator.pushReplacement(context,
-//                    MaterialPageRoute(builder: (context) {
-//                  //Here DecodedData is a locally savedvariable containing selected course data
-//                  return CourseRegistrationLoadingScreen(DecodedData, false);
-//                }));
-//              }
-//            } else {
-//              setState(() {
-//                //clearTextInput();
-//                Fluttertoast.showToast(
-//                    msg: "Please Check Internet Connection!");
-//                setState(() {
-//                  button = 'Send OTP';
-//                });
-//              });
-//            }
-//          } else {
-//            print('ERROR');
-//          }
-//
-//          Navigator.pop(context);
-        },
+        verificationCompleted: (AuthCredential credential) async {},
         verificationFailed: (AuthException exception) {
           print(exception.message);
           Navigator.of(context).pop();
@@ -231,7 +188,7 @@ class _EnterMobileNoScreenState extends State<EnterMobileNoScreen> {
                       height: screenSize.screenHeight * 30,
                       child: Image.asset(
                         "images/logo.png",
-                        fit: BoxFit.fitWidth,
+                        fit: BoxFit.fitHeight,
                       ),
                     ),
                     SizedBox(

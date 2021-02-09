@@ -136,8 +136,7 @@ class _ListLoadingScreenState extends State<ListLoadingScreen> {
                         children: <Widget>[
                           FloatingActionButton(
                             onPressed: () {
-                              Navigator.pushNamed(
-                                  context, '/filterLoadingScreen');
+                              Navigator.pushNamed(context, '/searchCourses');
                             },
                             elevation: screenSize.screenHeight * 1,
                             backgroundColor: Theme.of(context).primaryColor,

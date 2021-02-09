@@ -39,7 +39,7 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
 
   void OpenCheckout() {
     var options = {
-      'key': 'rzp_test_xasNNrw9VXtsnF',
+      'key': 'rzp_live_c6cRqluwJOv6by',
       'amount': totalAmount * 100,
       'name': 'Sarvogyan',
       'description': 'Test Payment',

@@ -45,14 +45,16 @@ class _UpdateProfileState extends State<UpdateProfile> {
   String age = "";
 
   SavedData savedData = SavedData();
-
+  String profileImage;
   void getDetails() async {
+    profileImage = await savedData.getProfileImage();
+
     name = await savedData.getName();
     address = await savedData.getAddress();
     age = await savedData.getAge();
     board = await savedData.getBoard();
     studentClass = await savedData.getClass();
-    isStudent = await savedData.getIsStudent();
+    isStudent = await savedData.getIsStudent() == "yes" ? true : false;
     setState(() {});
   }
 
@@ -117,10 +119,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
               Container(
                 width: screenSize.screenWidth * 100,
                 height: screenSize.screenHeight * 25,
-                child: Image.asset(
-                  "images/logo.png",
-                  fit: BoxFit.fitWidth,
-                ),
+                child: (profileImage == null)
+                    ? Image.asset('images/logo.png')
+                    : FadeInImage.assetNetwork(
+                        placeholder: 'images/logo.png', image: profileImage),
               ),
               SizedBox(
                 height: screenSize.screenHeight * 2,

@@ -7,8 +7,8 @@ import 'package:sarvogyan/components/getExamQuestions.dart';
 
 class TakeExamLoadingScreen extends StatefulWidget {
   Exam exam;
-  String userId;
-  TakeExamLoadingScreen(this.exam, this.userId);
+
+  TakeExamLoadingScreen(this.exam);
   @override
   _TakeExamLoadingScreenState createState() => _TakeExamLoadingScreenState();
 }
@@ -17,10 +17,11 @@ class _TakeExamLoadingScreenState extends State<TakeExamLoadingScreen> {
   List<Question> questionList;
 
   void getQues() async {
+    print(widget.exam.examId);
     GetExamQuestions getExamQuestions = GetExamQuestions(widget.exam.examId);
     questionList = await getExamQuestions.getQuestions();
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-      return ExamScreen(widget.userId, questionList, widget.exam);
+      return ExamScreen(questionList, widget.exam);
     }));
   }
 

@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sarvogyan/Screens/profile/myResultScreen.dart';
+import 'package:sarvogyan/Screens/profile/showAnswers.dart';
 import 'package:sarvogyan/components/Cards/ReusableButton.dart';
+import 'package:sarvogyan/components/getAllExams.dart';
+import 'package:sarvogyan/components/getExamQuestions.dart';
 import 'package:sarvogyan/components/sizeConfig.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -12,9 +15,9 @@ import 'package:sarvogyan/utilities/userData.dart';
 
 class ResultScreen extends StatefulWidget {
   var answers;
-  int totalQues;
-  String examId;
-  ResultScreen(this.answers, this.totalQues, this.examId);
+  List<Question> questionList;
+  Exam exam;
+  ResultScreen(this.answers, this.questionList, this.exam);
   @override
   _ResultScreenState createState() => _ResultScreenState();
 }
@@ -32,15 +35,22 @@ class _ResultScreenState extends State<ResultScreen> {
     saveResult();
   }
 
+  @override
+  void dispose() {
+    widget.answers.clear();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   void saveResult() async {
     String authAccessToken = await savedData.getAccessToken();
 
     print(
-        "the access token is $authAccessToken and answers are: ${convert.jsonEncode(widget.answers)} with ${convert.jsonEncode(widget.examId)} and ${widget.totalQues}");
+        "the access token is $authAccessToken and answers are: ${convert.jsonEncode(widget.answers)} with ${convert.jsonEncode(widget.exam.examId)} and ${widget.questionList.length}");
     String url1 =
         "https://us-central1-sarvogyan-course-platform.cloudfunctions.net/api/exam/calculateResult";
 
-    String examID = widget.examId;
+    String examID = widget.exam.examId;
     var ans = widget.answers;
     http.Response response1 = await http.post(url1,
         headers: {
@@ -50,10 +60,10 @@ class _ResultScreenState extends State<ResultScreen> {
         body: convert.jsonEncode({
           "exam_id": examID,
           "answer": ans,
+          'examName': widget.exam.examName
         }));
 
     if (response1.statusCode == 200) {
-      widget.answers.clear();
       var decodedData = convert.jsonDecode(response1.body);
       total = decodedData["total"];
       score = decodedData["marks"];
@@ -179,7 +189,7 @@ class _ResultScreenState extends State<ResultScreen> {
                           ),
                           Center(
                             child: Text(
-                              "You Scored ${score} out of ${total}",
+                              "You Scored $score out of $total",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: screenSize.screenHeight * 3.5,
@@ -191,16 +201,35 @@ class _ResultScreenState extends State<ResultScreen> {
                           SizedBox(
                             height: screenSize.screenHeight * 15,
                           ),
-                          ReusableButton(
-                              onPress: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return MyResultScreen();
-                                }));
-                              },
-                              content: "See All Results",
-                              height: screenSize.screenHeight * 7,
-                              width: screenSize.screenWidth * 30),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ReusableButton(
+                                  onPress: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return ShowResultsScreen(widget.exam,
+                                          widget.questionList, widget.answers);
+                                    }));
+                                  },
+                                  content: "Show Answers",
+                                  height: screenSize.screenHeight * 7,
+                                  width: screenSize.screenWidth * 30),
+                              SizedBox(
+                                width: screenSize.screenWidth * 15,
+                              ),
+                              ReusableButton(
+                                  onPress: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return MyResultScreen();
+                                    }));
+                                  },
+                                  content: "See All Results",
+                                  height: screenSize.screenHeight * 7,
+                                  width: screenSize.screenWidth * 30),
+                            ],
+                          ),
                         ],
                       ),
                     ),

@@ -1,27 +1,27 @@
+import 'package:sarvogyan/components/Constants/constants.dart';
 import 'package:sarvogyan/components/Networking.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'package:sarvogyan/utilities/sharedPref.dart';
 
 class GetExamQuestions {
-  String url =
-      "https://us-central1-sarvogyan-course-platform.cloudfunctions.net/api/exam/getQuestions/";
+  String url = "api/exam/getQuestions/";
   String examId;
   GetExamQuestions(this.examId);
   SavedData savedData = SavedData();
 
   Future<List<Question>> getQuestions() async {
     String authAccessToken = await savedData.getAccessToken();
-    print(examId);
+    print('exam id: $examId');
     List<Question> questionList = List<Question>();
-    http.Response response = await http.get('$url$examId', headers: {
+    http.Response response = await http.get('$ipAddress$url$examId', headers: {
       "Content-Type": "application/json",
       "x-auth-token": authAccessToken
     });
     if (response.statusCode == 200) {
       var decodedData = await convert.jsonDecode(response.body);
       Map data = decodedData;
-      print("map: " + data.toString());
+      //print("map: " + data.toString());
       for (int i = 0; i < data.length; i++) {
         Question question = Question();
         String a = (i + 1).toString();

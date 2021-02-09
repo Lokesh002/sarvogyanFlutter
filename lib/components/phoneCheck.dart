@@ -12,7 +12,7 @@ class PhoneCheck {
     print('$phone is phone no.');
 
     http.Response response1 = await http.post(
-        "https://us-central1-sarvogyan-course-platform.cloudfunctions.net/api/user/phoneCheck",
+        "https://us-central1-sarvogyan-course-platform.cloudfunctions.net/api/user/phoneUserCheck",
         headers: {"Content-Type": "application/json"},
         body: convert.jsonEncode({
           'phone': phone,
@@ -20,14 +20,9 @@ class PhoneCheck {
 
     if (response1.statusCode == 200) {
       print(response1.statusCode);
+      return true;
     } else {
-      String data = response1.body;
-      var decodedData = convert.jsonDecode(data);
-      print(decodedData['msg']);
-      if (decodedData['msg'] == "Phone number already in use") {
-        return true;
-      }
+      return false;
     }
-    return false;
   }
 }

@@ -55,7 +55,7 @@ class LoginUserNetworking {
         print(await savedData.getPhone());
         await savedData.setEmail(decodedData["email"]);
         await savedData.setUserSubsLevel(decodedData["subscription"]);
-
+        await savedData.setUserId(decodedData["id"]);
         if (decodedData["isStudent"] == null ||
             decodedData["isStudent"] == false) {
           await savedData.setIsStudent(decodedData["isStudent"]);

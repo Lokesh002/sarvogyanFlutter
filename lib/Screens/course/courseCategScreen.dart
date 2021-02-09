@@ -127,7 +127,7 @@ class _CourseCategScreenState extends State<CourseCategScreen> {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
                                   return CourseSelectedLoadingScreen(
-                                      listofCourses[index].id);
+                                      listofCourses[index]);
                                 }));
                               });
                             },

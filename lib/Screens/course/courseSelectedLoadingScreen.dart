@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sarvogyan/Screens/course/courseSelected.dart';
 import 'package:sarvogyan/components/courseListData.dart';
+import 'package:sarvogyan/lists/course_List.dart';
 
 class CourseSelectedLoadingScreen extends StatefulWidget {
-  String id;
-  CourseSelectedLoadingScreen(this.id);
+  CourseData courseSelected;
+  CourseSelectedLoadingScreen(this.courseSelected);
   @override
   _CourseSelectedLoadingScreenState createState() =>
       _CourseSelectedLoadingScreenState();
@@ -17,7 +18,8 @@ class _CourseSelectedLoadingScreenState
   CourseModel courseModel = CourseModel();
 
   void getdata() async {
-    var decodedData = await courseModel.getCourseDetails(widget.id);
+    var decodedData =
+        await courseModel.getCourseDetails(widget.courseSelected.id);
 
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
       print("hello world");

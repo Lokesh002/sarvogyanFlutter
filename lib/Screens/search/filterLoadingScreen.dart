@@ -23,7 +23,7 @@ class _FilterLoadingScreenState extends State<FilterLoadingScreen> {
 
     var decodedData = await courseModel.getAllCategories();
     print("response: ");
-    debugPrint(decodedData);
+    //debugPrint(decodedData);
     clist = AllCategoryList(decodedData);
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
       return FilterCourseScreen(clst.getCourseList(), clist.getCategoryList());

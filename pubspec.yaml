@@ -43,7 +43,7 @@ dependencies:
   firebase_auth: ^0.14.0+5
   page_indicator: ^0.3.0
   flutter_youtube_view: ^1.1.8
-  image_picker: ^0.5.3+1
+  image_picker: ^0.6.7+15
   dio: ^3.0.9
   progress_dialog: ^1.2.4
   path_provider: ^1.6.11
@@ -74,7 +74,6 @@ flutter:
   assets:
     - images/
     - images/media/
-    - images/media/courses/
     - svg/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

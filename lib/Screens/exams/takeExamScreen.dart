@@ -12,10 +12,9 @@ import 'package:page_indicator/page_indicator.dart';
 import 'package:quiver/async.dart';
 
 class ExamScreen extends StatefulWidget {
-  String userId;
   Exam exam;
   List<Question> questionList;
-  ExamScreen(this.userId, this.questionList, this.exam);
+  ExamScreen(this.questionList, this.exam);
   @override
   _ExamScreenState createState() => _ExamScreenState();
 }
@@ -69,40 +68,37 @@ class _ExamScreenState extends State<ExamScreen> {
   }
 
   Widget timer() {
-    if (widget.exam.examType == 'timed')
-      return Row(
-        children: <Widget>[
-          Text(
-            (_current ~/ 3600).toString() + ' : ',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: screenSize.screenHeight * 2,
-              fontFamily: "Roboto",
-              fontWeight: FontWeight.bold,
-            ),
+    return Row(
+      children: <Widget>[
+        Text(
+          (_current ~/ 3600).toString() + ' : ',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: screenSize.screenHeight * 2,
+            fontFamily: "Roboto",
+            fontWeight: FontWeight.bold,
           ),
-          Text(
-            (_current ~/ 60).toString() + ' : ',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: screenSize.screenHeight * 2,
-              fontFamily: "Roboto",
-              fontWeight: FontWeight.bold,
-            ),
+        ),
+        Text(
+          (_current ~/ 60).toString() + ' : ',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: screenSize.screenHeight * 2,
+            fontFamily: "Roboto",
+            fontWeight: FontWeight.bold,
           ),
-          Text(
-            (_current % 60).toString(),
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: screenSize.screenHeight * 2,
-              fontFamily: "Roboto",
-              fontWeight: FontWeight.bold,
-            ),
+        ),
+        Text(
+          (_current % 60).toString(),
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: screenSize.screenHeight * 2,
+            fontFamily: "Roboto",
+            fontWeight: FontWeight.bold,
           ),
-        ],
-      );
-    else
-      return Text('');
+        ),
+      ],
+    );
   }
 
   void submit() {
@@ -122,7 +118,7 @@ class _ExamScreenState extends State<ExamScreen> {
 //    print(score);
     //countDownTimer.cancel();
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-      return ResultScreen(answers, questionList.length, widget.exam.examId);
+      return ResultScreen(answers, questionList, widget.exam);
     }));
   }
 
@@ -132,7 +128,7 @@ class _ExamScreenState extends State<ExamScreen> {
     super.dispose();
     scrollController.dispose();
     pageViewController.dispose();
-    if (widget.exam.examType == 'timed') sub.cancel();
+    sub.cancel();
   }
 
   @override
@@ -140,9 +136,8 @@ class _ExamScreenState extends State<ExamScreen> {
     // TODO: implement initState
 
     super.initState();
-    if (widget.exam.examType == 'timed') {
-      startTimer();
-    }
+
+    startTimer();
   }
 
   @override
@@ -190,33 +185,7 @@ class _ExamScreenState extends State<ExamScreen> {
                             width: screenSize.screenWidth * 50,
                           ),
                           timer(),
-//                          Text(
-//                            (_current ~/ 3600).toString() + ' : ',
-//                            style: TextStyle(
-//                              color: Colors.black,
-//                              fontSize: screenSize.screenHeight * 2,
-//                              fontFamily: "Roboto",
-//                              fontWeight: FontWeight.bold,
-//                            ),
-//                          ),
-//                          Text(
-//                            (_current ~/ 60).toString() + ' : ',
-//                            style: TextStyle(
-//                              color: Colors.black,
-//                              fontSize: screenSize.screenHeight * 2,
-//                              fontFamily: "Roboto",
-//                              fontWeight: FontWeight.bold,
-//                            ),
-//                          ),
-//                          Text(
-//                            (_current % 60).toString(),
-//                            style: TextStyle(
-//                              color: Colors.black,
-//                              fontSize: screenSize.screenHeight * 2,
-//                              fontFamily: "Roboto",
-//                              fontWeight: FontWeight.bold,
-//                            ),
-//                          ),
+//
                         ],
                       ),
                       SizedBox(
@@ -338,7 +307,7 @@ class _ExamScreenState extends State<ExamScreen> {
                     print('ans');
                     print(answers);
                     //countDownTimer.cancel();
-                    if (widget.exam.examType == 'timed') sub.cancel();
+                    if (widget.exam.examPicture == 'timed') sub.cancel();
                     submit();
 
 //                    int score = 0;

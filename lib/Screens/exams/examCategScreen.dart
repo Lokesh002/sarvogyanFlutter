@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sarvogyan/Screens/NavDrawer.dart';
+import 'package:sarvogyan/Screens/exams/AllExamsScreen.dart';
 import 'package:sarvogyan/components/Cards/reusableCourseCard.dart';
 import 'package:sarvogyan/components/courseTree.dart';
+import 'package:sarvogyan/components/getAllExams.dart';
 import 'package:sarvogyan/components/sizeConfig.dart';
 
 class ExamCategScreen extends StatefulWidget {
@@ -67,15 +69,6 @@ class _ExamCategScreenState extends State<ExamCategScreen> {
     } else {
       return Scaffold(
           drawer: navDrawer.getNavDrawer(context, widget.sarvogyan),
-          appBar: AppBar(
-            toolbarHeight: screenSize.screenHeight * 10,
-            elevation: 5,
-            title: Text(
-              widget.node.value,
-              style: TextStyle(
-                  color: Colors.white, fontSize: screenSize.screenHeight * 3.5),
-            ),
-          ),
           body: Container(
             child: Column(
               children: [
@@ -84,7 +77,7 @@ class _ExamCategScreenState extends State<ExamCategScreen> {
                 ),
                 Container(
                   width: screenSize.screenWidth * 100,
-                  height: screenSize.screenHeight * 85,
+                  height: screenSize.screenHeight * 75,
                   child: GridView.count(
                     // Create a grid with 2 columns. If you change the scrollDirection to
                     // horizontal, this produces 2 rows.
@@ -99,28 +92,14 @@ class _ExamCategScreenState extends State<ExamCategScreen> {
                               vertical: screenSize.screenHeight * 3),
                           child: GestureDetector(
                             onTap: () {
-                              if (widget.node.children[index].children ==
-                                  null) {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return ExamCategScreen(
-                                      widget.sarvogyan,
-                                      widget.query +
-                                          " ${widget.node.children[index].value}",
-                                      null,
-                                      'images/media');
-                                }));
-                              } else {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return ExamCategScreen(
-                                      widget.sarvogyan,
-                                      widget.query +
-                                          " ${widget.node.children[index].value}",
-                                      widget.node.children[index],
-                                      'images/media');
-                                }));
-                              }
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return AllExamsScreen(
+                                  widget.query +
+                                      "${widget.node.children[index].value} ",
+                                  widget.node.children[index],
+                                );
+                              }));
                             },
                             child: Container(
                               width: screenSize.screenWidth * 40,

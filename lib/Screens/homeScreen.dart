@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sarvogyan/Screens/course/ListloadingScreen.dart';
 import 'package:sarvogyan/Screens/course/allCoursesScreen.dart';
+import 'package:sarvogyan/Screens/course/search/seachScreen.dart';
 
 import 'package:sarvogyan/Screens/docs/docsScreen.dart';
+import 'package:sarvogyan/Screens/exams/examCategScreen.dart';
 import 'package:sarvogyan/Screens/exams/examListLoadingScreen.dart';
 import 'package:sarvogyan/Screens/course/myCourses/myCourses.dart';
 import 'package:sarvogyan/Screens/NavDrawer.dart';
@@ -166,10 +168,11 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           backgroundColor: Theme.of(context).accentColor,
           body: TabBarView(children: [
-            ListLoadingScreen(),
+            SearchScreen(),
             MyCourses(),
-            AllCoursesScreen(sarvogyan, sarvogyan.children[0], 'images/media/'),
-            ExamListLoadingScreen(),
+            AllCoursesScreen(sarvogyan, sarvogyan.children[0], 'images/media'),
+            ExamCategScreen(
+                sarvogyan, "", sarvogyan.children[1], 'images/media'),
             DocsScreen(),
           ]),
         ),

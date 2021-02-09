@@ -7,7 +7,7 @@ import 'package:sarvogyan/components/sizeConfig.dart';
 class ReusableExamCard extends StatelessWidget {
   final String examName;
   final int examTime;
-  final String examType;
+  final String examPicture;
   final String totalQuestion;
   final String examDesc;
 
@@ -19,15 +19,9 @@ class ReusableExamCard extends StatelessWidget {
       this.examTime,
       this.examDesc,
       this.totalQuestion,
-      this.examType,
+      this.examPicture,
       this.onTap,
       this.onChangeTap});
-  IconData getIcon() {
-    if (examType == 'timed') {
-      return Icons.timer;
-    }
-    return Icons.border_color;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +41,15 @@ class ReusableExamCard extends StatelessWidget {
                     SizedBox(
                       width: screenSize.screenWidth * 5,
                     ),
-                    Icon(
-                      getIcon(),
-                      size: screenSize.screenHeight * 4,
-                      color: Theme.of(context).primaryColor,
-                    ),
+                    Container(
+                        width: screenSize.screenWidth * 12,
+                        height: screenSize.screenHeight * 10,
+                        child: (examPicture == 'images/logo.png')
+                            ? Image.asset('images/logo.png')
+                            : Image.network(
+                                this.examPicture,
+                                fit: BoxFit.contain,
+                              )),
                     SizedBox(
                       width: screenSize.screenWidth * 3,
                     ),

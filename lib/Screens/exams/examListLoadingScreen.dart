@@ -39,7 +39,7 @@ class _ExamListLoadingScreenState extends State<ExamListLoadingScreen> {
   void getExamList() async {
     List<Exam> examList;
     GetAllExams getAllExams = GetAllExams();
-    examList = await getAllExams.getExamList();
+    examList = await getAllExams.getExamList("all");
     String UserId = await savedData.getAccessToken();
 //    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
 //      return ExamListScreen(examList, UserId);
@@ -93,7 +93,7 @@ class _ExamListLoadingScreenState extends State<ExamListLoadingScreen> {
                             return ReusableExamCard(
                               examName: allExamList[index].examName,
                               examTime: allExamList[index].examTime,
-                              examType: allExamList[index].examType,
+                              examPicture: allExamList[index].examPicture,
                               examDesc: allExamList[index].examDescription,
                               totalQuestion: allExamList[index].totalQuestions,
                               onTap: () {
@@ -102,7 +102,7 @@ class _ExamListLoadingScreenState extends State<ExamListLoadingScreen> {
                                     Navigator.push(context,
                                         MaterialPageRoute(builder: (context) {
                                       return TakeExamLoadingScreen(
-                                          allExamList[index], widget.userId);
+                                          allExamList[index]);
                                     }));
                                   } else {
                                     Fluttertoast.showToast(

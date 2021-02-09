@@ -23,7 +23,7 @@ class FetchLessons {
       var data = response.body;
 
       var decDataLesson = convert.jsonDecode(data);
-      print('got data');
+      print(decDataLesson);
       List lesson = decDataLesson['lessons'];
 
       for (int i = 0; i < lesson.length; i++) {

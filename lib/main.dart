@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sarvogyan/Screens/chooseColor.dart';
 import 'package:sarvogyan/Screens/course/ListloadingScreen.dart';
+import 'file:///D:/Projects/Flutter/sarvogyan/sarvogyan/lib/Screens/course/search/seachScreen.dart';
 import 'package:sarvogyan/Screens/exams/examListLoadingScreen.dart';
 import 'package:sarvogyan/Screens/homeScreen.dart';
 import 'package:sarvogyan/Screens/profile/profile.dart';
@@ -11,7 +12,6 @@ import 'package:sarvogyan/Screens/userAuth/registerUser.dart';
 import 'package:sarvogyan/components/courseTree.dart';
 
 import 'package:sarvogyan/lists/theme.dart';
-
 
 void main() {
   runApp(new MyApp());
@@ -57,6 +57,7 @@ class _MyAppState extends State<MyApp> {
         '/changeColour': (context) => ChangeColour(),
         //'/enterOtp': (context) => EnterOtpScreen(),
         '/homeScreen': (context) => HomeScreen(),
+        '/searchCourses': (context) => SearchScreen(),
       },
     );
   }
