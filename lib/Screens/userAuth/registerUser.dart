@@ -69,6 +69,8 @@ class _RegisterUserState extends State<RegisterUser> {
   final addresscontroller = TextEditingController();
   final phoneNocontroller = TextEditingController();
 
+  String tag;
+  bool uploading = false;
   clearTextInput() {
     namecontroller.clear();
     emailcontroller.clear();
@@ -86,6 +88,33 @@ class _RegisterUserState extends State<RegisterUser> {
     phoneNocontroller.dispose();
     addresscontroller.dispose();
     super.dispose();
+  }
+
+  List tags = ['School Student', 'College Student', 'Professional'];
+  List<DropdownMenuItem> getDepartmentList() {
+    List<DropdownMenuItem> departmentList = [];
+
+    for (int i = 0; i < tags.length; i++) {
+      var item = DropdownMenuItem(
+        child: Text(tags[i]),
+        value: tags[i],
+      );
+      departmentList.add(item);
+    }
+
+    return departmentList;
+  }
+
+  Widget wait() {
+    return SizedBox(
+      width: double.infinity,
+      height: double.infinity,
+      child: Center(
+        child: CircularProgressIndicator(
+          backgroundColor: Colors.orange,
+        ),
+      ),
+    );
   }
 
   @override
@@ -129,397 +158,483 @@ class _RegisterUserState extends State<RegisterUser> {
     return Scaffold(
       resizeToAvoidBottomPadding: true,
       backgroundColor: Colors.white,
-      body: ListView(
-        children: <Widget>[
-          Container(
-            child: Column(children: <Widget>[
-              Container(
-                width: screenSize.screenWidth * 100,
-                height: screenSize.screenHeight * 25,
-                child: Image.asset(
-                  "images/logo.png",
-                  fit: BoxFit.fitWidth,
-                ),
-              ),
-              SizedBox(
-                height: screenSize.screenHeight * 2,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    "Sign Up",
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontSize: screenSize.screenHeight * 3.5,
-                      fontFamily: "Montserrat",
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
-                  SizedBox(
-                    height: screenSize.screenHeight * 2,
-                  ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[]),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: screenSize.screenHeight * 5,
-                              right: screenSize.screenHeight * 5,
-                              top: screenSize.screenHeight * 2),
-                          child: Stack(
-                            children: <Widget>[
-                              Container(
-                                padding: EdgeInsets.only(
-                                    top: screenSize.screenHeight * 2),
-                                child: TextFormField(
-                                  validator: (val) =>
-                                      val.isEmpty ? 'Enter your name' : null,
-                                  controller: namecontroller,
-                                  keyboardType: TextInputType.text,
-                                  textAlign: TextAlign.start,
-                                  onChanged: (name) {
-                                    this.name = name;
-                                    print(this.name);
-                                  },
+      body: Stack(
+        children: [
+          uploading
+              ? wait()
+              : ListView(
+                  children: <Widget>[
+                    Container(
+                      child: Column(children: <Widget>[
+                        Container(
+                          width: screenSize.screenWidth * 100,
+                          height: screenSize.screenHeight * 25,
+                          child: Image.asset(
+                            "images/logo.png",
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                        SizedBox(
+                          height: screenSize.screenHeight * 2,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              "Sign Up",
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: screenSize.screenHeight * 3.5,
+                                fontFamily: "Montserrat",
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            SizedBox(
+                              height: screenSize.screenHeight * 2,
+                            ),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[]),
+                            Form(
+                              key: _formKey,
+                              child: Column(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: screenSize.screenHeight * 5,
+                                        right: screenSize.screenHeight * 5,
+                                        top: screenSize.screenHeight * 2),
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Container(
+                                          padding: EdgeInsets.only(
+                                              top: screenSize.screenHeight * 2),
+                                          child: TextFormField(
+                                            validator: (val) => val.isEmpty
+                                                ? 'Enter your name'
+                                                : null,
+                                            controller: namecontroller,
+                                            keyboardType: TextInputType.text,
+                                            textAlign: TextAlign.start,
+                                            onChanged: (name) {
+                                              this.name = name;
+                                              print(this.name);
+                                            },
 
-                                  style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: screenSize.screenHeight * 2),
-                                  // focusNode: focusNode,
-                                  decoration: InputDecoration(
-                                    hintText: "Name",
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            screenSize.screenHeight * 2)),
+                                            style: TextStyle(
+                                                color: Colors.black87,
+                                                fontSize:
+                                                    screenSize.screenHeight *
+                                                        2),
+                                            // focusNode: focusNode,
+                                            decoration: InputDecoration(
+                                              hintText: "Name",
+                                              border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius
+                                                      .circular(screenSize
+                                                              .screenHeight *
+                                                          2)),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: screenSize.screenHeight * 5,
-                              right: screenSize.screenHeight * 5,
-                              top: screenSize.screenHeight * 2),
-                          child: Stack(
-                            children: <Widget>[
-                              Container(
-                                padding: const EdgeInsets.only(top: 10),
-                                child: TextFormField(
-                                  validator: (val) =>
-                                      val.isEmpty ? 'Enter an Email' : null,
-                                  controller: emailcontroller,
-                                  keyboardType: TextInputType.emailAddress,
-                                  textAlign: TextAlign.start,
-                                  onChanged: (name) {
-                                    this.email = name;
-                                    print(this.email);
-                                  },
-                                  style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: screenSize.screenHeight * 2),
-                                  // focusNode: focusNode,
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: screenSize.screenHeight * 5,
+                                        right: screenSize.screenHeight * 5,
+                                        top: screenSize.screenHeight * 2),
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Container(
+                                          padding:
+                                              const EdgeInsets.only(top: 10),
+                                          child: TextFormField(
+                                            validator: (val) => val.isEmpty
+                                                ? 'Enter an Email'
+                                                : null,
+                                            controller: emailcontroller,
+                                            keyboardType:
+                                                TextInputType.emailAddress,
+                                            textAlign: TextAlign.start,
+                                            onChanged: (name) {
+                                              this.email = name;
+                                              print(this.email);
+                                            },
+                                            style: TextStyle(
+                                                color: Colors.black87,
+                                                fontSize:
+                                                    screenSize.screenHeight *
+                                                        2),
+                                            // focusNode: focusNode,
 
-                                  decoration: InputDecoration(
-                                    hintText: "Email",
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            screenSize.screenHeight * 2)),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: screenSize.screenHeight * 5,
-                              right: screenSize.screenHeight * 5,
-                              top: screenSize.screenHeight * 2),
-                          child: Stack(
-                            children: <Widget>[
-                              Container(
-                                padding: const EdgeInsets.only(top: 10),
-                                child: TextFormField(
-                                  validator: (val) => val.length < 6
-                                      ? 'Enter a 6+ character long password'
-                                      : null,
-                                  obscureText: true,
-                                  controller: passwordcontroller,
-                                  keyboardType: TextInputType.text,
-                                  textAlign: TextAlign.start,
-                                  onChanged: (pass) {
-                                    this.password = pass;
-                                    print(this.password);
-                                  },
-                                  style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: screenSize.screenHeight * 2),
-                                  // focusNode: focusNode,
-                                  decoration: InputDecoration(
-                                    hintText: "Password",
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            screenSize.screenHeight * 2)),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: screenSize.screenHeight * 5,
-                              right: screenSize.screenHeight * 5,
-                              top: screenSize.screenHeight * 2),
-                          child: Stack(
-                            children: <Widget>[
-                              Container(
-                                padding: const EdgeInsets.only(top: 10),
-                                child: TextFormField(
-                                  validator: (val) {
-                                    if (val.length == 10)
-                                      return null;
-                                    else
-                                      return "Please enter valid 10 digit phone number";
-                                  },
-                                  controller: phoneNocontroller,
-                                  keyboardType: TextInputType.number,
-                                  textAlign: TextAlign.start,
-                                  onChanged: (phone) {
-                                    this.phoneNo = phone;
-                                    print(this.phoneNo);
-                                  },
-                                  style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: screenSize.screenHeight * 2),
-                                  // focusNode: focusNode,
-                                  decoration: InputDecoration(
-                                    hintText: "Phone Number",
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            screenSize.screenHeight * 2)),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: screenSize.screenHeight * 5,
-                              right: screenSize.screenHeight * 5,
-                              top: screenSize.screenHeight * 2),
-                          child: Stack(
-                            children: <Widget>[
-                              Container(
-                                padding: const EdgeInsets.only(top: 10),
-                                child: TextFormField(
-                                  minLines: 3,
-                                  maxLines: 5,
-                                  validator: (val) =>
-                                      val.isEmpty ? 'Enter an address' : null,
-                                  controller: addresscontroller,
-                                  keyboardType: TextInputType.emailAddress,
-                                  textAlign: TextAlign.start,
-                                  onChanged: (address) {
-                                    this.address = address;
-                                    print(this.address);
-                                  },
-                                  style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: screenSize.screenHeight * 2),
-                                  // focusNode: focusNode,
-                                  decoration: InputDecoration(
-                                    hintText: "Address",
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            screenSize.screenHeight * 2)),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: screenSize.screenWidth * 6,
-                  ),
-                  Center(
-                    child: Container(
-                      height: screenSize.screenHeight * 10,
-                      width: screenSize.screenWidth * 80,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          SizedBox(
-                            height: screenSize.screenWidth * 2,
-                          ),
-                          Center(
-                              child: Text(
-                            "Age",
-                            style: TextStyle(
-                                fontSize: screenSize.screenHeight * 2),
-                          )),
-                          SizedBox(
-                            height: screenSize.screenHeight * 2,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              GestureDetector(
-                                child: Row(
-                                  children: <Widget>[
-                                    age1,
-                                    SizedBox(
-                                      width: screenSize.screenWidth * 2,
+                                            decoration: InputDecoration(
+                                              hintText: "Email",
+                                              border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius
+                                                      .circular(screenSize
+                                                              .screenHeight *
+                                                          2)),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      "less than 18",
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: screenSize.screenHeight * 5,
+                                        right: screenSize.screenHeight * 5,
+                                        top: screenSize.screenHeight * 2),
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Container(
+                                          padding:
+                                              const EdgeInsets.only(top: 10),
+                                          child: TextFormField(
+                                            validator: (val) => val.length < 6
+                                                ? 'Enter a 6+ character long password'
+                                                : null,
+                                            obscureText: true,
+                                            controller: passwordcontroller,
+                                            keyboardType: TextInputType.text,
+                                            textAlign: TextAlign.start,
+                                            onChanged: (pass) {
+                                              this.password = pass;
+                                              print(this.password);
+                                            },
+                                            style: TextStyle(
+                                                color: Colors.black87,
+                                                fontSize:
+                                                    screenSize.screenHeight *
+                                                        2),
+                                            // focusNode: focusNode,
+                                            decoration: InputDecoration(
+                                              hintText: "Password",
+                                              border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius
+                                                      .circular(screenSize
+                                                              .screenHeight *
+                                                          2)),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: screenSize.screenHeight * 5,
+                                        right: screenSize.screenHeight * 5,
+                                        top: screenSize.screenHeight * 2),
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Container(
+                                          padding:
+                                              const EdgeInsets.only(top: 10),
+                                          child: TextFormField(
+                                            validator: (val) {
+                                              if (val.length == 10)
+                                                return null;
+                                              else
+                                                return "Please enter valid 10 digit phone number";
+                                            },
+                                            controller: phoneNocontroller,
+                                            keyboardType: TextInputType.number,
+                                            textAlign: TextAlign.start,
+                                            onChanged: (phone) {
+                                              this.phoneNo = phone;
+                                              print(this.phoneNo);
+                                            },
+                                            style: TextStyle(
+                                                color: Colors.black87,
+                                                fontSize:
+                                                    screenSize.screenHeight *
+                                                        2),
+                                            // focusNode: focusNode,
+                                            decoration: InputDecoration(
+                                              hintText: "Phone Number",
+                                              border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius
+                                                      .circular(screenSize
+                                                              .screenHeight *
+                                                          2)),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: screenSize.screenHeight * 5,
+                                        right: screenSize.screenHeight * 5,
+                                        top: screenSize.screenHeight * 2),
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Container(
+                                          padding:
+                                              const EdgeInsets.only(top: 10),
+                                          child: TextFormField(
+                                            minLines: 3,
+                                            maxLines: 5,
+                                            validator: (val) => val.isEmpty
+                                                ? 'Enter an address'
+                                                : null,
+                                            controller: addresscontroller,
+                                            keyboardType:
+                                                TextInputType.emailAddress,
+                                            textAlign: TextAlign.start,
+                                            onChanged: (address) {
+                                              this.address = address;
+                                              print(this.address);
+                                            },
+                                            style: TextStyle(
+                                                color: Colors.black87,
+                                                fontSize:
+                                                    screenSize.screenHeight *
+                                                        2),
+                                            // focusNode: focusNode,
+                                            decoration: InputDecoration(
+                                              hintText: "Address",
+                                              border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius
+                                                      .circular(screenSize
+                                                              .screenHeight *
+                                                          2)),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: screenSize.screenWidth * 6,
+                            ),
+                            Center(
+                              child: Container(
+                                height: screenSize.screenHeight * 10,
+                                width: screenSize.screenWidth * 80,
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: <Widget>[
+                                    SizedBox(
+                                      height: screenSize.screenWidth * 2,
+                                    ),
+                                    Center(
+                                        child: Text(
+                                      "Age",
                                       style: TextStyle(
                                           fontSize:
                                               screenSize.screenHeight * 2),
-                                    ),
-                                  ],
-                                ),
-                                onTap: () {
-                                  setState(() {
-                                    age1selected = true;
-                                    age2selected = false;
-                                    age3selected = false;
-                                    this.age = "a";
-                                  });
-                                },
-                              ),
-                              SizedBox(
-                                width: screenSize.screenWidth * 2,
-                              ),
-                              GestureDetector(
-                                child: Row(
-                                  children: <Widget>[
-                                    age2,
+                                    )),
                                     SizedBox(
-                                      width: screenSize.screenWidth * 2,
+                                      height: screenSize.screenHeight * 2,
                                     ),
-                                    Text(
-                                      "18-40",
-                                      style: TextStyle(
-                                          fontSize:
-                                              screenSize.screenHeight * 2),
-                                    ),
-                                  ],
-                                ),
-                                onTap: () {
-                                  setState(() {
-                                    age1selected = false;
-                                    age2selected = true;
-                                    age3selected = false;
-                                    this.age = "b";
-                                  });
-                                },
-                              ),
-                              SizedBox(
-                                width: screenSize.screenWidth * 2,
-                              ),
-                              GestureDetector(
-                                child: Row(
-                                  children: <Widget>[
-                                    age3,
-                                    SizedBox(
-                                      width: screenSize.screenWidth * 2,
-                                    ),
-                                    Text(
-                                      "above 40",
-                                      style: TextStyle(
-                                          fontSize:
-                                              screenSize.screenHeight * 2),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        GestureDetector(
+                                          child: Row(
+                                            children: <Widget>[
+                                              age1,
+                                              SizedBox(
+                                                width:
+                                                    screenSize.screenWidth * 2,
+                                              ),
+                                              Text(
+                                                "less than 18",
+                                                style: TextStyle(
+                                                    fontSize: screenSize
+                                                            .screenHeight *
+                                                        2),
+                                              ),
+                                            ],
+                                          ),
+                                          onTap: () {
+                                            setState(() {
+                                              age1selected = true;
+                                              age2selected = false;
+                                              age3selected = false;
+                                              this.age = "a";
+                                            });
+                                          },
+                                        ),
+                                        SizedBox(
+                                          width: screenSize.screenWidth * 2,
+                                        ),
+                                        GestureDetector(
+                                          child: Row(
+                                            children: <Widget>[
+                                              age2,
+                                              SizedBox(
+                                                width:
+                                                    screenSize.screenWidth * 2,
+                                              ),
+                                              Text(
+                                                "18-40",
+                                                style: TextStyle(
+                                                    fontSize: screenSize
+                                                            .screenHeight *
+                                                        2),
+                                              ),
+                                            ],
+                                          ),
+                                          onTap: () {
+                                            setState(() {
+                                              age1selected = false;
+                                              age2selected = true;
+                                              age3selected = false;
+                                              this.age = "b";
+                                            });
+                                          },
+                                        ),
+                                        SizedBox(
+                                          width: screenSize.screenWidth * 2,
+                                        ),
+                                        GestureDetector(
+                                          child: Row(
+                                            children: <Widget>[
+                                              age3,
+                                              SizedBox(
+                                                width:
+                                                    screenSize.screenWidth * 2,
+                                              ),
+                                              Text(
+                                                "above 40",
+                                                style: TextStyle(
+                                                    fontSize: screenSize
+                                                            .screenHeight *
+                                                        2),
+                                              )
+                                            ],
+                                          ),
+                                          onTap: () {
+                                            setState(() {
+                                              age1selected = false;
+                                              age2selected = false;
+                                              age3selected = true;
+                                              this.age = "c";
+                                            });
+                                          },
+                                        ),
+                                      ],
                                     )
                                   ],
                                 ),
-                                onTap: () {
-                                  setState(() {
-                                    age1selected = false;
-                                    age2selected = false;
-                                    age3selected = true;
-                                    this.age = "c";
-                                  });
-                                },
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
 //
-                    ),
-                  ),
-                  SizedBox(
-                    height: screenSize.screenHeight * 6,
-                  ),
-                  Center(
-                    child: ReusableButton(
-                        height: screenSize.screenHeight * 8,
-                        width: screenSize.screenWidth * 50,
-                        content: "Register",
-                        onPress: () async {
-                          if (_formKey.currentState.validate()) {
-                            FirebaseUser FireAccessUser =
-                                await registerUserFirebase(email, password);
-                            var a = await FireAccessUser.getIdToken();
-                            String FireAccessToken = a.token;
+                              ),
+                            ),
+                            SizedBox(
+                              height: screenSize.screenHeight * 6,
+                            ),
+                            Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.black45),
+                                  borderRadius: BorderRadius.circular(
+                                      screenSize.screenHeight * 2),
+                                ),
+                                width: screenSize.screenWidth * 80,
+                                height: screenSize.screenHeight * 11,
+                                child: Center(
+                                  child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal:
+                                              screenSize.screenWidth * 3),
+                                      child: DropdownButtonFormField(
+                                        disabledHint: Text("Choose category"),
+                                        validator: (val) =>
+                                            val == null ? 'Choose' : null,
+                                        elevation: 7,
+                                        isExpanded: false,
+                                        hint: Text('Choose',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .accentColor)),
+                                        value: tag,
+                                        items: getDepartmentList(),
+                                        onChanged: (value) {
+                                          tag = value;
+                                          print('selected: $tag');
 
-                            String UId = FireAccessUser.uid;
-                            if (FireAccessToken == error ||
-                                FireAccessToken == null) {
-                              Fluttertoast.showToast(msg: error);
-                            } else {
-                              print('fireAccess: ' + FireAccessToken);
-                              print('going to phone check');
-                              phoneCheck(
-                                  phoneNo, context, FireAccessToken, UId);
-                            }
-                          } else {
-                            print("Wrong data");
-                          }
-                        }),
-                  ),
-                  SizedBox(
-                    height: screenSize.screenWidth * 5,
-                  ),
-                  Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) {
-                          return Login(true);
-                        }));
-                      },
-                      child: Text("Already a user? Sign In.",
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "Montserrat",
-                              fontStyle: FontStyle.normal,
-                              fontSize: screenSize.screenHeight * 1.7),
-                          textAlign: TextAlign.left),
+                                          setState(() {});
+                                        },
+                                      )),
+                                )),
+                            SizedBox(
+                              height: screenSize.screenHeight * 6,
+                            ),
+                            Center(
+                              child: ReusableButton(
+                                  height: screenSize.screenHeight * 8,
+                                  width: screenSize.screenWidth * 50,
+                                  content: "Register",
+                                  onPress: () async {
+                                    setState(() {
+                                      uploading = true;
+                                    });
+
+                                    if (_formKey.currentState.validate()) {
+                                      FirebaseUser FireAccessUser =
+                                          await registerUserFirebase(
+                                              email, password);
+                                      var a = await FireAccessUser.getIdToken();
+                                      String FireAccessToken = a.token;
+
+                                      String UId = FireAccessUser.uid;
+                                      if (FireAccessToken == error ||
+                                          FireAccessToken == null) {
+                                        Fluttertoast.showToast(msg: error);
+                                      } else {
+                                        print('fireAccess: ' + FireAccessToken);
+                                        print('going to phone check');
+                                        phoneCheck(phoneNo, context,
+                                            FireAccessToken, UId);
+                                      }
+                                    } else {
+                                      print("Wrong data");
+                                    }
+                                  }),
+                            ),
+                            SizedBox(
+                              height: screenSize.screenWidth * 5,
+                            ),
+                            Center(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pushReplacement(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return Login(true);
+                                  }));
+                                },
+                                child: Text("Already a user? Sign In.",
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Montserrat",
+                                        fontStyle: FontStyle.normal,
+                                        fontSize:
+                                            screenSize.screenHeight * 1.7),
+                                    textAlign: TextAlign.left),
+                              ),
+                            ),
+                            SizedBox(
+                              height: screenSize.screenWidth * 5,
+                            ),
+                          ],
+                        )
+                      ]),
                     ),
-                  ),
-                  SizedBox(
-                    height: screenSize.screenWidth * 5,
-                  ),
-                ],
-              )
-            ]),
-          ),
+                  ],
+                ),
         ],
       ),
     );
@@ -527,16 +642,16 @@ class _RegisterUserState extends State<RegisterUser> {
 
   void phoneCheck(String phone, BuildContext context, String fireAccessToken,
       String Uid) async {
-    showAlertDialog(context);
+    //showAlertDialog(context);
     print('reached');
     PhoneCheck phoneCheck = PhoneCheck(phone);
     bool isPhoneVerified = await phoneCheck.check();
     print(isPhoneVerified.toString() + " phone verified");
     if (isPhoneVerified) {
-      Navigator.pop(context);
+      //Navigator.pop(context);
       Fluttertoast.showToast(msg: "Phone Number already used");
     } else {
-      Navigator.pop(context);
+      //Navigator.pop(context);
       print("sending OTP");
 
       await verifyPhone('+91' + phone, fireAccessToken, Uid);
@@ -545,9 +660,6 @@ class _RegisterUserState extends State<RegisterUser> {
 
   Future<void> verifyPhone(
       String phoneNo, String FireAccessToken, String UId) async {
-//    final PhoneCodeSent smsOTPSent = (String verId, [int forceCodeResend]) {
-//      this.verificationId = verId;
-//    };
     print("UID: " + UId);
     print("FireAccessTOken: " + FireAccessToken);
     auth = FirebaseAuth.instance;
@@ -566,7 +678,7 @@ class _RegisterUserState extends State<RegisterUser> {
             });
 
             if (code != null) {
-              showAlertDialog(context);
+              // showAlertDialog(context);
               print(code);
               print('process flow');
               try {
@@ -580,11 +692,6 @@ class _RegisterUserState extends State<RegisterUser> {
                 print('process flow');
                 FirebaseUser user = result.user;
                 if (user != null) {
-//                  print('signed in with: ' +
-//                      result.user.phoneNumber +
-//                      " and " +
-//                      result.user.email);
-
                   registerUserNetworking = RegisterUserNetworking(
                       name,
                       email,
@@ -593,7 +700,9 @@ class _RegisterUserState extends State<RegisterUser> {
                       address,
                       age,
                       UId,
-                      FireAccessToken);
+                      FireAccessToken,
+                      tag,
+                      (tag == 'Professional') ? 'no' : 'yes');
 
                   int aT = await registerUserNetworking.postData();
                   print("VALUE OF at : " + aT.toString());
@@ -608,10 +717,14 @@ class _RegisterUserState extends State<RegisterUser> {
                   if (status == 200) {
                     Fluttertoast.showToast(msg: "Login Successfully");
                     //FirebaseAuth.instance.signOut();
+
                     Navigator.pop(context);
                     signedIn = true;
-                    Navigator.pop(context);
-                    if (age == "a") {
+                    //Navigator.pop(context);
+                    if (tag == "School Student") {
+                      setState(() {
+                        uploading = false;
+                      });
                       await Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         //Here DecodedData is a locally saved variable containing selected course data
@@ -622,6 +735,9 @@ class _RegisterUserState extends State<RegisterUser> {
                       Navigator.pushReplacementNamed(context, '/homeScreen');
                     } else {
                       setState(() {
+                        setState(() {
+                          uploading = false;
+                        });
                         //clearTextInput();
                         Fluttertoast.showToast(
                             msg: "Please Check Internet Connection!");
@@ -670,6 +786,9 @@ class _RegisterUserState extends State<RegisterUser> {
   }
 
   Future<String> smsOTPDialog(BuildContext context) {
+    setState(() {
+      uploading = false;
+    });
     return showDialog(
         context: context,
         barrierDismissible: false,
@@ -700,29 +819,13 @@ class _RegisterUserState extends State<RegisterUser> {
               FlatButton(
                   child: Text('Done'),
                   onPressed: () {
+                    uploading = true;
                     Navigator.of(context).pop(smsOTP);
                   }),
             ],
           );
         });
   }
-
-//  signIn() async {
-//    try {
-//      final AuthCredential credential = PhoneAuthProvider.getCredential(
-//        verificationId: verificationId,
-//        smsCode: smsOTP,
-//      );
-//      result.user.linkWithCredential(credential);
-//      final FirebaseUser currentUser = await _auth.currentUser();
-//      assert(result.user.uid == currentUser.uid);
-//      Navigator.of(context).pop();
-//
-//      //Navigator.of(context).pushReplacementNamed('/homepage');
-//    } catch (e) {
-//      handleError(e);
-//    }
-//  }
 
   handleError(PlatformException error) {
     print(error);
@@ -745,132 +848,6 @@ class _RegisterUserState extends State<RegisterUser> {
         break;
     }
   }
-
-//  Future<bool> loginUser(String phone, BuildContext context) {
-//    Future<bool> verified;
-//    _auth = FirebaseAuth.instance;
-//    _auth.verifyPhoneNumber(
-//        phoneNumber: phone,
-//        timeout: Duration(seconds: 60),
-//        verificationCompleted: (AuthCredential credential) async {
-////          AuthResult authResult = await _auth.signInWithCredential(credential);
-////          FirebaseUser user = authResult.user;
-////          if (user != null) {
-////            setState(() {
-////              button = 'Send OTP';
-////            });
-////            var u = await user.getIdToken();
-////
-////            LoginPhoneNetworking loginPhoneNetworking =
-////                LoginPhoneNetworking(phone: mobileNo, accessToken: u.token);
-////            print('sending data');
-////            int status = await loginPhoneNetworking.postData();
-////            if (status == 200) {
-////              Fluttertoast.showToast(msg: "Login Successfully");
-////              print('fromAllCourse ' + widget.fromAllCourses.toString());
-////              if (widget.fromAllCourses) {
-////                print('going to Loading screen');
-////                Navigator.pushReplacement(context,
-////                    MaterialPageRoute(builder: (context) {
-////                  return ListLoadingScreen();
-////                }));
-////              } else {
-////                Navigator.pushReplacement(context,
-////                    MaterialPageRoute(builder: (context) {
-////                  //Here DecodedData is a locally savedvariable containing selected course data
-////                  return CourseRegistrationLoadingScreen(DecodedData, false);
-////                }));
-////              }
-////            } else {
-////              setState(() {
-////                //clearTextInput();
-////                Fluttertoast.showToast(
-////                    msg: "Please Check Internet Connection!");
-////                setState(() {
-////                  button = 'Send OTP';
-////                });
-////              });
-////            }
-////          } else {
-////            print('ERROR');
-////          }
-////
-////          Navigator.pop(context);
-//        },
-//        verificationFailed: (AuthException exception) {
-//          print(exception.message);
-//        },
-//        codeSent: (String verificationId, [int forceResendingToken]) async {
-//          print("opening OTP Screen");
-//          String code;
-//          print(widget.fromAllCourses);
-//          await Navigator.push(context, MaterialPageRoute(builder: (context) {
-//            //Here DecodedData is a locally saved variable containing selected course data
-//            return EnterOtpScreen(widget.fromAllCourses);
-//          })).then((value) {
-//            code = value;
-//          });
-//
-//          if (code != null) {
-//            showAlertDialog(context);
-//            print(code);
-//            print('process flow');
-//            try {
-//              AuthCredential credential = PhoneAuthProvider.getCredential(
-//                  verificationId: verificationId, smsCode: code);
-//              print('process flow');
-//              AuthResult result = await _auth.signInWithCredential(credential);
-//              print('process flow');
-//              FirebaseUser user = result.user;
-//              if (user != null) {
-//                print('signed in with: ' + result.user.phoneNumber);
-//                var u = await user.getIdToken();
-//                print(u.token);
-//
-//                LoginPhoneNetworking loginPhoneNetworking =
-//                    LoginPhoneNetworking(phone: mobileNo, accessToken: u.token);
-//                print('sending data');
-//                int status = await loginPhoneNetworking.postData();
-//                if (status == 200) {
-//                  Fluttertoast.showToast(msg: "Login Successfully");
-//                  FirebaseAuth.instance.signOut();
-//                  Navigator.pop(context);
-//                  signedIn = true;
-//                  if (widget.fromAllCourses) {
-//                    Navigator.pushReplacementNamed(context, '/homeScreen');
-//                  } else {
-//                    Navigator.pushReplacement(context,
-//                        MaterialPageRoute(builder: (context) {
-//                      //Here DecodedData is a locally saved variable containing selected course data
-//                      return CourseRegistrationLoadingScreen(
-//                          DecodedData, false);
-//                    }));
-//                  }
-//                } else {
-//                  setState(() {
-//                    //clearTextInput();
-//                    Fluttertoast.showToast(
-//                        msg: "Please Check Internet Connection!");
-//                    print('LoginFailed');
-//                    setState(() {
-//                      button = 'Send OTP';
-//                    });
-//                  });
-//                }
-//              } else {
-//                print('ERROR');
-//              }
-//            } catch (e) {
-//              print(e);
-//            }
-//          } else {
-//            Fluttertoast.showToast(msg: "Please Enter OTP");
-//            print("code=null");
-//          }
-//        },
-//        codeAutoRetrievalTimeout: null);
-//    return verified;
-//  }
 
   Future<FirebaseUser> registerUserFirebase(String email, String pass) async {
     FirebaseAuth _auth = FirebaseAuth.instance;

@@ -47,7 +47,7 @@ class UpdateProfileSave {
             "age": this.age,
             "balance": this.balance,
             "board": this.board,
-            "isStudent": this.isStudent,
+            "isStudent": this.isStudent ? 'yes' : 'no',
             "name": this.name,
             "studentClass": this.studentClass,
             "subscription": subs

@@ -12,8 +12,19 @@ class RegisterUserNetworking {
   String accessToken;
   String UId;
   String FirebaseAccessToken;
-  RegisterUserNetworking(this.name, this.email, this.password, this.phoneNo,
-      this.address, this.age, this.UId, this.FirebaseAccessToken);
+  String tag;
+  String isStudent;
+  RegisterUserNetworking(
+      this.name,
+      this.email,
+      this.password,
+      this.phoneNo,
+      this.address,
+      this.age,
+      this.UId,
+      this.FirebaseAccessToken,
+      this.tag,
+      this.isStudent);
 
   String url =
       "http://us-central1-sarvogyan-course-platform.cloudfunctions.net/api/user";
@@ -31,6 +42,9 @@ class RegisterUserNetworking {
           'phone': phoneNo,
           'age': age,
           'id': UId,
+          'token': FirebaseAccessToken,
+          'tag': tag,
+          'isStudent': isStudent
         }));
 
     if (response1.statusCode == 200) {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sarvogyan/components/Constants/constants.dart';
+import 'package:sarvogyan/components/courseTree.dart';
 import 'package:sarvogyan/components/sizeConfig.dart';
 import 'package:sarvogyan/components/updateProfileSupport.dart';
 import 'package:sarvogyan/utilities/sharedPref.dart';
@@ -8,6 +10,7 @@ class EnterBoardClassScreen extends StatefulWidget {
   String name;
   String age;
   String address;
+
   EnterBoardClassScreen({this.name, this.address, this.age});
   @override
   _EnterBoardClassScreenState createState() => _EnterBoardClassScreenState();
@@ -42,7 +45,10 @@ class _EnterBoardClassScreenState extends State<EnterBoardClassScreen> {
     // TODO: implement initState
     super.initState();
     getData();
+    sarvogyan = getCourseClass.process();
   }
+
+  GetCourseClass getCourseClass = GetCourseClass();
 
   String name;
   String age;
@@ -52,7 +58,7 @@ class _EnterBoardClassScreenState extends State<EnterBoardClassScreen> {
   SizeConfig screenSize;
 
   bool isStudent;
-
+  CourseTreeNode chosenBoard;
   int _value = -1;
   SavedData savedData = SavedData();
   getData() async {
@@ -60,13 +66,46 @@ class _EnterBoardClassScreenState extends State<EnterBoardClassScreen> {
     address = widget.address;
     age = widget.age;
 
-    isStudent = await savedData.getIsStudent()=="yes"?true:false;
+    isStudent = await savedData.getIsStudent() == "yes" ? true : false;
 
     setState(() {});
   }
 
   TextEditingController boardController = TextEditingController();
   TextEditingController classController = TextEditingController();
+
+  CourseTreeNode sarvogyan;
+  List<DropdownMenuItem> getBoard() {
+    List<DropdownMenuItem> boardList = [];
+
+    for (int i = 0;
+        i < sarvogyan.children[0].children[0].children.length;
+        i++) {
+      var item = DropdownMenuItem(
+        child: Text(sarvogyan.children[0].children[0].children[i].value),
+        value: sarvogyan.children[0].children[0].children[i],
+      );
+      boardList.add(item);
+    }
+
+    return boardList;
+  }
+
+  List<DropdownMenuItem> getClass(CourseTreeNode c) {
+    List<DropdownMenuItem> classList = [];
+    if (chosenBoard != null) {
+      for (int i = 0; i < c.children.length; i++) {
+        var item = DropdownMenuItem(
+          child: Text(c.children[i].value),
+          value: c.children[i].value,
+        );
+        classList.add(item);
+      }
+
+      return classList;
+    } else
+      return null;
+  }
 
   void _handleRadioValueChanged(int value) {
     print(isStudent);
@@ -177,35 +216,44 @@ class _EnterBoardClassScreenState extends State<EnterBoardClassScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  SizedBox(
+                    height: screenSize.screenHeight * 6,
+                  ),
                   Container(
-                    padding: EdgeInsets.all(screenSize.screenHeight * 3),
-                    child: TextFormField(
-                      controller: boardController,
-                      readOnly: _value != 0 ? true : false,
-                      validator: (val) {
-                        if (val.length == 10)
-                          return null;
-                        else
-                          return "Please enter the Board";
-                      },
+                      width: screenSize.screenWidth * 80,
+                      height: screenSize.screenHeight * 11,
+                      child: Material(
+                        color: Theme.of(context).accentColor,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(screenSize.screenHeight * 1),
+                        ),
+                        child: Center(
+                          child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: screenSize.screenWidth * 3),
+                              child: DropdownButtonFormField(
+                                disabledHint: Text("Choose Board"),
+                                validator: (val) =>
+                                    val == null ? 'Select Board' : null,
+                                elevation: 7,
+                                isExpanded: false,
+                                hint: Text('Choose',
+                                    style: TextStyle(
+                                        color: Theme.of(context).accentColor)),
+                                value: chosenBoard,
+                                items: getBoard(),
+                                onChanged: (value) {
+                                  chosenBoard = value;
+                                  board = chosenBoard.value;
+                                  print('selected1: $board');
 
-                      keyboardType: TextInputType.text,
-                      textAlign: TextAlign.start,
-                      onChanged: (value) {
-                        board = value;
-                        print(board);
-                      },
-                      style: TextStyle(
-                          color: Colors.black87,
-                          fontSize: screenSize.screenHeight * 2),
-                      // focusNode: focusNode,
-                      decoration: InputDecoration(
-                        hintText: "Board",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(
-                                screenSize.screenHeight * 2)),
-                      ),
-                    ),
+                                  setState(() {});
+                                },
+                              )),
+                        ),
+                      )),
+                  SizedBox(
+                    height: screenSize.screenHeight * 3,
                   ),
                   Text(
                     "Enter Class",
@@ -215,38 +263,43 @@ class _EnterBoardClassScreenState extends State<EnterBoardClassScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.all(screenSize.screenHeight * 3),
-                    child: TextFormField(
-                      controller: classController,
-                      readOnly: _value != 0 ? true : false,
-                      validator: (val) {
-                        if (val.length > 0)
-                          return null;
-                        else
-                          return "Please enter the Class";
-                      },
-
-                      keyboardType: TextInputType.number,
-                      textAlign: TextAlign.start,
-                      onChanged: (value) {
-                        studentClass = value;
-                        print(studentClass);
-                      },
-                      style: TextStyle(
-                          color: Colors.black87,
-                          fontSize: screenSize.screenHeight * 2),
-                      // focusNode: focusNode,
-                      decoration: InputDecoration(
-                        hintText: "Class",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(
-                                screenSize.screenHeight * 2)),
-                      ),
-                    ),
-                  ),
                   SizedBox(
-                    height: screenSize.screenHeight * 20,
+                    height: screenSize.screenHeight * 6,
+                  ),
+                  Container(
+                      width: screenSize.screenWidth * 80,
+                      height: screenSize.screenHeight * 11,
+                      child: Material(
+                        color: Theme.of(context).accentColor,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(screenSize.screenHeight * 1),
+                        ),
+                        child: Center(
+                          child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: screenSize.screenWidth * 3),
+                              child: DropdownButtonFormField(
+                                disabledHint: Text("Choose Class"),
+                                validator: (val) =>
+                                    val == null ? 'Select Class' : null,
+                                elevation: 7,
+                                isExpanded: false,
+                                hint: Text('Choose',
+                                    style: TextStyle(
+                                        color: Theme.of(context).accentColor)),
+                                value: studentClass,
+                                items: getClass(chosenBoard),
+                                onChanged: (value) {
+                                  studentClass = value;
+                                  print('selected1: $studentClass');
+
+                                  setState(() {});
+                                },
+                              )),
+                        ),
+                      )),
+                  SizedBox(
+                    height: screenSize.screenHeight * 3,
                   ),
                   MaterialButton(
                     color: Theme.of(context).primaryColor,
@@ -267,6 +320,7 @@ class _EnterBoardClassScreenState extends State<EnterBoardClassScreen> {
                         print("class" + this.studentClass.toString());
                         Navigator.pop(context);
                       } else {
+                        showAlertDialog(this.context);
                         print(isStudent);
                         print("value" + this._value.toString());
                         print("address" + this.address.toString());
@@ -281,7 +335,7 @@ class _EnterBoardClassScreenState extends State<EnterBoardClassScreen> {
                           board: board,
                           isStudent: isStudent,
                         );
-                        showAlertDialog(this.context);
+
                         bool x = await updateProfileSave.updateProfile();
                         if (x == true) {
                           Navigator.pop(this.context);

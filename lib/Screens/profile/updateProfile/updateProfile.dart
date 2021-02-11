@@ -43,12 +43,12 @@ class _UpdateProfileState extends State<UpdateProfile> {
   bool isStudent;
   String address = "";
   String age = "";
-
+  String tag;
   SavedData savedData = SavedData();
   String profileImage;
   void getDetails() async {
     profileImage = await savedData.getProfileImage();
-
+    tag = await savedData.getTag();
     name = await savedData.getName();
     address = await savedData.getAddress();
     age = await savedData.getAge();
@@ -208,7 +208,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                             height: screenSize.screenHeight * 2,
                           ),
                           data("Board", board, () {
-                            if (age == 'a' &&
+                            if (tag.contains('School') &&
                                 board == "Not Selected" &&
                                 studentClass == "Not Selected") {
                               Navigator.push(context,

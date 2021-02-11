@@ -26,11 +26,11 @@ class _CourseSelectedState extends State<CourseSelected> {
   String desc = '';
   String cost = '';
   String subscription = '';
-  ImageProvider<dynamic> pic;
-
+  Widget pic;
+  String totalParts;
   String getSubscription(String sub) {
     if (sub == 'a')
-      return "Free Course";
+      return "Basic Course";
     else if (sub == 'b')
       return "Basic Course";
     else if (sub == 'c')
@@ -50,12 +50,18 @@ class _CourseSelectedState extends State<CourseSelected> {
       } else {
         name = '';
       }
+
       if (widget.decodedData["picture"] != null) {
         picture = widget.decodedData["picture"];
-        pic = NetworkImage(picture);
+        pic = Image.network(picture);
       } else {
         picture = 'images/logo.png';
-        pic = AssetImage(picture);
+        pic = Image.asset(picture);
+      }
+      if (widget.decodedData["totalParts"] != null) {
+        totalParts = widget.decodedData["totalParts"].toString();
+      } else {
+        totalParts = "N.A.";
       }
       if (widget.decodedData["teacherDetails"]["name"] != null) {
         teacherName = widget.decodedData["teacherDetails"]["name"];
@@ -82,7 +88,7 @@ class _CourseSelectedState extends State<CourseSelected> {
 
       name = 'Course Not Approved';
       picture = 'images/logo.png';
-      pic = AssetImage(picture);
+      pic = Image.asset(picture);
       teacherName = '';
       desc = '';
       cost = '0';
@@ -143,6 +149,7 @@ class _CourseSelectedState extends State<CourseSelected> {
     final x = screenSize.screenHeight * 50;
     print(name);
     return Scaffold(
+      appBar: AppBar(),
       backgroundColor: Colors.white,
       body: Container(
         child: Column(
@@ -150,14 +157,142 @@ class _CourseSelectedState extends State<CourseSelected> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      alignment: Alignment(0, 0),
-                      image: pic,
-                      fit: BoxFit.fitHeight),
+                color: Color(0xffeee9e9),
+                width: screenSize.screenWidth * 100,
+                height: screenSize.screenHeight * 35,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: screenSize.screenWidth * 5,
+                          vertical: screenSize.screenHeight * 3),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                name,
+                                softWrap: true,
+                                style: TextStyle(
+                                  color: Color(0xffff6714),
+                                  fontSize: screenSize.screenHeight * 3.5,
+                                  fontFamily: "Roboto",
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.screen_lock_landscape,
+                                    color: Color(0xffff6714),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      '$totalParts Lectures',
+                                      softWrap: true,
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: screenSize.screenHeight * 2,
+                                          fontFamily: "Roboto"),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundColor: Colors.black26,
+                                radius: screenSize.screenHeight * 2,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: screenSize.screenWidth * 2),
+                                child: Text(
+                                  'Prof. $teacherName',
+                                  softWrap: true,
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: screenSize.screenHeight * 2,
+                                      fontFamily: "Roboto"),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: screenSize.screenWidth * 5,
+                          vertical: screenSize.screenHeight * 3),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              width: screenSize.screenWidth * 30,
+                              height: screenSize.screenHeight * 20,
+                              child: pic),
+                          Center(
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  top: isCourseRegistered
+                                      ? screenSize.screenHeight * 1
+                                      : screenSize.screenHeight * 1),
+                              child: ReusableButton(
+                                  onPress: () async {
+                                    bool login = await savedData.getLoggedIn();
+                                    print(login);
+                                    if (login == null) {
+                                      login = false;
+                                    }
+                                    print(login);
+                                    if (login) {
+                                      print(subscription);
+                                      bool x = await canEnter();
+                                      print("helo" + x.toString());
+                                      if (x) {
+                                        Navigator.pushReplacement(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return CourseRegistrationLoadingScreen(
+                                              widget.decodedData, false);
+                                        }));
+                                      } else {
+                                        Fluttertoast.showToast(
+                                            msg:
+                                                "Please increase subscription level");
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return BuySubscription();
+                                        }));
+                                      }
+                                    } else {
+                                      DecodedData = widget.decodedData;
+                                      Navigator.pushReplacement(context,
+                                          MaterialPageRoute(builder: (context) {
+                                        return Login(false);
+                                      }));
+                                    }
+                                  },
+                                  content: "Enter Course",
+                                  height: screenSize.screenHeight * 7,
+                                  width: screenSize.screenWidth * 20),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-//                alignment: Alignment.bottomCenter,
-                padding: EdgeInsets.only(bottom: screenSize.screenHeight * 30),
               ),
               SizedBox(
                 height: screenSize.screenHeight * 3,
@@ -172,10 +307,10 @@ class _CourseSelectedState extends State<CourseSelected> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        height: screenSize.screenHeight * 10,
+                        height: screenSize.screenHeight * 5,
                         width: screenSize.screenWidth * 90,
                         child: Text(
-                          name,
+                          "About the Course",
                           softWrap: true,
                           style: TextStyle(
                             color: Colors.black,
@@ -188,20 +323,8 @@ class _CourseSelectedState extends State<CourseSelected> {
                       SizedBox(
                         height: screenSize.screenHeight * 1,
                       ),
-                      Text(
-                        teacherName,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: screenSize.screenHeight * 2.5,
-                          fontFamily: "Roboto",
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(
-                        height: screenSize.screenHeight * 1,
-                      ),
                       Container(
-                        height: screenSize.screenHeight * 10,
+                        height: screenSize.screenHeight * 5,
                         width: screenSize.screenWidth * 90,
                         child: Text(
                           desc,
@@ -210,24 +333,6 @@ class _CourseSelectedState extends State<CourseSelected> {
                               color: Colors.black,
                               fontSize: screenSize.screenHeight * 2,
                               fontFamily: "Roboto"),
-                        ),
-                      ),
-                      SizedBox(
-                        height: screenSize.screenHeight * 1,
-                      ),
-                      Visibility(
-                        visible: !isCourseRegistered,
-                        child: Container(
-                          height: screenSize.screenHeight * 5,
-                          width: screenSize.screenWidth * 90,
-                          child: Text(
-                            'Cost: ' + cost,
-                            softWrap: true,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: screenSize.screenHeight * 2,
-                                fontFamily: "Roboto"),
-                          ),
                         ),
                       ),
                       SizedBox(
@@ -252,51 +357,6 @@ class _CourseSelectedState extends State<CourseSelected> {
                   ),
                 ],
               ),
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      top: isCourseRegistered
-                          ? screenSize.screenHeight * 30
-                          : screenSize.screenHeight * 20),
-                  child: ReusableButton(
-                      onPress: () async {
-                        bool login = await savedData.getLoggedIn();
-                        print(login);
-                        if (login == null) {
-                          login = false;
-                        }
-                        print(login);
-                        if (login) {
-                          print(subscription);
-                          bool x = await canEnter();
-                          print("helo" + x.toString());
-                          if (x) {
-                            Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (context) {
-                              return CourseRegistrationLoadingScreen(
-                                  widget.decodedData, false);
-                            }));
-                          } else {
-                            Fluttertoast.showToast(
-                                msg: "Please increase subscription level");
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return BuySubscription();
-                            }));
-                          }
-                        } else {
-                          DecodedData = widget.decodedData;
-                          Navigator.pushReplacement(context,
-                              MaterialPageRoute(builder: (context) {
-                            return Login(false);
-                          }));
-                        }
-                      },
-                      content: "Enter Course",
-                      height: screenSize.screenHeight * 10,
-                      width: screenSize.screenWidth * 80),
-                ),
-              )
             ]),
       ),
     );

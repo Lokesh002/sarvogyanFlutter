@@ -16,11 +16,13 @@ class _BoardClassUpdateState extends State<BoardClassUpdate> {
     getData();
   }
 
+  String tag;
   bool isStudent;
   SavedData savedData = SavedData();
   getData() async {
     isStudent = await savedData.getIsStudent() == "yes" ? true : false;
     _value = isStudent == true ? 0 : (isStudent == false ? 1 : -1);
+    tag = await savedData.getTag();
     setState(() {});
   }
 

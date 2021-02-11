@@ -57,6 +57,7 @@ class LoginPhoneNetworking {
         await savedData.setAge(decodedData["age"]);
         await savedData.setPhone(decodedData["phone"]);
         await savedData.setUserId(decodedData["id"]);
+        await savedData.setTag(decodedData['tag']);
         if (decodedData["isStudent"] == null ||
             decodedData["isStudent"] == false) {
           await savedData.setIsStudent(decodedData["isStudent"]);

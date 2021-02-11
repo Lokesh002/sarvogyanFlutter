@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:sarvogyan/Screens/profile/addMoney/applyCouponCode.dart';
 import 'package:sarvogyan/Screens/profile/subscription/buySubscription.dart';
 import 'package:sarvogyan/Screens/profile/updateProfile/updateProfile.dart';
+import 'package:sarvogyan/Screens/userAuth/EnterBoardClassScreen.dart';
 import 'package:sarvogyan/Screens/userAuth/login.dart';
 import 'package:sarvogyan/Screens/profile/myResultScreen.dart';
 import 'package:sarvogyan/lists/allCoursesList.dart';
@@ -633,6 +634,12 @@ class _ProfileViewState extends State<ProfileView> {
                                         savedData.setCourse(null);
                                         savedData.setBalance(null);
                                         savedData.setUserSubsLevel(null);
+                                        savedData.setTag(null);
+                                        savedData.setUserId(null);
+                                        savedData.setClass(null);
+                                        savedData.setBoard(null);
+                                        savedData.setIsStudent(null);
+
                                         signedIn = false;
                                         setState(() {});
                                         print(signedIn);

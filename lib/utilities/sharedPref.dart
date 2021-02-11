@@ -227,6 +227,20 @@ class SavedData {
       return name;
   }
 
+  setTag(String name) async {
+    final savedUserName = await SharedPreferences.getInstance();
+    await savedUserName.setString('tag', name);
+  }
+
+  Future<String> getTag() async {
+    final savedUserName = await SharedPreferences.getInstance();
+    final name = savedUserName.getString('tag');
+    if (name == null) {
+      return "Not Selected";
+    } else
+      return name;
+  }
+
   setIsStudent(String name) async {
     final savedUserName = await SharedPreferences.getInstance();
     await savedUserName.setString('isStudent', name);

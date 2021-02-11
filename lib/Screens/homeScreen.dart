@@ -4,12 +4,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sarvogyan/Screens/course/ListloadingScreen.dart';
 import 'package:sarvogyan/Screens/course/allCoursesScreen.dart';
 import 'package:sarvogyan/Screens/course/search/seachScreen.dart';
+import 'package:sarvogyan/Screens/docs/cloudDocsScreen.dart';
 
 import 'package:sarvogyan/Screens/docs/docsScreen.dart';
 import 'package:sarvogyan/Screens/exams/examCategScreen.dart';
 import 'package:sarvogyan/Screens/exams/examListLoadingScreen.dart';
 import 'package:sarvogyan/Screens/course/myCourses/myCourses.dart';
 import 'package:sarvogyan/Screens/NavDrawer.dart';
+import 'package:sarvogyan/Screens/userAuth/login.dart';
 import 'package:sarvogyan/components/courseTree.dart';
 import 'package:sarvogyan/components/sizeConfig.dart';
 import 'package:sarvogyan/lists/allCoursesList.dart';
@@ -51,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     sarvogyan = getCourseClass.process();
     _selectedIndex = _defaultIndex;
   }
@@ -81,7 +84,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     onTap: () {
-                      Navigator.pushNamed(context, '/profile');
+                      signedIn
+                          ? Navigator.pushNamed(context, '/profile')
+                          : Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                              return Login(true);
+                            }));
+                      ;
                     }),
               ),
               SizedBox(
@@ -173,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
             AllCoursesScreen(sarvogyan, sarvogyan.children[0], 'images/media'),
             ExamCategScreen(
                 sarvogyan, "", sarvogyan.children[1], 'images/media'),
-            DocsScreen(),
+            CloudDocsScreen(),
           ]),
         ),
       ),
