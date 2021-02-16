@@ -91,7 +91,7 @@ class _MyCoursesState extends State<MyCourses> {
 
   String getSubscription(int index) {
     if (courseList[index].subscription == 'a')
-      return "Free Course";
+      return "Basic Course";
     else if (courseList[index].subscription == 'b')
       return "Basic Course";
     else if (courseList[index].subscription == 'c')

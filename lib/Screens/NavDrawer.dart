@@ -26,8 +26,11 @@ class NavDrawer {
               children: [
                 Container(
                     width: screenSize.screenWidth * 100,
-                    height: screenSize.screenHeight * 20,
-                    child: Image.asset('images/logo.png')),
+                    height: screenSize.screenHeight * 15,
+                    child: Image.asset(
+                      'images/logo.png',
+                      fit: BoxFit.contain,
+                    )),
               ],
             ),
             decoration: BoxDecoration(
@@ -35,7 +38,7 @@ class NavDrawer {
             ),
           ),
           Container(
-            height: screenSize.screenHeight * 70,
+            height: screenSize.screenHeight * 74,
             child: Column(
               children: [
                 Text(
@@ -46,7 +49,7 @@ class NavDrawer {
                   textAlign: TextAlign.center,
                 ),
                 Container(
-                  height: screenSize.screenHeight * 30,
+                  height: screenSize.screenHeight * 32,
                   child: ListView.builder(
                       itemBuilder: (BuildContext cntxt, int index) {
                         return Column(
@@ -101,7 +104,7 @@ class NavDrawer {
                   ),
                 ),
                 Container(
-                  height: screenSize.screenHeight * 30,
+                  height: screenSize.screenHeight * 32,
                   child: ListView.builder(
                       itemBuilder: (BuildContext cntxt, int index) {
                         return Column(

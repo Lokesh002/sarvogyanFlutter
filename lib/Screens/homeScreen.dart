@@ -100,14 +100,10 @@ class _HomeScreenState extends State<HomeScreen> {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-//                SizedBox(
-//                  width: screenSize.screenWidth * 5,
-//                ),
-//
                 Hero(
                   tag: 'logo',
                   child: Container(
-                      height: screenSize.screenHeight * 10,
+                      height: screenSize.screenHeight * 7,
                       child: Image.asset('images/logo.png')),
                 ),
                 Text("Sarvogyan",
@@ -128,46 +124,61 @@ class _HomeScreenState extends State<HomeScreen> {
               tabs: <Widget>[
                 Tab(
                   child: Container(
-                    child: Text(
-                      "Search",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(),
+                    child: CircleAvatar(
+                      radius: screenSize.screenHeight * 2.5,
+                      backgroundColor: Colors.white,
+                      child: Icon(
+                        Icons.search,
+                        color: Theme.of(context).primaryColor,
+                      ),
                     ),
                   ),
                 ),
                 Tab(
                   child: Container(
-                    child: Text(
-                      "My Courses",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(),
+                    child: CircleAvatar(
+                      radius: screenSize.screenHeight * 2.5,
+                      backgroundColor: Colors.white,
+                      child: Icon(
+                        Icons.favorite_rounded,
+                        color: Colors.red,
+                      ),
                     ),
                   ),
                 ),
                 Tab(
                   child: Container(
-                    child: Text(
-                      "Courses",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(),
+                    child: CircleAvatar(
+                      radius: screenSize.screenHeight * 2.5,
+                      backgroundColor: Colors.white,
+                      child: Icon(
+                        Icons.library_books,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                 ),
                 Tab(
                   child: Container(
-                    child: Text(
-                      "Exam",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(),
+                    child: CircleAvatar(
+                      radius: screenSize.screenHeight * 2.5,
+                      backgroundColor: Colors.white,
+                      child: Icon(
+                        Icons.border_color,
+                        color: Colors.blue,
+                      ),
                     ),
                   ),
                 ),
                 Tab(
                   child: Container(
-                    child: Text(
-                      "Docs",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(),
+                    child: CircleAvatar(
+                      radius: screenSize.screenHeight * 2.5,
+                      backgroundColor: Colors.white,
+                      child: Icon(
+                        Icons.description,
+                        color: Colors.green,
+                      ),
                     ),
                   ),
                 ),

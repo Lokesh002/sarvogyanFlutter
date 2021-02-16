@@ -41,10 +41,25 @@ class ReusableShowAnswerCard extends StatelessWidget {
       return Container(
         width: screenSize.screenWidth * 95,
         child: (descriptionLink != null)
-            ? FadeInImage.assetNetwork(
-                placeholder: 'images/logo.png',
-                image: this.questionLink,
-                fit: BoxFit.contain,
+            ? Row(
+                children: [
+                  Text(
+                    'Q$questionNo.',
+                    overflow: TextOverflow.clip,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: screenSize.screenHeight * 2,
+                        fontWeight: FontWeight.w300),
+                  ),
+                  Container(
+                    width: screenSize.screenWidth * 75,
+                    child: FadeInImage.assetNetwork(
+                      placeholder: 'images/logo.png',
+                      image: this.questionLink,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ],
               )
             : Image.asset(
                 'images/logo.png',
@@ -150,7 +165,7 @@ class ReusableShowAnswerCard extends StatelessWidget {
                                 overflow: TextOverflow.clip,
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: screenSize.screenHeight * 3,
+                                    fontSize: screenSize.screenHeight * 2,
                                     fontWeight: FontWeight.w300),
                               ),
                             ),
@@ -177,7 +192,7 @@ class ReusableShowAnswerCard extends StatelessWidget {
                                 overflow: TextOverflow.clip,
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: screenSize.screenHeight * 3,
+                                    fontSize: screenSize.screenHeight * 2,
                                     fontWeight: FontWeight.w300),
                               ),
                             ),
@@ -204,7 +219,7 @@ class ReusableShowAnswerCard extends StatelessWidget {
                                 overflow: TextOverflow.clip,
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: screenSize.screenHeight * 3,
+                                    fontSize: screenSize.screenHeight * 2,
                                     fontWeight: FontWeight.w300),
                               ),
                             ),
@@ -231,7 +246,7 @@ class ReusableShowAnswerCard extends StatelessWidget {
                                 overflow: TextOverflow.clip,
                                 style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: screenSize.screenHeight * 3,
+                                    fontSize: screenSize.screenHeight * 2,
                                     fontWeight: FontWeight.w300),
                               ),
                             ),

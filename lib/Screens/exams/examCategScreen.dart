@@ -118,7 +118,7 @@ class _ExamCategScreenState extends State<ExamCategScreen> {
                                           vertical:
                                               screenSize.screenHeight * 1),
                                       child: Container(
-                                        height: screenSize.screenHeight * 15,
+                                        height: screenSize.screenHeight * 11,
                                         child: Image.asset(
                                           '${widget.imagePath}/${widget.node.children[index].value}.jpg',
                                           fit: BoxFit.fitHeight,

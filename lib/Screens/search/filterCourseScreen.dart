@@ -96,7 +96,7 @@ class _FilterCourseScreenState extends State<FilterCourseScreen> {
 
   String getSubscription(int index) {
     if (widget.listofCourses[index].subscription == 'a')
-      return "Free Course";
+      return "Basic Course";
     else if (widget.listofCourses[index].subscription == 'b')
       return "Basic Course";
     else if (widget.listofCourses[index].subscription == 'c')

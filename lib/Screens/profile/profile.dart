@@ -18,7 +18,7 @@ import 'package:sarvogyan/components/Cards/ReusableButton.dart';
 import 'package:sarvogyan/components/sizeConfig.dart';
 import 'package:sarvogyan/Screens/profile/addMoney/MakePaymentScreen.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dio/dio.dart';
 
 class ProfileView extends StatefulWidget {
@@ -52,7 +52,7 @@ showAlertDialog(BuildContext context) {
 class _ProfileViewState extends State<ProfileView> {
   String name = '';
   String email = '';
-  String password = '';
+
   String phoneNo = '';
   String address = '';
   String board = "";
@@ -320,7 +320,9 @@ class _ProfileViewState extends State<ProfileView> {
                                     Row(
                                       children: <Widget>[
                                         Text(
-                                          email,
+                                          email != null
+                                              ? email
+                                              : "Not Provided",
                                           overflow: TextOverflow.fade,
                                           style: TextStyle(
                                             color: Colors.black,
@@ -601,7 +603,7 @@ class _ProfileViewState extends State<ProfileView> {
                                             setState(() {});
                                           });
                                         },
-                                        content: "Subscribe",
+                                        content: "Subscription",
                                         height: screenSize.screenHeight * 5,
                                         width: screenSize.screenWidth * 30),
                                     ReusableButton(
@@ -639,7 +641,7 @@ class _ProfileViewState extends State<ProfileView> {
                                         savedData.setClass(null);
                                         savedData.setBoard(null);
                                         savedData.setIsStudent(null);
-
+                                        FirebaseAuth.instance.signOut();
                                         signedIn = false;
                                         setState(() {});
                                         print(signedIn);

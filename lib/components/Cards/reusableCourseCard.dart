@@ -12,6 +12,7 @@ class ReusableCourseCard extends StatelessWidget {
   final Function onChangeTap;
   final Color color;
   final String image;
+  final int lessons;
   ReusableCourseCard(
       {this.courseName,
       this.subscription,
@@ -19,7 +20,8 @@ class ReusableCourseCard extends StatelessWidget {
       this.onTap,
       this.onChangeTap,
       this.color,
-      this.image});
+      this.image,
+      this.lessons});
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +74,7 @@ class ReusableCourseCard extends StatelessWidget {
                             overflow: TextOverflow.clip,
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: screenSize.screenHeight * 3,
+                                fontSize: screenSize.screenHeight * 2.3,
                                 fontWeight: FontWeight.w300),
                           ),
                         ),
@@ -82,7 +84,7 @@ class ReusableCourseCard extends StatelessWidget {
                         Text(
                           '$subscription',
                           style: TextStyle(
-                            fontSize: screenSize.screenHeight * 2,
+                            fontSize: screenSize.screenHeight * 1.7,
                             color: Colors.blueGrey,
                           ),
                         ),
@@ -90,17 +92,14 @@ class ReusableCourseCard extends StatelessWidget {
                           height: screenSize.screenHeight * 1,
                         ),
                         Text(
-                          'Teacher: $teacher',
+                          teacher != null ? 'Teacher: $teacher' : '',
                           style: TextStyle(
-                            fontSize: screenSize.screenHeight * 2,
+                            fontSize: screenSize.screenHeight * 1.7,
                             color: Colors.black26,
                           ),
                         ),
                         SizedBox(
-                          height: screenSize.screenHeight * 1,
-                        ),
-                        SizedBox(
-                          height: screenSize.screenHeight * 1,
+                          height: screenSize.screenHeight * 2,
                         ),
                       ],
                     ),

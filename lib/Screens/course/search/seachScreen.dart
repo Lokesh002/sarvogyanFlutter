@@ -10,6 +10,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   int currentIndex = 0;
   PageController pageController = new PageController();
+
   @override
   void dispose() {
     pageController.dispose();

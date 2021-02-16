@@ -65,7 +65,7 @@ class _AllCoursesScreenState extends State<AllCoursesScreen> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(
                                 screenSize.screenHeight * 2),
-                            elevation: 5.0,
+                            elevation: screenSize.screenHeight * 1,
                             child: Column(
                               children: [
                                 Padding(
@@ -73,10 +73,10 @@ class _AllCoursesScreenState extends State<AllCoursesScreen> {
                                       horizontal: screenSize.screenWidth * 1,
                                       vertical: screenSize.screenHeight * 1),
                                   child: Container(
-                                    height: screenSize.screenHeight * 17,
+                                    height: screenSize.screenHeight * 11,
                                     child: Image.asset(
                                       '${widget.imagePath}/${widget.node.children[index].value}.jpg',
-                                      fit: BoxFit.fitHeight,
+                                      fit: BoxFit.contain,
                                     ),
                                   ),
                                 ),
@@ -89,8 +89,8 @@ class _AllCoursesScreenState extends State<AllCoursesScreen> {
                                   child: Text(
                                     widget.node.children[index].value,
                                     textAlign: TextAlign.center,
-                                    style:
-                                        Theme.of(context).textTheme.subtitle1,
+                                    style: TextStyle(
+                                        fontSize: screenSize.screenHeight * 2),
                                   ),
                                 ),
                               ],

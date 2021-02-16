@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sarvogyan/Screens/NavDrawer.dart';
 import 'package:sarvogyan/Screens/course/courseSelectedLoadingScreen.dart';
 import 'package:sarvogyan/components/Cards/reusableCourseCard.dart';
-import 'package:sarvogyan/components/Constants/constants.dart';
 import 'package:sarvogyan/components/Networking/networking.dart';
 import 'package:sarvogyan/components/courseTree.dart';
 import 'package:sarvogyan/components/sizeConfig.dart';
@@ -24,7 +23,9 @@ class CourseCategScreen extends StatefulWidget {
 
 class _CourseCategScreenState extends State<CourseCategScreen> {
   SizeConfig screenSize;
-  var listofCourses;
+
+  NavDrawer navDrawer = NavDrawer('courseCategScreen');
+  List<CourseData> listofCourses;
   @override
   void initState() {
     // TODO: implement initState
@@ -38,11 +39,10 @@ class _CourseCategScreenState extends State<CourseCategScreen> {
     Networking networking = Networking();
     var courses = await networking.postData(
         "api/search/searchCourse", {"searchQuery": widget.query.trimRight()});
-    print("hefh");
+    // print("hefh");
     print(courses);
     if (courses != null) {
       var clist = Course_List(courses);
-      //Navigator.pop(context);
       listofCourses = clist.getCourseList();
     } else {
       listofCourses = [];
@@ -55,7 +55,7 @@ class _CourseCategScreenState extends State<CourseCategScreen> {
 
   String getSubscription(int index) {
     if (listofCourses[index].subscription == 'a')
-      return "Free Course";
+      return "Basic Course";
     else if (listofCourses[index].subscription == 'b')
       return "Basic Course";
     else if (listofCourses[index].subscription == 'c')
@@ -210,7 +210,7 @@ class _CourseCategScreenState extends State<CourseCategScreen> {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(
                                     screenSize.screenHeight * 2),
-                                elevation: 5.0,
+                                elevation: screenSize.screenHeight,
                                 child: Column(
                                   children: [
                                     Padding(
@@ -220,10 +220,13 @@ class _CourseCategScreenState extends State<CourseCategScreen> {
                                           vertical:
                                               screenSize.screenHeight * 1),
                                       child: Container(
-                                        height: screenSize.screenHeight * 15,
+                                        height: screenSize.screenHeight * 12,
+                                        width: screenSize.screenWidth * 30,
                                         child: Image.asset(
                                           '${widget.imagePath}/${widget.node.children[index].value}.jpg',
-                                          fit: BoxFit.fitHeight,
+                                          fit: BoxFit.contain,
+                                          height: screenSize.screenHeight * 10,
+                                          width: screenSize.screenWidth * 20,
                                         ),
                                       ),
                                     ),
@@ -237,9 +240,9 @@ class _CourseCategScreenState extends State<CourseCategScreen> {
                                       child: Text(
                                         widget.node.children[index].value,
                                         textAlign: TextAlign.center,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .subtitle1,
+                                        style: TextStyle(
+                                            fontSize:
+                                                screenSize.screenHeight * 2),
                                       ),
                                     ),
                                   ],
@@ -258,7 +261,6 @@ class _CourseCategScreenState extends State<CourseCategScreen> {
     }
   }
 
-  NavDrawer navDrawer = NavDrawer('courseCategScreen');
   @override
   Widget build(BuildContext context) {
     screenSize = SizeConfig(context);

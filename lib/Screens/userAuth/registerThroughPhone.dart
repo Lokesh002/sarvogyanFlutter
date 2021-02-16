@@ -1,48 +1,26 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sarvogyan/Screens/userAuth/EnterBoardClassScreen.dart';
 import 'package:sarvogyan/Screens/userAuth/login.dart';
+import 'package:sarvogyan/Screens/userAuth/registerUser.dart';
+import 'package:sarvogyan/components/Cards/ReusableButton.dart';
 import 'package:sarvogyan/components/loginPhoneNetworking.dart';
 import 'package:sarvogyan/components/phoneCheck.dart';
-import 'package:sarvogyan/components/sizeConfig.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sarvogyan/components/Cards/ReusableCard.dart';
-import 'package:sarvogyan/components/Cards/ReusableButton.dart';
 import 'package:sarvogyan/components/registerUserNetworking.dart';
-import 'package:sarvogyan/components/updateProfileSupport.dart';
+import 'package:sarvogyan/components/sizeConfig.dart';
 import 'package:sarvogyan/lists/allCoursesList.dart';
-import 'package:sarvogyan/Screens/userAuth/registerThroughPhone.dart';
 
-class RegisterUser extends StatefulWidget {
+class RegisterThroughPhone extends StatefulWidget {
   @override
-  _RegisterUserState createState() => _RegisterUserState();
+  _RegisterThroughPhoneState createState() => _RegisterThroughPhoneState();
 }
 
-showAlertDialog(BuildContext context) {
-  AlertDialog alert = AlertDialog(
-    content: new Row(
-      children: [
-        CircularProgressIndicator(
-          backgroundColor: Theme.of(context).primaryColor,
-        ),
-        Container(margin: EdgeInsets.only(left: 5), child: Text("Loading")),
-      ],
-    ),
-  );
-  showDialog(
-    barrierDismissible: false,
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
-}
+class _RegisterThroughPhoneState extends State<RegisterThroughPhone> {
+  SizeConfig screenSize;
+  bool uploading = false;
 
-class _RegisterUserState extends State<RegisterUser> {
   String smsOTP;
   String verificationId;
   String errorMessage = '';
@@ -71,24 +49,13 @@ class _RegisterUserState extends State<RegisterUser> {
   final phoneNocontroller = TextEditingController();
 
   String tag;
-  bool uploading = false;
+
   clearTextInput() {
     namecontroller.clear();
     emailcontroller.clear();
     passwordcontroller.clear();
     phoneNocontroller.clear();
     addresscontroller.clear();
-  }
-
-  RegisterUserNetworking registerUserNetworking;
-  @override
-  void dispose() {
-    namecontroller.dispose();
-    emailcontroller.dispose();
-    passwordcontroller.dispose();
-    phoneNocontroller.dispose();
-    addresscontroller.dispose();
-    super.dispose();
   }
 
   List tags = ['School Student', 'College Student', 'Professional'];
@@ -106,6 +73,17 @@ class _RegisterUserState extends State<RegisterUser> {
     return departmentList;
   }
 
+  RegisterUserNetworking registerUserNetworking;
+  @override
+  void dispose() {
+    namecontroller.dispose();
+    emailcontroller.dispose();
+    passwordcontroller.dispose();
+    phoneNocontroller.dispose();
+    addresscontroller.dispose();
+    super.dispose();
+  }
+
   Widget wait() {
     return SizedBox(
       width: double.infinity,
@@ -120,8 +98,7 @@ class _RegisterUserState extends State<RegisterUser> {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig screenSize = SizeConfig(context);
-
+    screenSize = SizeConfig(context);
     Icon age1 = age1selected
         ? Icon(
             Icons.check_circle,
@@ -155,7 +132,6 @@ class _RegisterUserState extends State<RegisterUser> {
             size: screenSize.screenHeight * 2,
             color: Theme.of(context).primaryColor,
           );
-
     return Scaffold(
       resizeToAvoidBottomPadding: true,
       backgroundColor: Colors.white,
@@ -183,7 +159,7 @@ class _RegisterUserState extends State<RegisterUser> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              "Sign Up",
+                              "Sign Up using Phone",
                               style: TextStyle(
                                 color: Theme.of(context).primaryColor,
                                 fontSize: screenSize.screenHeight * 3.5,
@@ -232,89 +208,6 @@ class _RegisterUserState extends State<RegisterUser> {
                                             // focusNode: focusNode,
                                             decoration: InputDecoration(
                                               hintText: "Name",
-                                              border: OutlineInputBorder(
-                                                  borderRadius: BorderRadius
-                                                      .circular(screenSize
-                                                              .screenHeight *
-                                                          2)),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        left: screenSize.screenHeight * 5,
-                                        right: screenSize.screenHeight * 5,
-                                        top: screenSize.screenHeight * 2),
-                                    child: Stack(
-                                      children: <Widget>[
-                                        Container(
-                                          padding:
-                                              const EdgeInsets.only(top: 10),
-                                          child: TextFormField(
-                                            validator: (val) => val.isEmpty
-                                                ? 'Enter an Email'
-                                                : null,
-                                            controller: emailcontroller,
-                                            keyboardType:
-                                                TextInputType.emailAddress,
-                                            textAlign: TextAlign.start,
-                                            onChanged: (name) {
-                                              this.email = name;
-                                              print(this.email);
-                                            },
-                                            style: TextStyle(
-                                                color: Colors.black87,
-                                                fontSize:
-                                                    screenSize.screenHeight *
-                                                        2),
-                                            // focusNode: focusNode,
-
-                                            decoration: InputDecoration(
-                                              hintText: "Email",
-                                              border: OutlineInputBorder(
-                                                  borderRadius: BorderRadius
-                                                      .circular(screenSize
-                                                              .screenHeight *
-                                                          2)),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        left: screenSize.screenHeight * 5,
-                                        right: screenSize.screenHeight * 5,
-                                        top: screenSize.screenHeight * 2),
-                                    child: Stack(
-                                      children: <Widget>[
-                                        Container(
-                                          padding:
-                                              const EdgeInsets.only(top: 10),
-                                          child: TextFormField(
-                                            validator: (val) => val.length < 6
-                                                ? 'Enter a 6+ character long password'
-                                                : null,
-                                            obscureText: true,
-                                            controller: passwordcontroller,
-                                            keyboardType: TextInputType.text,
-                                            textAlign: TextAlign.start,
-                                            onChanged: (pass) {
-                                              this.password = pass;
-                                              print(this.password);
-                                            },
-                                            style: TextStyle(
-                                                color: Colors.black87,
-                                                fontSize:
-                                                    screenSize.screenHeight *
-                                                        2),
-                                            // focusNode: focusNode,
-                                            decoration: InputDecoration(
-                                              hintText: "Password",
                                               border: OutlineInputBorder(
                                                   borderRadius: BorderRadius
                                                       .circular(screenSize
@@ -586,22 +479,7 @@ class _RegisterUserState extends State<RegisterUser> {
                                     });
 
                                     if (_formKey.currentState.validate()) {
-                                      FirebaseUser fireAccessUser =
-                                          await registerUserFirebase(
-                                              email, password);
-                                      var a = await fireAccessUser.getIdToken();
-                                      String fireAccessToken = a.token;
-
-                                      String uId = fireAccessUser.uid;
-                                      if (fireAccessToken == error ||
-                                          fireAccessToken == null) {
-                                        Fluttertoast.showToast(msg: error);
-                                      } else {
-                                        print('fireAccess: ' + fireAccessToken);
-                                        print('going to phone check');
-                                        phoneCheck(phoneNo, context,
-                                            fireAccessToken, uId);
-                                      }
+                                      phoneCheck(phoneNo, context);
                                     } else {
                                       print("Wrong data");
                                     }
@@ -615,10 +493,10 @@ class _RegisterUserState extends State<RegisterUser> {
                                 onTap: () {
                                   Navigator.pushReplacement(context,
                                       MaterialPageRoute(builder: (context) {
-                                    return RegisterThroughPhone();
+                                    return RegisterUser();
                                   }));
                                 },
-                                child: Text("Register using phone No.",
+                                child: Text("Register using Email and Password",
                                     style: TextStyle(
                                         color: Theme.of(context).primaryColor,
                                         fontWeight: FontWeight.bold,
@@ -744,8 +622,7 @@ class _RegisterUserState extends State<RegisterUser> {
     );
   }
 
-  void phoneCheck(String phone, BuildContext context, String fireAccessToken,
-      String Uid) async {
+  void phoneCheck(String phone, BuildContext context) async {
     //showAlertDialog(context);
     print('reached');
     PhoneCheck phoneCheck = PhoneCheck(phone);
@@ -758,14 +635,11 @@ class _RegisterUserState extends State<RegisterUser> {
       //Navigator.pop(context);
       print("sending OTP");
 
-      await verifyPhone('+91' + phone, fireAccessToken, Uid);
+      await verifyPhone('+91' + phone);
     }
   }
 
-  Future<void> verifyPhone(
-      String phoneNo, String FireAccessToken, String UId) async {
-    print("UID: " + UId);
-    print("FireAccessTOken: " + FireAccessToken);
+  Future<void> verifyPhone(String phoneNo) async {
     auth = FirebaseAuth.instance;
     try {
       await auth.verifyPhoneNumber(
@@ -773,7 +647,6 @@ class _RegisterUserState extends State<RegisterUser> {
 
           codeSent: (String verificationId, [int forceResendingToken]) async {
             // WHEN CODE SENT THEN WE OPEN DIALOG TO ENTER OTP.
-            print("opening OTP Screen");
             String code;
 
             await smsOTPDialog(context).then((value) {
@@ -782,19 +655,21 @@ class _RegisterUserState extends State<RegisterUser> {
             });
 
             if (code != null) {
-              // showAlertDialog(context);
               print(code);
               print('process flow');
               try {
                 AuthCredential credential = PhoneAuthProvider.getCredential(
                     verificationId: verificationId, smsCode: code);
 
-                this.result.user.linkWithCredential(credential);
                 print('process flow');
-                //AuthResult result = await auth.signInWithCredential(credential);
+                AuthResult result = await auth.signInWithCredential(credential);
 
                 print('process flow');
                 FirebaseUser user = result.user;
+                String UId = user.uid;
+                String FireAccessToken;
+                var z = await user.getIdToken();
+                FireAccessToken = z.token;
                 if (user != null) {
                   registerUserNetworking = RegisterUserNetworking(
                       name,
@@ -808,7 +683,7 @@ class _RegisterUserState extends State<RegisterUser> {
                       tag,
                       (tag == 'Professional') ? 'no' : 'yes');
 
-                  int aT = await registerUserNetworking.postData();
+                  int aT = await registerUserNetworking.registerThroughPhone();
                   print("VALUE OF at : " + aT.toString());
                   if (aT == 200) {
                     Fluttertoast.showToast(msg: "Registered Successfully");
@@ -843,9 +718,8 @@ class _RegisterUserState extends State<RegisterUser> {
                           uploading = false;
                         });
                         //clearTextInput();
-                        Fluttertoast.showToast(
-                            msg: "Please Check Internet Connection!");
-                        print('LoginFailed');
+                        Fluttertoast.showToast(msg: "Error while Signing In!");
+                        print('Login Failed');
                         setState(() {});
                       });
                     }
@@ -951,28 +825,5 @@ class _RegisterUserState extends State<RegisterUser> {
 
         break;
     }
-  }
-
-  Future<FirebaseUser> registerUserFirebase(String email, String pass) async {
-    FirebaseAuth _auth = FirebaseAuth.instance;
-    try {
-      result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: pass);
-      if (result == null) {
-        setState(() {
-          error = 'Please enter a valid email';
-        });
-      } else {
-        FirebaseUser user = result.user;
-        //var u = await user.getIdToken();
-
-        return user;
-      }
-    } catch (e) {
-      print(e.toString());
-      error = "ERROR";
-      return null;
-    }
-    return null;
   }
 }

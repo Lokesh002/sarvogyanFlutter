@@ -28,6 +28,7 @@ class _AskDoubtsState extends State<AskDoubts> {
   List questions;
   bool isReady = false;
   getData() async {
+    print(DateTime.now().toString());
     Uid = await savedData.getUserId();
     accessToken = await savedData.getAccessToken();
     userName = await savedData.getName();
@@ -38,9 +39,75 @@ class _AskDoubtsState extends State<AskDoubts> {
     print(data);
     questions = data;
     _doubts = generateItems(
-        questions.length == null ? 0 : questions.length, questions);
+        questions.length == null ? 0 : questions.length, questions, context);
     setState(() {
       isReady = true;
+    });
+  }
+
+  List<Item> generateItems(
+      int numberOfItems, List doubts, BuildContext context) {
+    return List.generate(numberOfItems, (int index) {
+      return Item(
+          headerValue: Container(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    doubts[index]['question'],
+                    maxLines: 10,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 6,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        'Created on: ${DateTime.parse(doubts[index]['date']).toUtc().day}/${DateTime.parse(doubts[index]['date']).toUtc().month}/${DateTime.parse(doubts[index]['date']).toUtc().year}',
+                        style: TextStyle(color: Colors.redAccent),
+                      ),
+                    ],
+                  ),
+                ]),
+          ),
+          expandedValue: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                child: doubts[index]['answer'] == ''
+                    ? Text('Pending')
+                    : Text(
+                        doubts[index]['answer'],
+                        maxLines: 100,
+                      ),
+              ),
+              GestureDetector(
+                onTap: () async {
+                  Networking networking = Networking();
+                  SavedData savedData = SavedData();
+                  String acstkn = await savedData.getAccessToken();
+                  var data = await networking.postDataByUser(
+                      '/api/user/deleteQuestion',
+                      {'id': doubts[index]['id']},
+                      acstkn);
+                  setState(() {
+                    isReady = false;
+                  });
+
+                  getData();
+                },
+                child: Container(
+                  color: Colors.red,
+                  child: Icon(
+                    Icons.close,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ));
     });
   }
 
@@ -131,12 +198,17 @@ class _AskDoubtsState extends State<AskDoubts> {
                                   'userName': userName,
                                   'uid': Uid,
                                   'cid': widget.decData['id'],
-                                  'date': DateTime.now().toString(),
+                                  'date': DateTime.now().toString()
                                 },
                                 accessToken);
                             doubtController.clear();
 
                             print(data);
+                            setState(() {
+                              isReady = false;
+                            });
+                            getData();
+
                             Fluttertoast.showToast(msg: "Done!");
 //                        {
 //                          noteTitle,
@@ -176,11 +248,11 @@ class _AskDoubtsState extends State<AskDoubts> {
         return ExpansionPanel(
           headerBuilder: (BuildContext context, bool isExpanded) {
             return ListTile(
-              title: Text(item.headerValue),
+              title: item.headerValue,
             );
           },
           body: ListTile(
-            title: Text(item.expandedValue),
+            title: item.expandedValue,
           ),
           isExpanded: item.isExpanded,
         );
@@ -197,17 +269,7 @@ class Item {
     this.isExpanded = false,
   });
 
-  String expandedValue;
-  String headerValue;
+  Widget expandedValue;
+  Widget headerValue;
   bool isExpanded;
-}
-
-List<Item> generateItems(int numberOfItems, List doubts) {
-  return List.generate(numberOfItems, (int index) {
-    return Item(
-      headerValue: doubts[index]['question'],
-      expandedValue:
-          doubts[index]['answer'] == '' ? 'Pending' : doubts[index]['answer'],
-    );
-  });
 }

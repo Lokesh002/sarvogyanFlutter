@@ -50,7 +50,7 @@ class _SearchCourseState extends State<SearchCourse> {
 
   String getSubscription(int index) {
     if (listofCourses[index].subscription == 'a')
-      return "Free Course";
+      return "Basic Course";
     else if (listofCourses[index].subscription == 'b')
       return "Basic Course";
     else if (listofCourses[index].subscription == 'c')

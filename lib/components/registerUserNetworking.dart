@@ -72,4 +72,46 @@ class RegisterUserNetworking {
       return 400;
     }
   }
+
+  Future registerThroughPhone() async {
+    http.Response response;
+    SavedData savedData = SavedData();
+    http.Response response1 = await http.post(url,
+        headers: {"Content-Type": "application/json"},
+        body: convert.jsonEncode({
+          'name': name,
+          'address': address,
+          'phone': phoneNo,
+          'age': age,
+          'id': UId,
+          'token': FirebaseAccessToken,
+          'tag': tag,
+          'isStudent': isStudent
+        }));
+
+    if (response1.statusCode == 200) {
+      http.Response response = await http.post("$url/auth/user",
+          headers: {"Content-Type": "application/json"},
+          body: convert.jsonEncode({
+            "email": email,
+            "password": password,
+            "token": FirebaseAccessToken,
+          }));
+      if (response.statusCode == 200) {
+        String data = response.body;
+        var decodedData = convert.jsonDecode(data);
+        accessToken = decodedData["msg"];
+        print("msg: $accessToken");
+
+        print(
+            "the details are: $name has $email and $phoneNo with age $age and address: $address");
+        return response.statusCode;
+      } else
+        print("register error code: " + response.statusCode.toString());
+      return 400;
+    } else {
+      print('status code of registerNetworking: ${response1.statusCode}');
+      return 400;
+    }
+  }
 }

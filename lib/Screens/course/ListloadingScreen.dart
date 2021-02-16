@@ -58,7 +58,7 @@ class _ListLoadingScreenState extends State<ListLoadingScreen> {
 
   String getSubscription(int index) {
     if (allCoursesList[index].subscription == 'a')
-      return "Free Course";
+      return "Basic Course";
     else if (allCoursesList[index].subscription == 'b')
       return "Basic Course";
     else if (allCoursesList[index].subscription == 'c')
