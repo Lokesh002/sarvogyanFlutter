@@ -11,6 +11,11 @@ import 'package:sarvogyan/Screens/exams/examCategScreen.dart';
 import 'package:sarvogyan/Screens/exams/examListLoadingScreen.dart';
 import 'package:sarvogyan/Screens/course/myCourses/myCourses.dart';
 import 'package:sarvogyan/Screens/NavDrawer.dart';
+import 'package:sarvogyan/Screens/profile/SavedNotes.dart';
+import 'package:sarvogyan/Screens/profile/certificate/certificateScreen.dart';
+import 'package:sarvogyan/Screens/profile/myResultScreen.dart';
+import 'package:sarvogyan/Screens/profile/subscription/buySubscription.dart';
+import 'package:sarvogyan/Screens/profile/wishlist/wishlistScreen.dart';
 import 'package:sarvogyan/Screens/userAuth/login.dart';
 import 'package:sarvogyan/components/courseTree.dart';
 import 'package:sarvogyan/components/sizeConfig.dart';
@@ -71,31 +76,120 @@ class _HomeScreenState extends State<HomeScreen> {
           drawer: navDrawer.getNavDrawer(context, sarvogyan),
           appBar: AppBar(
             actions: <Widget>[
-              Visibility(
-                visible: true,
-                child: GestureDetector(
-                    child: Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.account_circle,
-                          color: Theme.of(context).accentColor,
-                          size: screenSize.screenHeight * 6,
-                        ),
-                      ],
-                    ),
-                    onTap: () {
-                      signedIn
-                          ? Navigator.pushNamed(context, '/profile')
-                          : Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                              return Login(true);
-                            }));
-                      ;
-                    }),
-              ),
               SizedBox(
                 width: screenSize.screenWidth * 3,
-              )
+              ),
+              signedIn
+                  ? PopupMenuButton(
+                      itemBuilder: (BuildContext context) {
+                        return [
+                          PopupMenuItem(
+                            value: 'Profile',
+                            child: Text('Profile'),
+                          ),
+                          PopupMenuItem(
+                            value: 'Notes',
+                            child: Text('My Notes'),
+                          ),
+                          PopupMenuItem(
+                            value: 'Certificates',
+                            child: Text('My Certificates'),
+                          ),
+                          PopupMenuItem(
+                            value: 'Wishlist',
+                            child: Text('My Wishlist'),
+                          ),
+                          PopupMenuItem(
+                            value: 'Results',
+                            child: Text('My Results'),
+                          ),
+                          PopupMenuItem(
+                            value: 'Subscription',
+                            child: Text('Subscription'),
+                          )
+                        ];
+                      },
+                      onSelected: (value) {
+                        if (value == 'Profile') {
+                          signedIn
+                              ? Navigator.pushNamed(context, '/profile')
+                              : Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                  return Login(true);
+                                }));
+                        }
+                        if (value == 'Notes') {
+                          signedIn
+                              ? Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                  return SavedNotes();
+                                }))
+                              : Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                  return Login(true);
+                                }));
+                        }
+                        if (value == 'Certificates') {
+                          signedIn
+                              ? Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                  return CertificateScreen();
+                                }))
+                              : Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                  return Login(true);
+                                }));
+                        }
+                        if (value == 'Wishlist') {
+                          signedIn
+                              ? Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                  return WishlistScreen();
+                                }))
+                              : Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                  return Login(true);
+                                }));
+                        }
+                        if (value == 'Results') {
+                          signedIn
+                              ? Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                  return MyResultScreen();
+                                }))
+                              : Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                  return Login(true);
+                                }));
+                        }
+                        if (value == 'Subscription') {
+                          signedIn
+                              ? Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                  return BuySubscription();
+                                }))
+                              : Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                  return Login(true);
+                                }));
+                        }
+                      },
+                    )
+                  : GestureDetector(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return Login(true);
+                        }));
+                      },
+                      child: Icon(
+                        Icons.account_circle,
+                        size: screenSize.screenHeight * 6,
+                        color: Colors.white,
+                      )),
+              SizedBox(
+                width: screenSize.screenWidth * 3,
+              ),
             ],
             title: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -211,4 +305,17 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     return Future.value(true);
   }
+}
+
+class ActionInfo {
+  final String id;
+  final Icon icon;
+  final String text;
+  final Function func;
+
+  const ActionInfo(
+      {@required this.id,
+      @required this.text,
+      @required this.icon,
+      @required this.func});
 }

@@ -65,6 +65,11 @@ class _ProfileViewState extends State<ProfileView> {
   SavedData savedData = SavedData();
   String levelOfSubscription = '';
   File _image;
+
+  String tag;
+
+  String uId;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -156,6 +161,44 @@ class _ProfileViewState extends State<ProfileView> {
     savedData.setProfileImage(photo);
     Navigator.pop(context);
     return (response.data);
+  }
+
+  Widget getDetail(String name, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            SizedBox(
+              width: screenSize.screenWidth * 5,
+            ),
+            Text(
+              "$name: ",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: screenSize.screenHeight * 2,
+                fontFamily: "Roboto",
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Text(
+              value.toString(),
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: screenSize.screenHeight * 2,
+                fontFamily: "Roboto",
+              ),
+            ),
+            SizedBox(
+              width: screenSize.screenWidth * 5,
+            ),
+          ],
+        ),
+      ],
+    );
   }
 
   SizeConfig screenSize;
@@ -257,273 +300,42 @@ class _ProfileViewState extends State<ProfileView> {
                                 SizedBox(
                                   height: screenSize.screenHeight * 5,
                                 ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        SizedBox(
-                                          width: screenSize.screenWidth * 5,
-                                        ),
-                                        Text(
-                                          "Phone: ",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize:
-                                                screenSize.screenHeight * 2,
-                                            fontFamily: "Roboto",
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          phoneNo,
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize:
-                                                screenSize.screenHeight * 2,
-                                            fontFamily: "Roboto",
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: screenSize.screenWidth * 5,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                                getDetail('Phone', '+91-$phoneNo'),
                                 SizedBox(
                                   height: screenSize.screenHeight * 1,
                                 ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        SizedBox(
-                                          width: screenSize.screenWidth * 5,
-                                        ),
-                                        Text(
-                                          "Email: ",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize:
-                                                screenSize.screenHeight * 2,
-                                            fontFamily: "Roboto",
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          email != null
-                                              ? email
-                                              : "Not Provided",
-                                          overflow: TextOverflow.fade,
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize:
-                                                screenSize.screenHeight * 2,
-                                            fontFamily: "Roboto",
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: screenSize.screenWidth * 5,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                                getDetail('Email', email),
                                 SizedBox(
                                   height: screenSize.screenHeight * 1,
                                 ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        SizedBox(
-                                          width: screenSize.screenWidth * 5,
-                                        ),
-                                        Text(
-                                          "Address: ",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize:
-                                                screenSize.screenHeight * 2,
-                                            fontFamily: "Roboto",
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                      width: screenSize.screenWidth * 50,
-                                      child: Row(
-                                        children: <Widget>[
-                                          Container(
-                                            width: screenSize.screenWidth * 45,
-                                            height: screenSize.screenHeight * 3,
-                                            child: ListView(
-                                              reverse: true,
-                                              scrollDirection: Axis.horizontal,
-                                              children: <Widget>[
-                                                Text(
-                                                  address,
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: screenSize
-                                                            .screenHeight *
-                                                        2,
-                                                    fontFamily: "Roboto",
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: screenSize.screenWidth * 5,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                getDetail('Address', address),
                                 SizedBox(
                                   height: screenSize.screenHeight * 1,
                                 ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        SizedBox(
-                                          width: screenSize.screenWidth * 5,
-                                        ),
-                                        Text(
-                                          "Board: ",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize:
-                                                screenSize.screenHeight * 2,
-                                            fontFamily: "Roboto",
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          board.toString(),
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize:
-                                                screenSize.screenHeight * 2,
-                                            fontFamily: "Roboto",
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: screenSize.screenWidth * 5,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                                getDetail('Board', board),
                                 SizedBox(
                                   height: screenSize.screenHeight * 1,
                                 ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        SizedBox(
-                                          width: screenSize.screenWidth * 5,
-                                        ),
-                                        Text(
-                                          "Class: ",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize:
-                                                screenSize.screenHeight * 2,
-                                            fontFamily: "Roboto",
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          studentClass.toString(),
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize:
-                                                screenSize.screenHeight * 2,
-                                            fontFamily: "Roboto",
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: screenSize.screenWidth * 5,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                                getDetail('Class', studentClass),
                                 SizedBox(
                                   height: screenSize.screenHeight * 1,
                                 ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        SizedBox(
-                                          width: screenSize.screenWidth * 5,
-                                        ),
-                                        Text(
-                                          "Balance: ",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize:
-                                                screenSize.screenHeight * 2,
-                                            fontFamily: "Roboto",
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          balance.toString(),
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize:
-                                                screenSize.screenHeight * 2,
-                                            fontFamily: "Roboto",
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: screenSize.screenWidth * 5,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                getDetail('Balance', balance.toString()),
+                                SizedBox(
+                                  height: screenSize.screenHeight * 1,
                                 ),
+                                getDetail('Tag', tag),
+                                SizedBox(
+                                  height: screenSize.screenHeight * 1,
+                                ),
+                                getDetail('Account ID', uId),
                                 SizedBox(
                                   height: screenSize.screenHeight * 1,
                                 ),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
-                                  children: [
+                                  children: <Widget>[
                                     ReusableButton(
                                         onPress: () {
                                           Navigator.push(context,
@@ -538,49 +350,6 @@ class _ProfileViewState extends State<ProfileView> {
                                         content: "Update Profile",
                                         height: screenSize.screenHeight * 5,
                                         width: screenSize.screenWidth * 30),
-                                    ReusableButton(
-                                        onPress: () {
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                            return SavedNotes();
-                                          }));
-                                        },
-                                        content: "Notes",
-                                        height: screenSize.screenHeight * 5,
-                                        width: screenSize.screenWidth * 30),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: screenSize.screenHeight * 1,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    ReusableButton(
-                                        onPress: () {
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                            return CertificateScreen();
-                                          })).then((value) async {
-                                            if (value != null) {
-                                              balance = value;
-                                            } else {
-                                              balance =
-                                                  await savedData.getBalance();
-                                            }
-                                            setState(() {});
-                                          });
-                                        },
-                                        content: "Certificates",
-                                        height: screenSize.screenHeight * 5,
-                                        width: screenSize.screenWidth * 30),
-//                                  SizedBox(
-//                                    width: screenSize.screenWidth * 10,
-//                                  ),
-
                                     ReusableButton(
                                         onPress: () {
                                           userbalance = balance;
@@ -601,42 +370,6 @@ class _ProfileViewState extends State<ProfileView> {
                                 ),
                                 SizedBox(
                                   height: screenSize.screenHeight * 1,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    ReusableButton(
-                                        onPress: () {
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                            return BuySubscription();
-                                          })).then((value) async {
-                                            if (value != null) {
-                                              balance = value;
-                                            } else {
-                                              balance =
-                                                  await savedData.getBalance();
-                                            }
-                                            setState(() {});
-                                          });
-                                        },
-                                        content: "Subscription",
-                                        height: screenSize.screenHeight * 5,
-                                        width: screenSize.screenWidth * 30),
-                                    ReusableButton(
-                                        onPress: () {
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                            return MyResultScreen();
-                                          }));
-                                        },
-                                        content: "See Result",
-                                        height: screenSize.screenHeight * 5,
-                                        width: screenSize.screenWidth * 30),
-                                  ],
                                 ),
                                 SizedBox(
                                   height: screenSize.screenHeight * 1,
@@ -703,6 +436,9 @@ class _ProfileViewState extends State<ProfileView> {
     photo = await savedData.getProfileImage();
     board = await savedData.getBoard();
     studentClass = await savedData.getClass();
+    tag = await savedData.getTag();
+    uId = await savedData.getUserId();
+
     setState(() {});
   }
 }

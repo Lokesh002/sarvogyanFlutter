@@ -41,12 +41,18 @@ class _CourseSelectedLoadingScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffffffff),
-      body: Center(
-        child: Container(
-          child: SpinKitWanderingCubes(
-            color: Theme.of(context).primaryColor,
-            shape: BoxShape.circle,
-            size: 100.0,
+      body: WillPopScope(
+        onWillPop: () async {
+          Navigator.pop(context, true);
+          return true;
+        },
+        child: Center(
+          child: Container(
+            child: SpinKitWanderingCubes(
+              color: Theme.of(context).primaryColor,
+              shape: BoxShape.circle,
+              size: 100.0,
+            ),
           ),
         ),
       ),

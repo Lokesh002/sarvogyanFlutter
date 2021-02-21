@@ -65,7 +65,7 @@ class Networking {
     return null;
   }
 
-  Future getDataWithoutDecode(String url, String accessToken) async {
+  Future getDataWithToken(String url, String accessToken) async {
     String fullURL = ip + url;
     http.Response postResponse = await http.get(fullURL, headers: {
       "Content-Type": "application/json",

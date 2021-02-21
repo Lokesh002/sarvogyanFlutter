@@ -40,7 +40,7 @@ class _ExamsState extends State<Exams> {
 
   void getResults() async {
     Networking networking = Networking();
-    var examResultApiResponse = await networking.getDataWithoutDecode(
+    var examResultApiResponse = await networking.getDataWithToken(
         'api/user/getExamResult/', await savedData.getAccessToken());
     List examResultResponse = examResultApiResponse;
     log(examResultApiResponse.toString());

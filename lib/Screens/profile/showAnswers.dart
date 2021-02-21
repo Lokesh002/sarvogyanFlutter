@@ -28,7 +28,7 @@ class _ShowResultsScreenState extends State<ShowResultsScreen> {
     print(await savedData.getUserId());
     acsTkn = await savedData.getAccessToken();
     Networking networking = Networking();
-    answer = await networking.getDataWithoutDecode(
+    answer = await networking.getDataWithToken(
         'api/exam/getAnswersForResult/${widget.exam.examId}', acsTkn);
     print('answer ' + answer.toString());
     setState(() {
