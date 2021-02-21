@@ -13,7 +13,6 @@ class MakeNotes extends StatefulWidget {
 }
 
 class _MakeNotesState extends State<MakeNotes> {
-  List<Item> _books = generateItems(8);
   SizeConfig screenSize;
   final notesController = TextEditingController();
   final noteTitleController = TextEditingController();
@@ -22,6 +21,7 @@ class _MakeNotesState extends State<MakeNotes> {
   final _formKey = GlobalKey<FormState>();
   String Uid;
   SavedData savedData = SavedData();
+
   getData() async {
     Uid = await savedData.getUserId();
   }
@@ -116,6 +116,7 @@ class _MakeNotesState extends State<MakeNotes> {
                       onPress: () async {
                         if (_formKey.currentState.validate()) {
                           Networking networking = Networking();
+                          DateTime d = DateTime.now();
                           print(widget.decData);
                           var data = await networking
                               .postData('api/course/createNote', {
@@ -123,7 +124,11 @@ class _MakeNotesState extends State<MakeNotes> {
                             'noteDesc': note,
                             'courseName': widget.decData['name'],
                             'uid': Uid,
-                            'date': DateTime.now().toString(),
+                            'date': (d.day.toString() +
+                                '/' +
+                                d.month.toString() +
+                                '/' +
+                                d.year.toString()),
                           });
                           notesController.clear();
                           noteTitleController.clear();
@@ -150,48 +155,6 @@ class _MakeNotesState extends State<MakeNotes> {
     );
   }
 
-  Widget _buildPanel() {
-    return ExpansionPanelList(
-      expansionCallback: (int index, bool isExpanded) {
-        setState(() {
-          _books[index].isExpanded = !isExpanded;
-        });
-      },
-      children: _books.map<ExpansionPanel>((Item item) {
-        return ExpansionPanel(
-          headerBuilder: (BuildContext context, bool isExpanded) {
-            return ListTile(
-              title: Text(item.headerValue),
-            );
-          },
-          body: ListTile(
-            title: Text(item.expandedValue),
-          ),
-          isExpanded: item.isExpanded,
-        );
-      }).toList(),
-    );
-  }
-}
-
 // stores ExpansionPanel state information
-class Item {
-  Item({
-    this.expandedValue,
-    this.headerValue,
-    this.isExpanded = false,
-  });
 
-  String expandedValue;
-  String headerValue;
-  bool isExpanded;
-}
-
-List<Item> generateItems(int numberOfItems) {
-  return List.generate(numberOfItems, (int index) {
-    return Item(
-      headerValue: 'Book $index',
-      expandedValue: 'Details for Book $index goes here',
-    );
-  });
 }

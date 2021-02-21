@@ -58,7 +58,7 @@ class _CourseViewScreenState extends State<CourseViewScreen> {
             ReusableOptionCard(
               cardChild: Container(
                 height: screenSize.screenHeight * 10,
-                width: screenSize.screenWidth * 80,
+                width: screenSize.screenWidth * 84,
                 child: Center(
                   child: Padding(
                     padding: EdgeInsets.only(
@@ -73,7 +73,7 @@ class _CourseViewScreenState extends State<CourseViewScreen> {
                 ),
               ),
               height: screenSize.screenHeight * 10,
-              width: screenSize.screenWidth * 80,
+              width: screenSize.screenWidth * 84,
               color: Theme.of(context).primaryColor,
               elevation: 5,
             ),
@@ -96,41 +96,45 @@ class _CourseViewScreenState extends State<CourseViewScreen> {
                           cardChild: Center(
                               child: Container(
                             height: screenSize.screenHeight * 10,
-                            width: screenSize.screenWidth * 80,
-                            child: Center(
-                              child: Row(
-                                children: <Widget>[
-                                  SizedBox(
-                                    width: screenSize.screenWidth * 2,
-                                  ),
-                                  getIcon(lessList[index1]
-                                      .lessonParts[index2]
-                                      .partType),
-                                  SizedBox(
-                                    width: screenSize.screenWidth * 2,
-                                  ),
-                                  Container(
-                                    width: screenSize.screenWidth * 70,
-                                    child: Text(
-                                      (index1 + 1).toString() +
-                                          "." +
-                                          (index2 + 1).toString() +
-                                          " " +
-                                          lessList[index1]
-                                              .lessonParts[index2]
-                                              .partName,
-                                      style: TextStyle(color: Colors.black),
-                                      overflow: TextOverflow.fade,
+                            width: screenSize.screenWidth * 84,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: screenSize.screenWidth * 2),
+                              child: Center(
+                                child: Row(
+                                  children: <Widget>[
+                                    SizedBox(
+                                      width: screenSize.screenWidth * 2,
                                     ),
-                                  ),
-                                ],
-                                mainAxisAlignment: MainAxisAlignment.start,
+                                    getIcon(lessList[index1]
+                                        .lessonParts[index2]
+                                        .partType),
+                                    SizedBox(
+                                      width: screenSize.screenWidth * 2,
+                                    ),
+                                    Container(
+                                      width: screenSize.screenWidth * 70,
+                                      child: Text(
+                                        (index1 + 1).toString() +
+                                            "." +
+                                            (index2 + 1).toString() +
+                                            " " +
+                                            lessList[index1]
+                                                .lessonParts[index2]
+                                                .partName,
+                                        style: TextStyle(color: Colors.black),
+                                        overflow: TextOverflow.fade,
+                                      ),
+                                    ),
+                                  ],
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                ),
                               ),
                             ),
                           )),
                           elevation: 2,
                           color: Theme.of(context).accentColor,
-                          width: screenSize.screenWidth * 80,
+                          width: screenSize.screenWidth * 84,
                           height: screenSize.screenHeight * 10,
                         ),
                         onTap: () {

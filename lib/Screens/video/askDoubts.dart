@@ -50,27 +50,31 @@ class _AskDoubtsState extends State<AskDoubts> {
     return List.generate(numberOfItems, (int index) {
       return Item(
           headerValue: Container(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    doubts[index]['question'],
-                    maxLines: 10,
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 6,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Created on: ${DateTime.parse(doubts[index]['date']).toUtc().day}/${DateTime.parse(doubts[index]['date']).toUtc().month}/${DateTime.parse(doubts[index]['date']).toUtc().year}',
-                        style: TextStyle(color: Colors.redAccent),
-                      ),
-                    ],
-                  ),
-                ]),
+            child: Padding(
+              padding:
+                  EdgeInsets.symmetric(vertical: screenSize.screenHeight * 2),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      doubts[index]['question'],
+                      maxLines: 10,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 6,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          'Created on: ${DateTime.fromMillisecondsSinceEpoch(doubts[index]['date']).toUtc().day}/${DateTime.fromMillisecondsSinceEpoch(doubts[index]['date']).toUtc().month}/${DateTime.fromMillisecondsSinceEpoch(doubts[index]['date']).toUtc().year}',
+                          style: TextStyle(color: Colors.redAccent),
+                        ),
+                      ],
+                    ),
+                  ]),
+            ),
           ),
           expandedValue: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -198,7 +202,9 @@ class _AskDoubtsState extends State<AskDoubts> {
                                   'userName': userName,
                                   'uid': Uid,
                                   'cid': widget.decData['id'],
-                                  'date': DateTime.now().toString()
+                                  'date': DateTime.now()
+                                      .millisecondsSinceEpoch
+                                      .toString()
                                 },
                                 accessToken);
                             doubtController.clear();

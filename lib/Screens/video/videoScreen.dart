@@ -149,7 +149,7 @@ class _VideoScreenState extends State<VideoScreen> {
           visible: listVisible,
           child: Container(
             width: screenSize.screenWidth * 100,
-            height: screenSize.screenHeight * 42,
+            height: screenSize.screenHeight * 50,
             child: ListView.builder(
               itemCount: widget.lessonList.length,
               itemBuilder: (context, index1) {
@@ -161,7 +161,7 @@ class _VideoScreenState extends State<VideoScreen> {
                     ReusableOptionCard(
                       cardChild: Container(
                         height: screenSize.screenHeight * 7,
-                        width: screenSize.screenWidth * 80,
+                        width: screenSize.screenWidth * 84,
                         child: Center(
                           child: Text(
                               (index1 + 1).toString() +
@@ -171,7 +171,7 @@ class _VideoScreenState extends State<VideoScreen> {
                         ),
                       ),
                       height: screenSize.screenHeight * 7,
-                      width: screenSize.screenWidth * 80,
+                      width: screenSize.screenWidth * 84,
                       color: Theme.of(context).primaryColor,
                       elevation: 5,
                     ),
@@ -192,31 +192,41 @@ class _VideoScreenState extends State<VideoScreen> {
                               child: ReusableOptionCard(
                                 cardChild: Center(
                                     child: Container(
-                                  height: screenSize.screenHeight * 7,
-                                  width: screenSize.screenWidth * 80,
-                                  child: Center(
-                                    child: Row(
-                                      children: <Widget>[
-                                        SizedBox(
-                                          width: screenSize.screenWidth * 2,
-                                        ),
-                                        getIcon(widget.lessonList[index1]
-                                            .lessonParts[index2].partType),
-                                        SizedBox(
-                                          width: screenSize.screenWidth * 2,
-                                        ),
-                                        Text(
-                                          (index1 + 1).toString() +
-                                              "." +
-                                              (index2 + 1).toString() +
-                                              " " +
-                                              widget.lessonList[index1]
-                                                  .lessonParts[index2].partName,
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      ],
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                  height: screenSize.screenHeight * 10,
+                                  width: screenSize.screenWidth * 84,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: screenSize.screenWidth * 2),
+                                    child: Center(
+                                      child: Row(
+                                        children: <Widget>[
+                                          SizedBox(
+                                            width: screenSize.screenWidth * 2,
+                                          ),
+                                          getIcon(widget.lessonList[index1]
+                                              .lessonParts[index2].partType),
+                                          SizedBox(
+                                            width: screenSize.screenWidth * 2,
+                                          ),
+                                          Container(
+                                            width: screenSize.screenWidth * 70,
+                                            child: Text(
+                                              (index1 + 1).toString() +
+                                                  "." +
+                                                  (index2 + 1).toString() +
+                                                  " " +
+                                                  widget
+                                                      .lessonList[index1]
+                                                      .lessonParts[index2]
+                                                      .partName,
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                        ],
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                      ),
                                     ),
                                   ),
                                 )),
@@ -226,8 +236,8 @@ class _VideoScreenState extends State<VideoScreen> {
                                         : 5
                                     : 5,
                                 color: getColor(index1, index2),
-                                width: screenSize.screenWidth * 80,
-                                height: screenSize.screenHeight * 5,
+                                width: screenSize.screenWidth * 84,
+                                height: screenSize.screenHeight * 7,
                               ),
                               onTap: () {
                                 print(widget.lessonList[index1]

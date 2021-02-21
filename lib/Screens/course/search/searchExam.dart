@@ -90,7 +90,7 @@ class _SearchExamsState extends State<SearchExams> {
                     return ReusableExamCard(
                       examName: listOfExam[index].examName,
                       examTime: listOfExam[index].examTime,
-                      examPicture: listOfExam[index].examPicture,
+                      examType: listOfExam[index].examType,
                       examDesc: listOfExam[index].examDescription,
                       totalQuestion: listOfExam[index].totalQuestions,
                       onTap: () {

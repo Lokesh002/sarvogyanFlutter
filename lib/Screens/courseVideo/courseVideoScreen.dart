@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_youtube_view/flutter_youtube_view.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CourseVideoScreen extends StatefulWidget {
   String id;
@@ -100,7 +101,8 @@ class _MyAppState extends State<CourseVideoScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Custom UI')),
+        appBar: AppBar(title: const Text('Preview')),
+        backgroundColor: Colors.black,
         body: Column(
           children: <Widget>[
             Expanded(
@@ -113,7 +115,7 @@ class _MyAppState extends State<CourseVideoScreen>
                   videoId: widget.id,
                   showUI: true,
                   startSeconds: 0.0,
-                  autoPlay: false,
+                  autoPlay: true,
                   showFullScreen: true,
                   showYoutube: true,
                 ),
@@ -122,16 +124,10 @@ class _MyAppState extends State<CourseVideoScreen>
             Expanded(
               child: Column(
                 children: <Widget>[
-                  Text(
-                    'Current state: $_playerState',
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                  RaisedButton(
-                    onPressed: _loadOrCueVideo,
-                    child: Text('Click reload video'),
-                  ),
                   _buildControl(),
-                  _buildScaleModeRadioGroup(),
+                  SizedBox(
+                    height: 10,
+                  ),
                   _buildPlaybackRate()
                 ],
               ),
@@ -145,19 +141,26 @@ class _MyAppState extends State<CourseVideoScreen>
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         RaisedButton(
+          color: Colors.black,
+          onPressed: _loadOrCueVideo,
+          child: Icon(
+            Icons.refresh,
+            color: Colors.white,
+          ),
+        ),
+        RaisedButton(
+          color: Colors.black,
           onPressed: _play,
-          child: Text('Play'),
+          child: Icon(
+            Icons.play_arrow,
+            color: Colors.white,
+          ),
         ),
         RaisedButton(
+          color: Colors.black,
           onPressed: _pause,
-          child: Text('Pause'),
+          child: Icon(Icons.pause, color: Colors.white),
         ),
-        RaisedButton(
-          onPressed: () {
-            _seekTo(20.0);
-          },
-          child: Text('seekTo 20s'),
-        )
       ],
     );
   }
@@ -167,6 +170,8 @@ class _MyAppState extends State<CourseVideoScreen>
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         new Radio(
+          focusColor: Theme.of(context).primaryColor,
+          activeColor: Theme.of(context).primaryColor,
           value: YoutubeScaleMode.none,
           groupValue: _mode,
           onChanged: _changeScaleMode,
@@ -176,6 +181,8 @@ class _MyAppState extends State<CourseVideoScreen>
           style: TextStyle(color: Colors.blue),
         ),
         new Radio(
+          focusColor: Theme.of(context).primaryColor,
+          activeColor: Theme.of(context).primaryColor,
           value: YoutubeScaleMode.fitWidth,
           groupValue: _mode,
           onChanged: _changeScaleMode,
@@ -185,6 +192,8 @@ class _MyAppState extends State<CourseVideoScreen>
           style: TextStyle(color: Colors.blue),
         ),
         new Radio(
+          focusColor: Theme.of(context).primaryColor,
+          activeColor: Theme.of(context).primaryColor,
           value: YoutubeScaleMode.fitHeight,
           groupValue: _mode,
           onChanged: _changeScaleMode,
@@ -227,51 +236,81 @@ class _MyAppState extends State<CourseVideoScreen>
     return new Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        new Radio(
-          value: PlaybackRate.RATE_0_25,
-          groupValue: _playbackRate,
-          onChanged: _changePlaybackRate,
+        Text(
+          'Speed',
+          style: TextStyle(color: Colors.white),
         ),
-        new Text(
-          '0_25',
-          style: TextStyle(color: Colors.blue),
+        SizedBox(
+          width: 16,
         ),
-        new Radio(
-          value: PlaybackRate.RATE_0_5,
-          groupValue: _playbackRate,
-          onChanged: _changePlaybackRate,
+        Container(
+          color: Colors.grey,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Radio(
+                focusColor: Colors.white,
+                hoverColor: Colors.white,
+                activeColor: Theme.of(context).primaryColor,
+                value: PlaybackRate.RATE_0_25,
+                groupValue: _playbackRate,
+                onChanged: _changePlaybackRate,
+              ),
+              Text(
+                '0_25',
+                style: TextStyle(color: Colors.white),
+              ),
+              new Radio(
+                focusColor: Theme.of(context).primaryColor,
+                activeColor: Theme.of(context).primaryColor,
+                value: PlaybackRate.RATE_0_5,
+                groupValue: _playbackRate,
+                onChanged: _changePlaybackRate,
+              ),
+              new Text(
+                '0_5',
+                style: TextStyle(color: Colors.white),
+              ),
+              new Radio(
+                focusColor: Theme.of(context).primaryColor,
+                activeColor: Theme.of(context).primaryColor,
+                value: PlaybackRate.RATE_1,
+                groupValue: _playbackRate,
+                onChanged: _changePlaybackRate,
+              ),
+              new Text(
+                '1',
+                style: TextStyle(color: Colors.white),
+              ),
+              new Radio(
+                focusColor: Theme.of(context).primaryColor,
+                activeColor: Theme.of(context).primaryColor,
+                value: PlaybackRate.RATE_1_5,
+                groupValue: _playbackRate,
+                onChanged: _changePlaybackRate,
+              ),
+              new Text(
+                '1_5',
+                style: TextStyle(color: Colors.white),
+              ),
+              new Radio(
+                focusColor: Theme.of(context).primaryColor,
+                activeColor: Theme.of(context).primaryColor,
+                value: PlaybackRate.RATE_2,
+                groupValue: _playbackRate,
+                onChanged: _changePlaybackRate,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 16.0),
+                child: new Text(
+                  '2',
+                  style: TextStyle(color: Colors.white),
+                ),
+              )
+            ],
+          ),
         ),
-        new Text(
-          '0_5',
-          style: TextStyle(color: Colors.blue),
-        ),
-        new Radio(
-          value: PlaybackRate.RATE_1,
-          groupValue: _playbackRate,
-          onChanged: _changePlaybackRate,
-        ),
-        new Text(
-          '1',
-          style: TextStyle(color: Colors.blue),
-        ),
-        new Radio(
-          value: PlaybackRate.RATE_1_5,
-          groupValue: _playbackRate,
-          onChanged: _changePlaybackRate,
-        ),
-        new Text(
-          '1_5',
-          style: TextStyle(color: Colors.blue),
-        ),
-        new Radio(
-          value: PlaybackRate.RATE_2,
-          groupValue: _playbackRate,
-          onChanged: _changePlaybackRate,
-        ),
-        new Text(
-          '2',
-          style: TextStyle(color: Colors.blue),
-        )
       ],
     );
   }

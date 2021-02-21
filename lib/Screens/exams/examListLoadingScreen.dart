@@ -93,7 +93,7 @@ class _ExamListLoadingScreenState extends State<ExamListLoadingScreen> {
                             return ReusableExamCard(
                               examName: allExamList[index].examName,
                               examTime: allExamList[index].examTime,
-                              examPicture: allExamList[index].examPicture,
+                              examType: allExamList[index].examType,
                               examDesc: allExamList[index].examDescription,
                               totalQuestion: allExamList[index].totalQuestions,
                               onTap: () {

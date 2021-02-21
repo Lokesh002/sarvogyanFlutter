@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sarvogyan/Screens/course/courseSelected.dart';
+import 'package:sarvogyan/components/Networking/networking.dart';
 import 'package:sarvogyan/components/courseListData.dart';
 import 'package:sarvogyan/lists/course_List.dart';
 
@@ -20,11 +21,13 @@ class _CourseSelectedLoadingScreenState
   void getdata() async {
     var decodedData =
         await courseModel.getCourseDetails(widget.courseSelected.id);
-
+    Networking networking = Networking();
+    var previewData = await networking.getData(
+        '/api/part/${decodedData['lessons'][decodedData['lessons'].length - 1]['lesson']}/details');
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
       print("hello world");
       print(decodedData);
-      return CourseSelected(decodedData);
+      return CourseSelected(decodedData, previewData);
     }));
   }
 

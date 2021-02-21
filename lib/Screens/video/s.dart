@@ -36,23 +36,6 @@ class _UserInfoEditState extends State<UserInfoEdit> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    //============================================= loading dialoge
-    // pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
-
-    //Optional
-//    pr.style(
-//      message: 'Please wait...',
-//      borderRadius: 10.0,
-//      backgroundColor: Colors.white,
-//      progressWidget: CircularProgressIndicator(),
-//      elevation: 10.0,
-//      insetAnimCurve: Curves.easeInOut,
-//      progressTextStyle: TextStyle(
-//          color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
-//      messageTextStyle: TextStyle(
-//          color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600),
-//    );
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

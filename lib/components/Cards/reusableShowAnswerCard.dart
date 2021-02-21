@@ -256,17 +256,19 @@ class ReusableShowAnswerCard extends StatelessWidget {
                       SizedBox(
                         height: screenSize.screenHeight * 1,
                       ),
-                      Text(
-                        'Description: ',
-                        style: TextStyle(
-                          fontSize: screenSize.screenHeight * 2,
-                          color: Colors.blueGrey,
-                        ),
-                      ),
+                      (description != null)
+                          ? Text(
+                              'Description: ',
+                              style: TextStyle(
+                                fontSize: screenSize.screenHeight * 2,
+                                color: Colors.blueGrey,
+                              ),
+                            )
+                          : SizedBox(),
                       SizedBox(
                         height: screenSize.screenHeight * 1,
                       ),
-                      getDescription(),
+                      (description != null) ? getDescription() : SizedBox(),
                       SizedBox(
                         height: screenSize.screenHeight * 1,
                       ),

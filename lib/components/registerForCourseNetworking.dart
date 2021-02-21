@@ -33,27 +33,35 @@ class RegisterForCourseNetworking {
 
     //Registering for course
     print('registering course for ' + accessToken);
+    if (cost <= await savedData.getBalance() || cost == null) {
+      http.Response response1 = await http.put(
+        '$url$cId',
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": accessToken
+        },
+      );
+      if (response1.statusCode == 200) {
+        print("Successfully registered");
+        bool x = await addCoursesToSharedPref.addCourses();
+        if (x) {
+          print("added Course to shared pref and course are: ");
+          print(savedData.getCourses());
+          if (cost != null) {
+            int bal = await savedData.getBalance();
+            bal = bal - cost;
+            await savedData.setBalance(bal);
+          }
+        }
 
-    http.Response response1 = await http.put(
-      '$url$cId',
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": accessToken
-      },
-    );
-    if (response1.statusCode == 200) {
-      print("Successfully registered");
-      bool x = await addCoursesToSharedPref.addCourses();
-      if (x) {
-        print("added Course to shared pref and course are: ");
-        print(savedData.getCourses());
+        // updatebalance.update();
+        return "Registered";
+      } else {
+        print('status code during registering: ${response1.statusCode}');
+        return "Not able to register";
       }
-
-      // updatebalance.update();
-      return "Registered";
     } else {
-      print('status code during registering: ${response1.statusCode}');
-      return "Not able to register";
+      return 'Please add money';
     }
   }
 }

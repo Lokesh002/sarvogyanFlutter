@@ -15,6 +15,29 @@ class ApplyCouponCode extends StatefulWidget {
   _ApplyCouponCodeState createState() => _ApplyCouponCodeState();
 }
 
+showAlertDialog(BuildContext context) {
+  AlertDialog alert = AlertDialog(
+    content: new Row(
+      children: [
+        CircularProgressIndicator(
+          backgroundColor: Theme.of(context).primaryColor,
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        Container(margin: EdgeInsets.only(left: 5), child: Text("Loading")),
+      ],
+    ),
+  );
+  showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
 class _ApplyCouponCodeState extends State<ApplyCouponCode> {
   SizeConfig screenSize;
   String couponCode;
@@ -49,7 +72,9 @@ class _ApplyCouponCodeState extends State<ApplyCouponCode> {
       await savedData.setBalance(decodedData['balance']);
       print(response1.statusCode);
       Fluttertoast.showToast(msg: "Code Successfully applied!");
+      Navigator.pop(context);
       Navigator.pop(context, decodedData['balance']);
+      Navigator.pop(context, true);
     } else {
       print(response1.statusCode);
       String data = response1.body;
@@ -124,6 +149,7 @@ class _ApplyCouponCodeState extends State<ApplyCouponCode> {
                       button = 'Loading...';
                       _controller.clear();
                     });
+                    showAlertDialog(context);
                     applyCoupon();
                   },
                 ),

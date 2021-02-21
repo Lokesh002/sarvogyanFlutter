@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sarvogyan/Screens/exams/takeExamScreen.dart';
+import 'package:sarvogyan/Screens/exams/updatedTakeExamScreen.dart';
 import 'package:sarvogyan/components/getAllExams.dart';
 import 'package:sarvogyan/components/getExamQuestions.dart';
 
@@ -21,7 +22,7 @@ class _TakeExamLoadingScreenState extends State<TakeExamLoadingScreen> {
     GetExamQuestions getExamQuestions = GetExamQuestions(widget.exam.examId);
     questionList = await getExamQuestions.getQuestions();
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-      return ExamScreen(questionList, widget.exam);
+      return UpdatedExamScreen(questionList, widget.exam);
     }));
   }
 

@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sarvogyan/Screens/profile/SavedNotes.dart';
 
 import 'package:sarvogyan/Screens/profile/addMoney/applyCouponCode.dart';
+import 'package:sarvogyan/Screens/profile/certificate/certificateScreen.dart';
 import 'package:sarvogyan/Screens/profile/subscription/buySubscription.dart';
 import 'package:sarvogyan/Screens/profile/updateProfile/updateProfile.dart';
 import 'package:sarvogyan/Screens/userAuth/EnterBoardClassScreen.dart';
@@ -58,8 +60,7 @@ class _ProfileViewState extends State<ProfileView> {
   String board = "";
   String studentClass = "";
   String age = '';
-  String photo =
-      'https://firebasestorage.googleapis.com/v0/b/sarvogyan-course-platform.appspot.com/o/sarvogyan-logo.jpg?alt=media&token=57068781-79f3-4f3c-b3e2-8be92c43e9a8';
+  String photo = '';
   int balance;
   SavedData savedData = SavedData();
   String levelOfSubscription = '';
@@ -190,7 +191,7 @@ class _ProfileViewState extends State<ProfileView> {
                                 child: SizedBox(
                                   width: screenSize.screenWidth * 35,
                                   height: screenSize.screenWidth * 35,
-                                  child: (photo == null)
+                                  child: (photo == null || photo == '')
                                       ? Image.asset('images/logo.png')
                                       : FadeInImage.assetNetwork(
                                           placeholder: 'images/logo.png',
@@ -519,19 +520,37 @@ class _ProfileViewState extends State<ProfileView> {
                                 SizedBox(
                                   height: screenSize.screenHeight * 1,
                                 ),
-                                ReusableButton(
-                                    onPress: () {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) {
-                                        return UpdateProfile();
-                                      })).then((v) {
-                                        getData();
-                                        setState(() {});
-                                      });
-                                    },
-                                    content: "Update Profile",
-                                    height: screenSize.screenHeight * 5,
-                                    width: screenSize.screenWidth * 30),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    ReusableButton(
+                                        onPress: () {
+                                          Navigator.push(context,
+                                              MaterialPageRoute(
+                                                  builder: (context) {
+                                            return UpdateProfile();
+                                          })).then((v) {
+                                            getData();
+                                            setState(() {});
+                                          });
+                                        },
+                                        content: "Update Profile",
+                                        height: screenSize.screenHeight * 5,
+                                        width: screenSize.screenWidth * 30),
+                                    ReusableButton(
+                                        onPress: () {
+                                          Navigator.push(context,
+                                              MaterialPageRoute(
+                                                  builder: (context) {
+                                            return SavedNotes();
+                                          }));
+                                        },
+                                        content: "Notes",
+                                        height: screenSize.screenHeight * 5,
+                                        width: screenSize.screenWidth * 30),
+                                  ],
+                                ),
                                 SizedBox(
                                   height: screenSize.screenHeight * 1,
                                 ),
@@ -544,7 +563,7 @@ class _ProfileViewState extends State<ProfileView> {
                                           Navigator.push(context,
                                               MaterialPageRoute(
                                                   builder: (context) {
-                                            return ApplyCouponCode();
+                                            return CertificateScreen();
                                           })).then((value) async {
                                             if (value != null) {
                                               balance = value;
@@ -555,7 +574,7 @@ class _ProfileViewState extends State<ProfileView> {
                                             setState(() {});
                                           });
                                         },
-                                        content: "Apply Coupon Code",
+                                        content: "Certificates",
                                         height: screenSize.screenHeight * 5,
                                         width: screenSize.screenWidth * 30),
 //                                  SizedBox(
@@ -569,10 +588,10 @@ class _ProfileViewState extends State<ProfileView> {
                                               MaterialPageRoute(
                                                   builder: (context) {
                                             return MakePaymentScreen();
-                                          })).then((value) {
-                                            setState(() {
-                                              balance = userbalance;
-                                            });
+                                          })).then((value) async {
+                                            balance =
+                                                await savedData.getBalance();
+                                            setState(() {});
                                           });
                                         },
                                         content: "Add Money",

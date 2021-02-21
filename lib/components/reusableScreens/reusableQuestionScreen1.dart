@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sarvogyan/components/Cards/ReusableCard.dart';
 import 'package:sarvogyan/components/Cards/reusableOptionCard.dart';
 import 'package:sarvogyan/components/sizeConfig.dart';
@@ -179,7 +181,7 @@ class _ReusableQuestionScreen1State extends State<ReusableQuestionScreen1> {
                                         fontSize:
                                             screenSize.screenHeight * 2.5),
                                   )),
-                                  height: screenSize.screenHeight * 8,
+                                  height: screenSize.screenHeight * 6,
                                 )
                               ],
                             ),
@@ -224,7 +226,7 @@ class _ReusableQuestionScreen1State extends State<ReusableQuestionScreen1> {
                                         fontSize:
                                             screenSize.screenHeight * 2.5),
                                   )),
-                                  height: screenSize.screenHeight * 8,
+                                  height: screenSize.screenHeight * 6,
                                 )
                               ],
                             ),
@@ -269,7 +271,7 @@ class _ReusableQuestionScreen1State extends State<ReusableQuestionScreen1> {
                                         fontSize:
                                             screenSize.screenHeight * 2.5),
                                   )),
-                                  height: screenSize.screenHeight * 8,
+                                  height: screenSize.screenHeight * 6,
                                 )
                               ],
                             ),
@@ -314,12 +316,70 @@ class _ReusableQuestionScreen1State extends State<ReusableQuestionScreen1> {
                                         fontSize:
                                             screenSize.screenHeight * 2.5),
                                   )),
-                                  height: screenSize.screenHeight * 8,
+                                  height: screenSize.screenHeight * 6,
                                 ),
                                 SizedBox(
                                   height: screenSize.screenHeight * 1,
                                 ),
                               ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: screenSize.screenWidth * 70,
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: screenSize.screenHeight * 2),
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (markedQuestions[
+                                          (widget.questionNo).toString()] !=
+                                      true)
+                                    markedQuestions[
+                                        (widget.questionNo).toString()] = true;
+                                  else {
+                                    markedQuestions[
+                                        (widget.questionNo).toString()] = false;
+                                  }
+                                  print(markedQuestions);
+                                  setState(() {});
+
+                                  Fluttertoast.showToast(
+                                      msg: 'Marked for review');
+                                },
+                                child: (markedQuestions[
+                                            (widget.questionNo).toString()] !=
+                                        true)
+                                    ? Container(
+                                        //height: screenSize.screenHeight * 20,
+                                        width: screenSize.screenWidth * 20,
+                                        height: screenSize.screenHeight * 8,
+                                        decoration: BoxDecoration(
+                                          color: Colors.purpleAccent,
+                                        ),
+                                        child: Center(
+                                            child: Text(
+                                          "Mark for review",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(color: Colors.white),
+                                        )),
+                                      )
+                                    : Container(
+                                        //height: screenSize.screenHeight * 20,
+                                        width: screenSize.screenWidth * 20,
+                                        height: screenSize.screenHeight * 8,
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey,
+                                        ),
+                                        child: Center(
+                                            child: Text(
+                                          "Unmark question",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(color: Colors.white),
+                                        )),
+                                      ),
+                              ),
                             ),
                           ),
                         ),
@@ -330,7 +390,7 @@ class _ReusableQuestionScreen1State extends State<ReusableQuestionScreen1> {
               ),
             ),
             SizedBox(
-              height: screenSize.screenHeight * 2,
+              height: screenSize.screenHeight * 1,
             )
           ],
         ),

@@ -100,6 +100,7 @@ class _AllExamsScreenState extends State<AllExamsScreen> {
                               return ReusableExamCard(
                                 examName: examList[index].examName,
                                 examTime: examList[index].examTime,
+                                examType: examList[index].examType,
                                 examPicture: examList[index].examPicture,
                                 examDesc: examList[index].examDescription,
                                 totalQuestion: examList[index].totalQuestions,

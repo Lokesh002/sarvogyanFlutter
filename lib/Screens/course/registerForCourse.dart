@@ -63,6 +63,19 @@ class _RegisterForCourseScreenState extends State<RegisterForCourseScreen> {
                   SizedBox(
                     height: screenSize.screenHeight * 4,
                   ),
+                  (widget.courseData['subscription'] == 'c')
+                      ? Center(
+                          child: Text(
+                            "Cost: Rs. ${widget.courseData['cost'].toString()}",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: screenSize.screenHeight * 2.5,
+                              fontFamily: "Roboto",
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        )
+                      : SizedBox(),
                   SizedBox(
                     height: screenSize.screenWidth * 6,
                   ),
@@ -72,7 +85,7 @@ class _RegisterForCourseScreenState extends State<RegisterForCourseScreen> {
                         width: screenSize.screenWidth * 71,
                         content: "Register",
                         onPress: () {
-                          print("registered pressed for course: ");
+                          print("Registered pressed for course: ");
                           print('${widget.courseData['id']}');
                           Navigator.pushReplacement(context,
                               MaterialPageRoute(builder: (context) {

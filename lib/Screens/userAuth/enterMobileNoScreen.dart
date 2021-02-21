@@ -74,7 +74,7 @@ class _EnterMobileNoScreenState extends State<EnterMobileNoScreen> {
         button = 'Sending...';
       });
       print("sending OTP");
-      Navigator.pop(context);
+
       loginUserThroughPhone('+91' + mobileNo, context);
     } else {
       Navigator.pop(context);
@@ -88,7 +88,7 @@ class _EnterMobileNoScreenState extends State<EnterMobileNoScreen> {
     FirebaseAuth _auth = FirebaseAuth.instance;
     _auth.verifyPhoneNumber(
         phoneNumber: phone,
-        timeout: Duration(seconds: 60),
+        timeout: Duration(seconds: 30),
         verificationCompleted: (AuthCredential credential) async {},
         verificationFailed: (AuthException exception) {
           print(exception.message);
@@ -99,6 +99,7 @@ class _EnterMobileNoScreenState extends State<EnterMobileNoScreen> {
           print("opening OTP Screen");
           String code;
           print(widget.fromAllCourses);
+          Navigator.pop(context);
           await Navigator.push(context, MaterialPageRoute(builder: (context) {
             //Here DecodedData is a locally saved variable containing selected course data
             return EnterOtpScreen(widget.fromAllCourses);
@@ -138,7 +139,7 @@ class _EnterMobileNoScreenState extends State<EnterMobileNoScreen> {
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) {
                       //Here DecodedData is a locally saved variable containing selected course data
-                      return CourseSelected(DecodedData);
+                      return CourseSelected(DecodedData, previewData);
                     }));
                   }
                 } else {
@@ -161,6 +162,9 @@ class _EnterMobileNoScreenState extends State<EnterMobileNoScreen> {
               Fluttertoast.showToast(msg: "Error");
             }
           } else {
+            setState(() {
+              button = "Send OTP";
+            });
             Fluttertoast.showToast(msg: "Please Enter OTP");
             print("code=null");
           }

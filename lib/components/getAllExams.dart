@@ -22,6 +22,7 @@ class GetAllExams {
         print(exam.examName);
         exam.examDescription = data[i]['examDescription'];
         exam.examTime = data[i]['examTime'];
+        exam.examType = data[i]['examType'];
         exam.examPicture = data[i]['examPicture'];
         exam.totalQuestions = data[i]['totalQuestions'].toString();
         List categ = data[i]['courseCategory'];
@@ -44,6 +45,7 @@ class Exam {
   String examId;
   String examName;
   String examDescription;
+  String examType;
   String examPicture;
   int examTime;
   String totalQuestions;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:sarvogyan/Screens/profile/updateProfile/boardClassUpdate.dart';
+import 'package:sarvogyan/Screens/userAuth/EnterBoardClassScreen.dart';
 import 'package:sarvogyan/components/Cards/ReusableButton.dart';
 import 'package:sarvogyan/components/sizeConfig.dart';
 import 'package:sarvogyan/components/updateProfileSupport.dart';
@@ -44,6 +45,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
   String address = "";
   String age = "";
   String tag;
+  String newTag;
   SavedData savedData = SavedData();
   String profileImage;
   void getDetails() async {
@@ -95,6 +97,21 @@ class _UpdateProfileState extends State<UpdateProfile> {
         ],
       ),
     );
+  }
+
+  List tags = ['School Student', 'College Student', 'Professional'];
+  List<DropdownMenuItem> getDepartmentList() {
+    List<DropdownMenuItem> departmentList = [];
+
+    for (int i = 0; i < tags.length; i++) {
+      var item = DropdownMenuItem(
+        child: Text(tags[i]),
+        value: tags[i],
+      );
+      departmentList.add(item);
+    }
+
+    return departmentList;
   }
 
   @override
@@ -207,13 +224,15 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           SizedBox(
                             height: screenSize.screenHeight * 2,
                           ),
-                          data("Board", board, () {
-                            if (tag.contains('School') &&
-                                board == "Not Selected" &&
-                                studentClass == "Not Selected") {
+                          data("Board & Class", board, () {
+                            if (tag.contains('School')) {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return BoardClassUpdate();
+                                return BoardClassUpdate(
+                                  board: board,
+                                  isStudent: isStudent,
+                                  sClass: studentClass,
+                                );
                               })).then((value) {
                                 print(value);
                                 board = value == null
@@ -246,41 +265,53 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           SizedBox(
                             height: screenSize.screenHeight * 2,
                           ),
-                          data("Class", studentClass, () {
-                            if (age == 'a' &&
-                                board == "Not Selected" &&
-                                studentClass == "Not Selected") {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return BoardClassUpdate();
-                              })).then((value) {
-                                setState(() {
-                                  board = value["board"];
-                                  studentClass = value["class"];
-                                  isStudent = value["isStudent"];
-                                });
-                              });
-                            } else {
-                              setState(() {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return UpdateData(
-                                    changeIn: "Class",
-                                    ifAge: false,
-                                  );
-                                })).then((value) {
-                                  setState(() {
-                                    if (value != null) studentClass = value;
-                                  });
-                                });
-                              });
-                            }
-                          }),
+                          Text(
+                            'Category:',
+                            style: TextStyle(
+                              fontSize: screenSize.screenHeight * 2.5,
+                            ),
+                          ),
+                          SizedBox(
+                            height: screenSize.screenHeight * 2,
+                          ),
+                          Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black45),
+                                borderRadius: BorderRadius.circular(
+                                    screenSize.screenHeight * 2),
+                              ),
+                              width: screenSize.screenWidth * 80,
+                              height: screenSize.screenHeight * 11,
+                              child: Center(
+                                child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: screenSize.screenWidth * 3),
+                                    child: DropdownButtonFormField(
+                                      disabledHint: Text("Choose category"),
+                                      validator: (val) =>
+                                          val == null ? 'Choose' : null,
+                                      elevation: 7,
+                                      isExpanded: false,
+                                      hint: Text('Choose Category',
+                                          style: TextStyle(
+                                              color: Colors.black45,
+                                              fontSize:
+                                                  screenSize.screenHeight * 2)),
+                                      value: newTag,
+                                      items: getDepartmentList(),
+                                      onChanged: (value) {
+                                        newTag = value;
+                                        print('selected: $newTag');
+
+                                        setState(() {});
+                                      },
+                                    )),
+                              )),
                         ],
                       ),
                     ),
                     SizedBox(
-                      height: screenSize.screenWidth * 10,
+                      height: screenSize.screenWidth * 5,
                     ),
                   ]),
               ReusableButton(
@@ -292,6 +323,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       name: name,
                       studentClass: studentClass,
                       age: age,
+                      tag: newTag == null ? tag : newTag,
                       board: board == "Not Selected" ? null : board,
                       isStudent: isStudent);
                   bool x = await updateProfileSave.updateProfile();
@@ -320,6 +352,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
   }
 
   String getAge() {
+    print('board:' + board);
     switch (age) {
       case "a":
         return "0 to 18";
@@ -402,7 +435,6 @@ class UpdateData extends StatelessWidget {
     } else
       return Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).primaryColor,
           elevation: 5,
           title: Text("Change $changeIn"),
         ),

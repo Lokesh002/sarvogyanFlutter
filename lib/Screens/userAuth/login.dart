@@ -228,7 +228,8 @@ class _LoginState extends State<Login> {
                                 Navigator.pushReplacement(context,
                                     MaterialPageRoute(builder: (context) {
                                   //Here DecodedData is a locally saved variable containing selected course data
-                                  return CourseSelected(DecodedData);
+                                  return CourseSelected(
+                                      DecodedData, previewData);
                                   // Navigator.pop(context);
                                 }));
                               }

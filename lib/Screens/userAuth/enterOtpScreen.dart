@@ -34,7 +34,7 @@ class _EnterOtpScreenState extends State<EnterOtpScreen> {
     FirebaseAuth _auth = FirebaseAuth.instance;
     _auth.verifyPhoneNumber(
         phoneNumber: phone,
-        timeout: Duration(seconds: 60),
+        timeout: Duration(seconds: 30),
         verificationCompleted: (AuthCredential credential) async {},
         verificationFailed: (AuthException exception) {
           print(exception.message);
@@ -110,8 +110,8 @@ class _EnterOtpScreenState extends State<EnterOtpScreen> {
   }
 
   void startTimer() {
-    _current = 60;
-    _start = 60;
+    _current = 30;
+    _start = 30;
 
     countDownTimer = new CountdownTimer(
       new Duration(seconds: _start),

@@ -68,55 +68,49 @@ class _ExamScreenState extends State<ExamScreen> {
   }
 
   Widget timer() {
-    return Row(
-      children: <Widget>[
-        Text(
-          (_current ~/ 3600).toString() + ' : ',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: screenSize.screenHeight * 2,
-            fontFamily: "Roboto",
-            fontWeight: FontWeight.bold,
+    if (widget.exam.examType == 'timed')
+      return Row(
+        children: <Widget>[
+          Text(
+            (_current ~/ 3600).toString() + ' : ',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: screenSize.screenHeight * 2,
+              fontFamily: "Roboto",
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        Text(
-          (_current ~/ 60).toString() + ' : ',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: screenSize.screenHeight * 2,
-            fontFamily: "Roboto",
-            fontWeight: FontWeight.bold,
+          Text(
+            (_current ~/ 60).toString() + ' : ',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: screenSize.screenHeight * 2,
+              fontFamily: "Roboto",
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        Text(
-          (_current % 60).toString(),
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: screenSize.screenHeight * 2,
-            fontFamily: "Roboto",
-            fontWeight: FontWeight.bold,
+          Text(
+            (_current % 60).toString(),
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: screenSize.screenHeight * 2,
+              fontFamily: "Roboto",
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    else {
+      return Text('');
+    }
   }
 
   void submit() {
     int score = 0;
     print('answer');
     print(answers);
-//    Map getAnswer = answers;
-//    Function unOrdDeepEq = const DeepCollectionEquality.unordered().equals;
-//
-//    for (int i = 0; i < getAnswer.length; i++) {
-//      if (unOrdDeepEq(
-//          getAnswer['${(i + 1).toString()}'], questionList[i].answer)) score++;
-//    }
-//    print('get');
-//    print(getAnswer);
 
-//    print(score);
-    //countDownTimer.cancel();
+    //ACTUAL CODE GOES HERE
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
       return ResultScreen(answers, questionList, widget.exam);
     }));
@@ -128,7 +122,7 @@ class _ExamScreenState extends State<ExamScreen> {
     super.dispose();
     scrollController.dispose();
     pageViewController.dispose();
-    sub.cancel();
+    if (widget.exam.examType == 'timed') sub.cancel();
   }
 
   @override
@@ -136,8 +130,7 @@ class _ExamScreenState extends State<ExamScreen> {
     // TODO: implement initState
 
     super.initState();
-
-    startTimer();
+    if (widget.exam.examType == 'timed') startTimer();
   }
 
   @override
@@ -307,7 +300,7 @@ class _ExamScreenState extends State<ExamScreen> {
                     print('ans');
                     print(answers);
                     //countDownTimer.cancel();
-                    if (widget.exam.examPicture == 'timed') sub.cancel();
+                    if (widget.exam.examType == 'timed') sub.cancel();
                     submit();
 
 //                    int score = 0;

@@ -60,7 +60,7 @@ class _ShowResultsScreenState extends State<ShowResultsScreen> {
           title: Text(widget.exam.examName),
         ),
         body: Container(
-          height: screenSize.screenHeight * 80,
+          height: screenSize.screenHeight * 100,
           child: ListView.builder(
               itemBuilder: (BuildContext cntxt, int index) {
                 print(widget.answers.toString());

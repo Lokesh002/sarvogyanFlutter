@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sarvogyan/Screens/profile/addMoney/applyCouponCode.dart';
 import 'package:sarvogyan/components/Cards/ReusableButton.dart';
 import 'package:sarvogyan/components/sizeConfig.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -175,7 +176,7 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
                     height: screenSize.screenHeight * 10,
                   ),
                   ReusableButton(
-                    height: screenSize.screenHeight * 10,
+                    height: screenSize.screenHeight * 7,
                     width: screenSize.screenWidth * 50,
                     content: button,
                     onPress: () async {
@@ -207,6 +208,28 @@ class _MakePaymentScreenState extends State<MakePaymentScreen> {
                       OpenCheckout();
                     },
                   ),
+                  SizedBox(
+                    height: screenSize.screenHeight * 5,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return ApplyCouponCode();
+                      }));
+                    },
+                    child: Text(
+                      "Apply Coupon Code",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
+                          fontSize: screenSize.screenHeight * 2,
+                          color: Theme.of(context).primaryColor),
+                    ),
+                  ),
+//                                  SizedBox(
+//                                    width: screenSize.screenWidth * 10,
+//                                  ),
                 ],
               ),
             ),

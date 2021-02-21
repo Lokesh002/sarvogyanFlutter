@@ -11,7 +11,7 @@ class UpdateProfileSave {
   bool isStudent;
   String board;
   String studentClass;
-
+  String tag;
   String accessTkn;
   SavedData savedData = SavedData();
   UpdateProfileSave(
@@ -19,6 +19,7 @@ class UpdateProfileSave {
       this.address,
       this.age,
       this.board,
+      this.tag,
       this.studentClass,
       this.isStudent});
   int balance;
@@ -47,6 +48,7 @@ class UpdateProfileSave {
             "age": this.age,
             "balance": this.balance,
             "board": this.board,
+            "tag": this.tag == null ? await savedData.getTag() : tag,
             "isStudent": this.isStudent ? 'yes' : 'no',
             "name": this.name,
             "studentClass": this.studentClass,

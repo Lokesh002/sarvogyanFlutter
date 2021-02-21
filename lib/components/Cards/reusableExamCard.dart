@@ -7,10 +7,10 @@ import 'package:sarvogyan/components/sizeConfig.dart';
 class ReusableExamCard extends StatelessWidget {
   final String examName;
   final int examTime;
-  final String examPicture;
+  final String examType;
   final String totalQuestion;
   final String examDesc;
-
+  final String examPicture;
   final Function onTap;
   final Function onChangeTap;
 
@@ -18,8 +18,9 @@ class ReusableExamCard extends StatelessWidget {
       {this.examName,
       this.examTime,
       this.examDesc,
-      this.totalQuestion,
       this.examPicture,
+      this.totalQuestion,
+      this.examType,
       this.onTap,
       this.onChangeTap});
 
@@ -92,7 +93,9 @@ class ReusableExamCard extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text(
-                                'Time: $examTime',
+                                examTime == null
+                                    ? 'Practice Exam'
+                                    : 'Time: $examTime',
                                 style: TextStyle(
                                   fontSize: screenSize.screenHeight * 1.7,
                                   color: Color(0xff7f7f7f),

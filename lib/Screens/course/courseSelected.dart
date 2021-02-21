@@ -1,10 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sarvogyan/Screens/course/readCourseDocScreen.dart';
+import 'package:sarvogyan/Screens/courseVideo/courseVideoScreen.dart';
 import 'package:sarvogyan/Screens/profile/subscription/buySubscription.dart';
 import 'package:sarvogyan/Screens/course/courseRegistrationLoadingScreen.dart';
 import 'package:sarvogyan/Screens/userAuth/login.dart';
 import 'package:sarvogyan/components/Cards/ReusableButton.dart';
+import 'package:sarvogyan/components/Networking/networking.dart';
 import 'package:sarvogyan/components/sizeConfig.dart';
 import 'package:sarvogyan/lists/course_List.dart';
 import 'package:sarvogyan/utilities/sharedPref.dart';
@@ -12,8 +17,9 @@ import 'package:sarvogyan/utilities/userData.dart';
 
 class CourseSelected extends StatefulWidget {
   var decodedData;
+  var previewData;
   //CourseData courseSelected;
-  CourseSelected(this.decodedData);
+  CourseSelected(this.decodedData, this.previewData);
   @override
   _CourseSelectedState createState() => _CourseSelectedState();
 }
@@ -28,9 +34,10 @@ class _CourseSelectedState extends State<CourseSelected> {
   String subscription = '';
   Widget pic;
   String totalParts;
+  String teacherPic;
   String getSubscription(String sub) {
     if (sub == 'a')
-      return "Basic Course";
+      return "Free Course";
     else if (sub == 'b')
       return "Basic Course";
     else if (sub == 'c')
@@ -39,9 +46,25 @@ class _CourseSelectedState extends State<CourseSelected> {
       return "Invalid Subscription Code";
   }
 
+  List<dynamic> wishListIds;
+  bool addedToWishList = false;
+  void inWishList() async {
+    String uId = await savedData.getUserId();
+    print('uid' + uId.toString());
+    wishListIds = widget.decodedData['wishlist'];
+    for (int i = 0; i < wishListIds.length; i++) {
+      if (uId == wishListIds[i]) {
+        setState(() {
+          addedToWishList = true;
+        });
+      }
+    }
+  }
+
   getDetails() {
     print("get details");
-    print(widget.decodedData);
+    log(widget.decodedData.toString());
+    log(widget.previewData.toString());
     if (widget.decodedData != null) {
       print("get fr details");
 
@@ -67,6 +90,11 @@ class _CourseSelectedState extends State<CourseSelected> {
         teacherName = widget.decodedData["teacherDetails"]["name"];
       } else {
         teacherName = '';
+      }
+      if (widget.decodedData["teacherDetails"]["picture"] != null) {
+        teacherPic = widget.decodedData["teacherDetails"]["picture"];
+      } else {
+        teacherPic = '';
       }
       if (widget.decodedData["description"] != null) {
         desc = widget.decodedData["description"];
@@ -109,7 +137,7 @@ class _CourseSelectedState extends State<CourseSelected> {
       } else {
         isCourseRegistered = false;
       }
-
+      inWishList();
       setState(() {});
     }
   }
@@ -122,6 +150,8 @@ class _CourseSelectedState extends State<CourseSelected> {
       return true;
     } else {
       if (subLevel == 'b' && widget.decodedData["subscription"] == 'a') {
+        return true;
+      } else if (widget.decodedData['subscription'] == 'c') {
         return true;
       } else {
         if (subLevel == 'c' &&
@@ -142,175 +172,328 @@ class _CourseSelectedState extends State<CourseSelected> {
     verifyUserRegistration();
   }
 
+  ScrollController scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     getDetails();
     SizeConfig screenSize = SizeConfig(context);
     final x = screenSize.screenHeight * 50;
     print(name);
+
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(''),
+            GestureDetector(
+              onTap: () async {
+                Networking networking = Networking();
+                var decData = await networking.postDataByUser(
+                    'api/user/wishlist',
+                    {'course_id': widget.decodedData['id']},
+                    await savedData.getAccessToken());
+                log(decData.toString());
+                setState(() {
+                  if (addedToWishList)
+                    setState(() {
+                      addedToWishList = false;
+                      Fluttertoast.showToast(msg: 'Removed from Wishlist');
+                    });
+                  else
+                    setState(() {
+                      addedToWishList = true;
+                      Fluttertoast.showToast(msg: 'Added to Wishlist');
+                    });
+                });
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius:
+                      BorderRadius.circular(screenSize.screenHeight * 3),
+                  border: Border.all(color: Colors.white, width: 1),
+                ),
+                height: screenSize.screenHeight * 5,
+                width: addedToWishList
+                    ? screenSize.screenWidth * 40
+                    : screenSize.screenWidth * 30,
+                child: Material(
+                  borderRadius:
+                      BorderRadius.circular(screenSize.screenHeight * 3),
+                  child: addedToWishList
+                      ? Center(
+                          child: Text(
+                            'Remove from Wishlist',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: screenSize.screenHeight * 2),
+                          ),
+                        )
+                      : Center(
+                          child: Text(
+                            'Add to wishlist',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: screenSize.screenHeight * 2),
+                          ),
+                        ),
+                  color: addedToWishList
+                      ? Colors.grey
+                      : Theme.of(context).primaryColor,
+                  elevation: 5,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
       backgroundColor: Colors.white,
-      body: Container(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                color: Color(0xffeee9e9),
-                width: screenSize.screenWidth * 100,
-                height: screenSize.screenHeight * 35,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: screenSize.screenWidth * 5,
-                          vertical: screenSize.screenHeight * 3),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  color: Color(0xffeee9e9),
+                  width: screenSize.screenWidth * 100,
+                  height: screenSize.screenHeight * 35,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: screenSize.screenWidth * 50,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: screenSize.screenWidth * 5,
+                              vertical: screenSize.screenHeight * 3),
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                name,
-                                softWrap: true,
-                                style: TextStyle(
-                                  color: Color(0xffff6714),
-                                  fontSize: screenSize.screenHeight * 3.5,
-                                  fontFamily: "Roboto",
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    name,
+                                    softWrap: true,
+                                    style: TextStyle(
+                                      color: Color(0xffff6714),
+                                      fontSize: screenSize.screenHeight * 3.5,
+                                      fontFamily: "Roboto",
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.screen_lock_landscape,
+                                        color: Color(0xffff6714),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal:
+                                                screenSize.screenWidth * 2,
+                                            vertical: screenSize.screenHeight),
+                                        child: Text(
+                                          '$totalParts Lectures',
+                                          softWrap: true,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize:
+                                                  screenSize.screenHeight * 2,
+                                              fontFamily: "Roboto"),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                               Row(
                                 children: [
-                                  Icon(
-                                    Icons.screen_lock_landscape,
-                                    color: Color(0xffff6714),
+                                  CircleAvatar(
+                                    backgroundColor: Colors.black26,
+                                    radius: screenSize.screenHeight * 2,
+                                    child: ClipOval(
+                                      child: SizedBox(
+                                        child: FadeInImage.assetNetwork(
+                                            placeholder: 'images/logo.png',
+                                            image: teacherPic),
+                                      ),
+                                    ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: screenSize.screenWidth * 2),
                                     child: Text(
-                                      '$totalParts Lectures',
+                                      'Prof. $teacherName',
                                       softWrap: true,
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: screenSize.screenHeight * 2,
                                           fontFamily: "Roboto"),
                                     ),
-                                  ),
+                                  )
                                 ],
                               ),
                             ],
                           ),
-                          Row(
+                        ),
+                      ),
+                      Container(
+                        width: screenSize.screenWidth * 50,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: screenSize.screenWidth * 5,
+                              vertical: screenSize.screenHeight * 3),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.black26,
-                                radius: screenSize.screenHeight * 2,
+                              Container(
+                                  width: screenSize.screenWidth * 30,
+                                  height: screenSize.screenHeight * 20,
+                                  child: pic),
+                              Center(
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      top: isCourseRegistered
+                                          ? screenSize.screenHeight * 1
+                                          : screenSize.screenHeight * 1),
+                                  child: ReusableButton(
+                                      onPress: () async {
+                                        bool login =
+                                            await savedData.getLoggedIn();
+                                        print(login);
+                                        if (login == null) {
+                                          login = false;
+                                        }
+                                        print(login);
+                                        if (login) {
+                                          print(subscription);
+                                          bool x = await canEnter();
+                                          print("helo" + x.toString());
+                                          if (x) {
+                                            Navigator.pushReplacement(context,
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                              return CourseRegistrationLoadingScreen(
+                                                  widget.decodedData, false);
+                                            }));
+                                          } else {
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    "Please increase subscription level");
+                                            Navigator.push(context,
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                              return BuySubscription();
+                                            }));
+                                          }
+                                        } else {
+                                          DecodedData = widget.decodedData;
+                                          previewData = widget.previewData;
+                                          Navigator.pushReplacement(context,
+                                              MaterialPageRoute(
+                                                  builder: (context) {
+                                            return Login(false);
+                                          }));
+                                        }
+                                      },
+                                      content: "Enter Course",
+                                      height: screenSize.screenHeight * 7,
+                                      width: screenSize.screenWidth * 20),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: screenSize.screenHeight * 3,
+                ),
+                Container(
+                  width: screenSize.screenWidth * 100,
+                  height: screenSize.screenHeight * 50,
+                  child: ListView(
+                    children: [
+                      Row(
+                        children: <Widget>[
+                          SizedBox(
+                            width: screenSize.screenWidth * 5,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                height: screenSize.screenHeight * 6,
+                                width: screenSize.screenWidth * 90,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "About the Course",
+                                      softWrap: true,
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: screenSize.screenHeight * 3.5,
+                                        fontFamily: "Roboto",
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: screenSize.screenWidth * 2),
+                              SizedBox(
+                                height: screenSize.screenHeight * 2,
+                              ),
+                              Container(
+                                height: screenSize.screenHeight * 5,
+                                width: screenSize.screenWidth * 90,
                                 child: Text(
-                                  'Prof. $teacherName',
+                                  desc,
                                   softWrap: true,
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontSize: screenSize.screenHeight * 2,
                                       fontFamily: "Roboto"),
                                 ),
+                              ),
+                              SizedBox(
+                                height: screenSize.screenHeight * 1,
+                              ),
+                              Visibility(
+                                visible: !isCourseRegistered,
+                                child: Container(
+                                  height: screenSize.screenHeight * 5,
+                                  width: screenSize.screenWidth * 90,
+                                  child: Text(
+                                    subscription,
+                                    softWrap: true,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: screenSize.screenHeight * 2,
+                                        fontFamily: "Roboto"),
+                                  ),
+                                ),
                               )
                             ],
                           ),
                         ],
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: screenSize.screenWidth * 5,
-                          vertical: screenSize.screenHeight * 3),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                              width: screenSize.screenWidth * 30,
-                              height: screenSize.screenHeight * 20,
-                              child: pic),
-                          Center(
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  top: isCourseRegistered
-                                      ? screenSize.screenHeight * 1
-                                      : screenSize.screenHeight * 1),
-                              child: ReusableButton(
-                                  onPress: () async {
-                                    bool login = await savedData.getLoggedIn();
-                                    print(login);
-                                    if (login == null) {
-                                      login = false;
-                                    }
-                                    print(login);
-                                    if (login) {
-                                      print(subscription);
-                                      bool x = await canEnter();
-                                      print("helo" + x.toString());
-                                      if (x) {
-                                        Navigator.pushReplacement(context,
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                          return CourseRegistrationLoadingScreen(
-                                              widget.decodedData, false);
-                                        }));
-                                      } else {
-                                        Fluttertoast.showToast(
-                                            msg:
-                                                "Please increase subscription level");
-                                        Navigator.push(context,
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                          return BuySubscription();
-                                        }));
-                                      }
-                                    } else {
-                                      DecodedData = widget.decodedData;
-                                      Navigator.pushReplacement(context,
-                                          MaterialPageRoute(builder: (context) {
-                                        return Login(false);
-                                      }));
-                                    }
-                                  },
-                                  content: "Enter Course",
-                                  height: screenSize.screenHeight * 7,
-                                  width: screenSize.screenWidth * 20),
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: screenSize.screenHeight * 3,
-              ),
-              Row(
-                children: <Widget>[
-                  SizedBox(
-                    width: screenSize.screenWidth * 5,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        height: screenSize.screenHeight * 5,
-                        width: screenSize.screenWidth * 90,
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: screenSize.screenWidth * 5),
                         child: Text(
-                          "About the Course",
+                          "Preview",
                           softWrap: true,
                           style: TextStyle(
                             color: Colors.black,
@@ -320,44 +503,86 @@ class _CourseSelectedState extends State<CourseSelected> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: screenSize.screenHeight * 1,
-                      ),
                       Container(
-                        height: screenSize.screenHeight * 5,
-                        width: screenSize.screenWidth * 90,
-                        child: Text(
-                          desc,
-                          softWrap: true,
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: screenSize.screenHeight * 2,
-                              fontFamily: "Roboto"),
+                        alignment: Alignment.center,
+                        height: screenSize.screenHeight * 30,
+                        width: screenSize.screenWidth * 100,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              left: screenSize.screenWidth * 2.5,
+                              right: screenSize.screenWidth * 2.5),
+                          child: ListView.builder(
+                              controller: scrollController,
+                              //shrinkWrap: true,
+                              itemBuilder: (BuildContext cntxt, int index) {
+                                return Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        left: screenSize.screenWidth * 2.5,
+                                        right: screenSize.screenWidth * 2.5),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        if (widget.previewData[index]['type'] !=
+                                            'text') {
+                                          print(widget.previewData[index]
+                                                  ['content']
+                                              .toString());
+                                          String link = widget
+                                              .previewData[index]['content']
+                                              .toString();
+                                          link = link.substring(
+                                              link.indexOf('embed/') + 6);
+                                          print(link);
+
+                                          Navigator.push(context,
+                                              MaterialPageRoute(
+                                                  builder: (context) {
+                                            return CourseVideoScreen(id: link);
+                                          }));
+                                        } else {
+                                          Navigator.push(context,
+                                              MaterialPageRoute(
+                                                  builder: (context) {
+                                            return ReadCourseDocScreen(
+                                                widget.previewData[index]
+                                                    ['content'],
+                                                widget.previewData[index]
+                                                    ['name']);
+                                          }));
+                                        }
+                                      },
+                                      child: Material(
+                                        color: Colors.white70,
+                                        elevation: 3,
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          width: screenSize.screenWidth * 30,
+                                          height: screenSize.screenHeight * 20,
+                                          child: Center(
+                                              child: Text(
+                                            widget.previewData[index]['name'],
+                                            textAlign: TextAlign.center,
+                                          )),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                              scrollDirection: Axis.horizontal,
+                              itemCount: widget.previewData.length,
+                              padding: EdgeInsets.fromLTRB(
+                                  0,
+                                  screenSize.screenHeight * 1,
+                                  0,
+                                  screenSize.screenHeight * 1)),
                         ),
                       ),
-                      SizedBox(
-                        height: screenSize.screenHeight * 1,
-                      ),
-                      Visibility(
-                        visible: !isCourseRegistered,
-                        child: Container(
-                          height: screenSize.screenHeight * 5,
-                          width: screenSize.screenWidth * 90,
-                          child: Text(
-                            subscription,
-                            softWrap: true,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: screenSize.screenHeight * 2,
-                                fontFamily: "Roboto"),
-                          ),
-                        ),
-                      )
                     ],
                   ),
-                ],
-              ),
-            ]),
+                ),
+              ]),
+        ),
       ),
     );
   }
