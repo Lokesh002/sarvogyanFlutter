@@ -14,11 +14,11 @@ class FirebaseNetworking {
       Future<bool> verified;
 
       FirebaseAuth _auth = FirebaseAuth.instance;
-      AuthResult authResult = await _auth.signInWithEmailAndPassword(
+      UserCredential authResult = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      FirebaseUser user = authResult.user;
-      return user.getIdToken();
-    } on AuthException catch (e) {
+      User user = authResult.user;
+      return user.getIdTokenResult();
+    } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         Fluttertoast.showToast(msg: 'No user found for that email.');
       } else if (e.code == 'wrong-password') {

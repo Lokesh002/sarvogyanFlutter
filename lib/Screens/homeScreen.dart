@@ -287,7 +287,7 @@ class _HomeScreenState extends State<HomeScreen> {
             AllCoursesScreen(sarvogyan, sarvogyan.children[0], 'images/media'),
             ExamCategScreen(
                 sarvogyan, "", sarvogyan.children[1], 'images/media'),
-            CloudDocsScreen(),
+            DocsScreen('/documents'),
           ]),
         ),
       ),

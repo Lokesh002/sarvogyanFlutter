@@ -170,7 +170,7 @@ class _ProfileViewState extends State<ProfileView> {
         Row(
           children: <Widget>[
             SizedBox(
-              width: screenSize.screenWidth * 5,
+              width: screenSize.screenWidth * 4,
             ),
             Text(
               "$name: ",
@@ -184,16 +184,26 @@ class _ProfileViewState extends State<ProfileView> {
         ),
         Row(
           children: <Widget>[
-            Text(
-              value.toString(),
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: screenSize.screenHeight * 2,
-                fontFamily: "Roboto",
+            Container(
+              width: screenSize.screenWidth * 50,
+              height: screenSize.screenHeight * 2,
+              child: ListView(
+                reverse: true,
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  Text(
+                    value.toString(),
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: screenSize.screenHeight * 2,
+                      fontFamily: "Roboto",
+                    ),
+                  ),
+                ],
               ),
             ),
             SizedBox(
-              width: screenSize.screenWidth * 5,
+              width: screenSize.screenWidth * 3,
             ),
           ],
         ),

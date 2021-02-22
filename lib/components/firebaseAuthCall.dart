@@ -20,7 +20,7 @@ class FirebseAuthCall {
         verificationCompleted: (AuthCredential credential) async {
 //
         },
-        verificationFailed: (AuthException exception) {
+        verificationFailed: (FirebaseAuthException exception) {
           print(exception.message);
         },
         codeSent: (String verificationId, [int forceResendingToken]) async {
@@ -36,15 +36,16 @@ class FirebseAuthCall {
           print(code);
           print('process fire flow');
           try {
-            AuthCredential credential = PhoneAuthProvider.getCredential(
+            AuthCredential credential = PhoneAuthProvider.credential(
                 verificationId: verificationId, smsCode: code);
             print('process fire flow');
-            AuthResult result = await _auth.signInWithCredential(credential);
+            UserCredential result =
+                await _auth.signInWithCredential(credential);
             print('process fire flow');
-            FirebaseUser user = result.user;
+            User user = result.user;
             if (user != null) {
               print('signed fire in with: ' + result.user.phoneNumber);
-              var u = await user.getIdToken();
+              var u = await user.getIdTokenResult();
               print(u.token);
               String phoneNo = phone.substring(3, phone.length);
               LoginPhoneNetworking loginPhoneNetworking =

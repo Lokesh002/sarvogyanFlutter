@@ -208,6 +208,7 @@ class _LoginState extends State<Login> {
                           print('hello $email & $password');
                           FirebaseNetworking firebaseNetworking =
                               FirebaseNetworking();
+
                           IdTokenResult token = await firebaseNetworking
                               .loginUserThroughEmail(email, password, context);
                           if (token != null) {

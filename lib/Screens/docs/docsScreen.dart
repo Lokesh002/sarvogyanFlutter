@@ -1,5 +1,6 @@
 import 'dart:io';
-
+import 'dart:developer';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:dio/dio.dart';
 import 'package:ext_storage/ext_storage.dart';
 import 'package:flutter/material.dart';
@@ -9,13 +10,18 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sarvogyan/Screens/userAuth/login.dart';
+import 'package:sarvogyan/components/Cards/CertificateCard.dart';
 import 'package:sarvogyan/components/Cards/DocsCard.dart';
 import 'package:sarvogyan/components/Cards/ReusableButton.dart';
+import 'package:sarvogyan/components/docsSupport.dart';
 import 'package:sarvogyan/components/getAllDocs.dart';
 import 'package:sarvogyan/components/sizeConfig.dart';
 import 'package:sarvogyan/utilities/sharedPref.dart';
+import 'package:sarvogyan/Screens/docs/insideDocs.dart';
 
 class DocsScreen extends StatefulWidget {
+  String path;
+  DocsScreen(this.path);
   @override
   _DocsScreenState createState() => _DocsScreenState();
 }
@@ -44,93 +50,63 @@ class _DocsScreenState extends State<DocsScreen> {
   bool isReady = false;
   SavedData savedData = SavedData();
   SizeConfig screenSize;
-  bool downloadComplete = false;
-  String downloadMessage = 'Initializing...';
-  bool isDownloading = false;
-  List<Docs> docsList;
+
   String accessTKN;
-  Future download(String url, String name) async {
-    String path = await ExtStorage.getExternalStoragePublicDirectory(
-        ExtStorage.DIRECTORY_DOWNLOADS);
-    String fullPath = "$path/$name";
-
-    try {
-      Dio dio = Dio();
-      showAlertDialog(context);
-      Response response =
-          await dio.get(url, onReceiveProgress: (actualbytes, totalbytes) {
-        var percentage = (actualbytes / totalbytes) * 100;
-
-        setState(() {
-          downloadMessage = 'Downloading....  ${percentage.floor()}%';
-          if (percentage == 100) {
-            downloadComplete = true;
-            setState(() {
-              Fluttertoast.showToast(
-                  msg: "Go to Internal Storage/Downloads to check the file.");
-            });
-          }
-        });
-      },
-              options: Options(
-                  responseType: ResponseType.bytes,
-                  followRedirects: false,
-                  validateStatus: (status) {
-                    return status < 500;
-                  }));
-      File file = File(fullPath);
-      var raf = file.openSync(mode: FileMode.write);
-      raf.writeFromSync(response.data);
-      await raf.close();
-      Navigator.of(context).pop();
-    } catch (e) {
-      print(e);
-    }
-
-//
-//    dio.download(url, '${dir.path}/kartikResume.pdf',
-//        onReceiveProgress: (actualbytes, totalbytes) {
-//      var percentage = (actualbytes / totalbytes) * 100;
-//
-//      setState(() {
-//        downloadMessage = 'Downoading....  ${percentage.floor()}%';
-//        if(percentage==100)
-    //{
-    //     downloadComplete=true;
-    //}
-//      });
-//    });
-    downloadComplete = true;
-  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (mounted) getDocsList();
+    if (mounted) getDocsList(widget.path);
     getPermission();
-  }
-
-  void getDocsList() async {
-    List<Docs> docsList;
-    GetAllDocs getAllDocs = GetAllDocs();
-    docsList = await getAllDocs.getDocsList();
-    this.docsList = docsList;
-    isReady = true;
-    if (mounted) setState(() {});
   }
 
   Future getPermission() async {
     print("permission");
-    accessTKN = await savedData.getAccessToken();
     var status = await Permission.storage.status;
     if (!status.isGranted) {
       await Permission.storage.request();
     }
   }
 
-  Widget ShowScreen(bool isReady) {
-    if (accessTKN == null) {
+  FirebaseStorage storage = FirebaseStorage.instance;
+  List<Doc> allDocs = List<Doc>();
+  void getDocsList(String path) async {
+    accessTKN = await savedData.getAccessToken();
+
+    Reference storageRef = storage.ref().child(path);
+    await storageRef.listAll().then((value) async {
+      for (Reference prefix in value.prefixes) {
+        allDocs.add(Doc(name: prefix.name, isFolder: true, link: ''));
+
+        log(prefix.name);
+      }
+      for (var item in value.items) {
+        allDocs.add(Doc(
+          isFolder: false,
+          name: item.name,
+          link: await item.getDownloadURL(),
+        ));
+        log(item.toString());
+      }
+    });
+
+    isReady = true;
+    if (mounted) setState(() {});
+  }
+
+  Widget ShowScreen() {
+    // print(isReady.toString());
+    if (isReady == false) {
+      return Scaffold(
+        backgroundColor: Color(0xffffffff),
+        body: SpinKitWanderingCubes(
+          color: Theme.of(context).primaryColor,
+          shape: BoxShape.circle,
+          size: 100.0,
+        ),
+      );
+    } else if (accessTKN == null) {
       return Scaffold(
         body: Container(
           child: Column(
@@ -166,16 +142,7 @@ class _DocsScreenState extends State<DocsScreen> {
           ),
         ),
       );
-    } else if (!isReady) {
-      return Scaffold(
-        backgroundColor: Color(0xffffffff),
-        body: SpinKitWanderingCubes(
-          color: Theme.of(context).primaryColor,
-          shape: BoxShape.circle,
-          size: 100.0,
-        ),
-      );
-    } else if (docsList.length != 0) {
+    } else if (allDocs.length != 0) {
       return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         body: Container(
@@ -194,19 +161,23 @@ class _DocsScreenState extends State<DocsScreen> {
                       child: ListView.builder(
                           itemBuilder: (BuildContext cntxt, int index) {
                             return ReusableDocsCard(
-                              docName: docsList[index].name,
+                              docName: allDocs[index].name,
+                              //icon: Icon(Icons.folder),
+                              isFolder: allDocs[index].isFolder,
                               color: Theme.of(context).backgroundColor,
-                              button: ReusableButton(
-                                  height: screenSize.screenHeight * 5,
-                                  width: screenSize.screenWidth * 15,
-                                  content: "Download",
-                                  onPress: () async {
-                                    await download(docsList[index].link,
-                                        docsList[index].name);
-                                  }),
+                              onTap: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return InsideDocs(widget.path +
+                                      '/' +
+                                      allDocs[index].name +
+                                      '/');
+                                }));
+                              },
+                              button: SizedBox(),
                             );
                           },
-                          itemCount: docsList.length,
+                          itemCount: allDocs.length,
                           padding: EdgeInsets.fromLTRB(
                               0, screenSize.screenHeight * 2.5, 0, 0
                               //screenSize.screenHeight * 15)),
@@ -217,24 +188,25 @@ class _DocsScreenState extends State<DocsScreen> {
           ),
         ),
       );
-    } else {
-      return Column(children: <Widget>[
-        SizedBox(
-          height: screenSize.screenHeight * 10,
-        ),
-        Container(
-          height: screenSize.screenHeight * 20,
-          child: SvgPicture.asset('svg/analysis.svg',
-              semanticsLabel: 'A red up arrow'),
-        ),
-      ]);
     }
+//    else if (allDocs.length == 0) {
+//      return Column(children: <Widget>[
+//        SizedBox(
+//          height: screenSize.screenHeight * 10,
+//        ),
+//        Container(
+//          height: screenSize.screenHeight * 20,
+//          child: SvgPicture.asset('svg/analysis.svg',
+//              semanticsLabel: 'A red up arrow'),
+//        ),
+//      ]);
+//    }
   }
 
   @override
   Widget build(BuildContext context) {
     screenSize = SizeConfig(context);
 
-    return ShowScreen(isReady);
+    return ShowScreen();
   }
 }

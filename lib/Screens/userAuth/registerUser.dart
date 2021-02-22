@@ -48,7 +48,7 @@ class _RegisterUserState extends State<RegisterUser> {
   String errorMessage = '';
 
   FirebaseAuth auth = FirebaseAuth.instance;
-  AuthResult result;
+  UserCredential result;
 
   bool age1selected = false;
   bool age2selected = false;
@@ -586,10 +586,11 @@ class _RegisterUserState extends State<RegisterUser> {
                                     });
 
                                     if (_formKey.currentState.validate()) {
-                                      FirebaseUser fireAccessUser =
+                                      User fireAccessUser =
                                           await registerUserFirebase(
                                               email, password);
-                                      var a = await fireAccessUser.getIdToken();
+                                      var a = await fireAccessUser
+                                          .getIdTokenResult();
                                       String fireAccessToken = a.token;
 
                                       String uId = fireAccessUser.uid;
@@ -786,7 +787,7 @@ class _RegisterUserState extends State<RegisterUser> {
               print(code);
               print('process flow');
               try {
-                AuthCredential credential = PhoneAuthProvider.getCredential(
+                AuthCredential credential = PhoneAuthProvider.credential(
                     verificationId: verificationId, smsCode: code);
 
                 this.result.user.linkWithCredential(credential);
@@ -794,7 +795,7 @@ class _RegisterUserState extends State<RegisterUser> {
                 //AuthResult result = await auth.signInWithCredential(credential);
 
                 print('process flow');
-                FirebaseUser user = result.user;
+                User user = result.user;
                 if (user != null) {
                   registerUserNetworking = RegisterUserNetworking(
                       name,
@@ -881,7 +882,7 @@ class _RegisterUserState extends State<RegisterUser> {
 //            this.verificationId = verId;
           },
           verificationCompleted: (AuthCredential phoneAuthCredential) {},
-          verificationFailed: (AuthException exceptio) {
+          verificationFailed: (FirebaseAuthException exceptio) {
             print('${exceptio.message}');
           });
     } catch (e) {
@@ -953,7 +954,7 @@ class _RegisterUserState extends State<RegisterUser> {
     }
   }
 
-  Future<FirebaseUser> registerUserFirebase(String email, String pass) async {
+  Future<User> registerUserFirebase(String email, String pass) async {
     FirebaseAuth _auth = FirebaseAuth.instance;
     try {
       result = await _auth.createUserWithEmailAndPassword(
@@ -963,7 +964,7 @@ class _RegisterUserState extends State<RegisterUser> {
           error = 'Please enter a valid email';
         });
       } else {
-        FirebaseUser user = result.user;
+        User user = result.user;
         //var u = await user.getIdToken();
 
         return user;

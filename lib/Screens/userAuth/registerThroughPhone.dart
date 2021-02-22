@@ -26,7 +26,7 @@ class _RegisterThroughPhoneState extends State<RegisterThroughPhone> {
   String errorMessage = '';
 
   FirebaseAuth auth = FirebaseAuth.instance;
-  AuthResult result;
+  UserCredential result;
 
   bool age1selected = false;
   bool age2selected = false;
@@ -133,7 +133,7 @@ class _RegisterThroughPhoneState extends State<RegisterThroughPhone> {
             color: Theme.of(context).primaryColor,
           );
     return Scaffold(
-      resizeToAvoidBottomPadding: true,
+      //resizeToAvoidBottomPadding: true,
       backgroundColor: Colors.white,
       body: Stack(
         children: [
@@ -658,17 +658,18 @@ class _RegisterThroughPhoneState extends State<RegisterThroughPhone> {
               print(code);
               print('process flow');
               try {
-                AuthCredential credential = PhoneAuthProvider.getCredential(
+                AuthCredential credential = PhoneAuthProvider.credential(
                     verificationId: verificationId, smsCode: code);
 
                 print('process flow');
-                AuthResult result = await auth.signInWithCredential(credential);
+                UserCredential result =
+                    await auth.signInWithCredential(credential);
 
                 print('process flow');
-                FirebaseUser user = result.user;
+                User user = result.user;
                 String UId = user.uid;
                 String FireAccessToken;
-                var z = await user.getIdToken();
+                var z = await user.getIdTokenResult();
                 FireAccessToken = z.token;
                 if (user != null) {
                   registerUserNetworking = RegisterUserNetworking(
@@ -755,7 +756,7 @@ class _RegisterThroughPhoneState extends State<RegisterThroughPhone> {
 //            this.verificationId = verId;
           },
           verificationCompleted: (AuthCredential phoneAuthCredential) {},
-          verificationFailed: (AuthException exceptio) {
+          verificationFailed: (FirebaseAuthException exceptio) {
             print('${exceptio.message}');
           });
     } catch (e) {

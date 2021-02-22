@@ -36,7 +36,7 @@ class _EnterOtpScreenState extends State<EnterOtpScreen> {
         phoneNumber: phone,
         timeout: Duration(seconds: 30),
         verificationCompleted: (AuthCredential credential) async {},
-        verificationFailed: (AuthException exception) {
+        verificationFailed: (FirebaseAuthException exception) {
           print(exception.message);
         },
         codeSent: (String verificationId, [int forceResendingToken]) async {

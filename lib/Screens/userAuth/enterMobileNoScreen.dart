@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -87,10 +89,11 @@ class _EnterMobileNoScreenState extends State<EnterMobileNoScreen> {
     Future<bool> verified;
     FirebaseAuth _auth = FirebaseAuth.instance;
     _auth.verifyPhoneNumber(
+        //autoRetrievedSmsCodeForTesting: ,
         phoneNumber: phone,
         timeout: Duration(seconds: 30),
         verificationCompleted: (AuthCredential credential) async {},
-        verificationFailed: (AuthException exception) {
+        verificationFailed: (FirebaseAuthException exception) {
           print(exception.message);
           Navigator.of(context).pop();
           Fluttertoast.showToast(msg: "Please Try Again");
@@ -112,15 +115,17 @@ class _EnterMobileNoScreenState extends State<EnterMobileNoScreen> {
             print(code);
             print('process flow');
             try {
-              AuthCredential credential = PhoneAuthProvider.getCredential(
+              AuthCredential credential = PhoneAuthProvider.credential(
                   verificationId: verificationId, smsCode: code);
               print('process flow');
-              AuthResult result = await _auth.signInWithCredential(credential);
+              UserCredential result =
+                  await _auth.signInWithCredential(credential);
+
               print('process flow');
-              FirebaseUser user = result.user;
+              User user = result.user;
               if (user != null) {
                 print('signed in with: ' + result.user.phoneNumber);
-                var u = await user.getIdToken();
+                var u = await user.getIdTokenResult();
                 print(u.token);
 
                 LoginPhoneNetworking loginPhoneNetworking =
@@ -129,7 +134,8 @@ class _EnterMobileNoScreenState extends State<EnterMobileNoScreen> {
                 int status = await loginPhoneNetworking.postData();
                 if (status == 200) {
                   Fluttertoast.showToast(msg: "Login Successfully");
-                  FirebaseAuth.instance.signOut();
+                  log(FirebaseAuth.instance.currentUser.uid);
+                  //FirebaseAuth.instance.signOut();
                   Navigator.pop(context);
                   signedIn = true;
                   if (widget.fromAllCourses) {
@@ -169,7 +175,7 @@ class _EnterMobileNoScreenState extends State<EnterMobileNoScreen> {
             print("code=null");
           }
         },
-        codeAutoRetrievalTimeout: null);
+        codeAutoRetrievalTimeout: (String verificationId) {});
     return verified;
   }
 

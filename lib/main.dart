@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sarvogyan/Screens/chooseColor.dart';
@@ -26,9 +27,16 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   Themes themes = Themes();
 
-//  getColr() {
-//    themes.getColor();
-//  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+  }
+
+  void getData() async {
+    await Firebase.initializeApp();
+  }
 
   @override
   Widget build(BuildContext context) {
