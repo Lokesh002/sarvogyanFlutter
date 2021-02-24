@@ -45,8 +45,8 @@ class ReusableExamCard extends StatelessWidget {
                     Container(
                         width: screenSize.screenWidth * 12,
                         height: screenSize.screenHeight * 10,
-                        child: (examPicture == 'images/logo.png')
-                            ? Image.asset('images/logo.png')
+                        child: (examPicture == 'images/media/logo.png')
+                            ? Image.asset('images/media/logo.png')
                             : Image.network(
                                 this.examPicture,
                                 fit: BoxFit.contain,

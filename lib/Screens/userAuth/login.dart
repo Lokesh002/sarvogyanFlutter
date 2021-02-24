@@ -87,7 +87,7 @@ class _LoginState extends State<Login> {
                 width: screenSize.screenWidth * 100,
                 height: screenSize.screenHeight * 25,
                 child: Image.asset(
-                  "images/logo.png",
+                  "images/media/logo.png",
                   fit: BoxFit.fitHeight,
                 ),
               ),

@@ -56,10 +56,12 @@ class _ShowResultsScreenState extends State<ShowResultsScreen> {
       );
     } else
       return Scaffold(
+        backgroundColor: Color(0xffffffff),
         appBar: AppBar(
           title: Text(widget.exam.examName),
         ),
         body: Container(
+          color: Colors.white,
           height: screenSize.screenHeight * 100,
           child: ListView.builder(
               itemBuilder: (BuildContext cntxt, int index) {
@@ -70,6 +72,7 @@ class _ShowResultsScreenState extends State<ShowResultsScreen> {
                   option2: widget.questionList[index].option2,
                   option3: widget.questionList[index].option3,
                   option4: widget.questionList[index].option4,
+                  color: Colors.white,
                   description: answer[(index + 1).toString()]['description'],
                   descriptionLink: answer[(index + 1).toString()]
                       ['descriptionLink'],

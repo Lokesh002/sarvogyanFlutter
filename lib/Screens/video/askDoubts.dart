@@ -68,7 +68,7 @@ class _AskDoubtsState extends State<AskDoubts> {
                     Row(
                       children: [
                         Text(
-                          'Created on: ${DateTime.fromMillisecondsSinceEpoch(doubts[index]['date']).toUtc().day}/${DateTime.fromMillisecondsSinceEpoch(doubts[index]['date']).toUtc().month}/${DateTime.fromMillisecondsSinceEpoch(doubts[index]['date']).toUtc().year}',
+                          'Created on: ${DateTime.fromMillisecondsSinceEpoch(int.parse(doubts[index]['date'])).toUtc().day.toString()}/${DateTime.fromMillisecondsSinceEpoch(int.parse(doubts[index]['date'])).toUtc().month.toString()}/${DateTime.fromMillisecondsSinceEpoch(int.parse(doubts[index]['date'])).toUtc().year.toString()}',
                           style: TextStyle(color: Colors.redAccent),
                         ),
                       ],

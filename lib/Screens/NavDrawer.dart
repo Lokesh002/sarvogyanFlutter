@@ -26,9 +26,9 @@ class NavDrawer {
               children: [
                 Container(
                     width: screenSize.screenWidth * 100,
-                    height: screenSize.screenHeight * 15,
+                    height: screenSize.screenHeight * 20,
                     child: Image.asset(
-                      'images/logo.png',
+                      'images/flogoBig.png',
                       fit: BoxFit.contain,
                     )),
               ],
@@ -81,9 +81,6 @@ class NavDrawer {
                                 }
                               },
                             ),
-                            Divider(
-                              thickness: 1,
-                            )
                           ],
                         );
                       },
@@ -93,6 +90,9 @@ class NavDrawer {
                           screenSize.screenHeight * 2.5,
                           0,
                           screenSize.screenHeight * 2.5)),
+                ),
+                Divider(
+                  thickness: 1,
                 ),
                 Container(
                   child: Text(
@@ -134,9 +134,6 @@ class NavDrawer {
                                 }
                               },
                             ),
-                            Divider(
-                              thickness: 1,
-                            )
                           ],
                         );
                       },

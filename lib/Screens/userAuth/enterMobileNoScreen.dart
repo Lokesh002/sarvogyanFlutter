@@ -197,7 +197,7 @@ class _EnterMobileNoScreenState extends State<EnterMobileNoScreen> {
                       width: screenSize.screenWidth * 100,
                       height: screenSize.screenHeight * 30,
                       child: Image.asset(
-                        "images/logo.png",
+                        "images/media/logo.png",
                         fit: BoxFit.fitHeight,
                       ),
                     ),

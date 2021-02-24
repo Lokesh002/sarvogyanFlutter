@@ -55,7 +55,7 @@ class _CourseCategScreenState extends State<CourseCategScreen> {
 
   String getSubscription(int index) {
     if (listofCourses[index].subscription == 'a')
-      return "Basic Course";
+      return "Free Course";
     else if (listofCourses[index].subscription == 'b')
       return "Basic Course";
     else if (listofCourses[index].subscription == 'c')
@@ -80,13 +80,14 @@ class _CourseCategScreenState extends State<CourseCategScreen> {
         return Scaffold(
             drawer: navDrawer.getNavDrawer(context, widget.sarvogyan),
             appBar: AppBar(
-              toolbarHeight: screenSize.screenHeight * 10,
+              //toolbarHeight: screenSize.screenHeight * 10,
               elevation: 5,
               title: Text(
                 widget.node.value,
                 style: TextStyle(
-                    color: Colors.white,
-                    fontSize: screenSize.screenHeight * 3.5),
+                  color: Colors.white,
+                ),
+                //  fontSize: screenSize.screenHeight * 3.5),
               ),
             ),
             body: listofCourses.length == 0
@@ -145,12 +146,11 @@ class _CourseCategScreenState extends State<CourseCategScreen> {
       return Scaffold(
           drawer: navDrawer.getNavDrawer(context, widget.sarvogyan),
           appBar: AppBar(
-            toolbarHeight: screenSize.screenHeight * 10,
+            // toolbarHeight: screenSize.screenHeight * 10,
             elevation: 5,
             title: Text(
               widget.node.value,
-              style: TextStyle(
-                  color: Colors.white, fontSize: screenSize.screenHeight * 3.5),
+              style: TextStyle(color: Colors.white),
             ),
           ),
           body: Container(
@@ -166,6 +166,7 @@ class _CourseCategScreenState extends State<CourseCategScreen> {
                     // Create a grid with 2 columns. If you change the scrollDirection to
                     // horizontal, this produces 2 rows.
                     crossAxisCount: 2,
+
                     // Generate 100 widgets that display their index in the List.
                     children:
                         List.generate(widget.node.children.length, (index) {
@@ -205,7 +206,7 @@ class _CourseCategScreenState extends State<CourseCategScreen> {
                             },
                             child: Container(
                               width: screenSize.screenWidth * 40,
-                              height: screenSize.screenHeight * 30,
+                              height: screenSize.screenHeight * 20,
                               child: Material(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(
@@ -225,7 +226,7 @@ class _CourseCategScreenState extends State<CourseCategScreen> {
                                         child: Image.asset(
                                           '${widget.imagePath}/${widget.node.children[index].value}.jpg',
                                           fit: BoxFit.contain,
-                                          height: screenSize.screenHeight * 10,
+                                          height: screenSize.screenHeight * 12,
                                           width: screenSize.screenWidth * 20,
                                         ),
                                       ),
@@ -234,15 +235,22 @@ class _CourseCategScreenState extends State<CourseCategScreen> {
                                       padding: EdgeInsets.only(
                                         left: screenSize.screenWidth * 1,
                                         right: screenSize.screenWidth * 1,
-                                        bottom: screenSize.screenHeight * 1,
-                                        top: screenSize.screenHeight * 1,
+                                        bottom: screenSize.screenHeight * 0,
+                                        top: screenSize.screenHeight * 0,
                                       ),
                                       child: Text(
                                         widget.node.children[index].value,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                            fontSize:
-                                                screenSize.screenHeight * 2),
+                                            fontSize: widget
+                                                        .node
+                                                        .children[index]
+                                                        .value
+                                                        .length <
+                                                    14
+                                                ? screenSize.screenHeight * 2.3
+                                                : screenSize.screenHeight *
+                                                    1.7),
                                       ),
                                     ),
                                   ],

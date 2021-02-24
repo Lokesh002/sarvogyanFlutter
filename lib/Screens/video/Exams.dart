@@ -161,7 +161,7 @@ class _ExamsState extends State<Exams> {
                                     examPicture: examList[index].examPicture ==
                                                 null ||
                                             examList[index].examPicture == ""
-                                        ? 'images/logo.png'
+                                        ? 'images/flogo.png'
                                         : examList[index].examPicture,
                                     examType: examList[index].examType,
                                     examDesc: examList[index].examDescription,

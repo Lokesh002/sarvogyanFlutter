@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sarvogyan/Screens/course/ListloadingScreen.dart';
 import 'package:sarvogyan/Screens/course/allCoursesScreen.dart';
 import 'package:sarvogyan/Screens/course/search/seachScreen.dart';
-import 'package:sarvogyan/Screens/docs/cloudDocsScreen.dart';
+import 'package:sarvogyan/Screens/course/search/searchCourse.dart';
 
 import 'package:sarvogyan/Screens/docs/docsScreen.dart';
 import 'package:sarvogyan/Screens/exams/examCategScreen.dart';
@@ -19,6 +19,7 @@ import 'package:sarvogyan/Screens/profile/wishlist/wishlistScreen.dart';
 import 'package:sarvogyan/Screens/userAuth/login.dart';
 import 'package:sarvogyan/components/courseTree.dart';
 import 'package:sarvogyan/components/sizeConfig.dart';
+import 'package:sarvogyan/lists/allCategory_list.dart';
 import 'package:sarvogyan/lists/allCoursesList.dart';
 import 'package:sarvogyan/utilities/sharedPref.dart';
 
@@ -54,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  int currentIndex = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -63,6 +65,15 @@ class _HomeScreenState extends State<HomeScreen> {
     _selectedIndex = _defaultIndex;
   }
 
+  PageController pageController = new PageController();
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   SizeConfig screenSize;
   @override
   Widget build(BuildContext context) {
@@ -70,225 +81,254 @@ class _HomeScreenState extends State<HomeScreen> {
     screenSize = SizeConfig(context);
     return WillPopScope(
       onWillPop: onWillPop,
-      child: DefaultTabController(
-        length: 5,
-        child: Scaffold(
-          drawer: navDrawer.getNavDrawer(context, sarvogyan),
-          appBar: AppBar(
-            actions: <Widget>[
-              SizedBox(
-                width: screenSize.screenWidth * 3,
+      child: Scaffold(
+        drawer: navDrawer.getNavDrawer(context, sarvogyan),
+        appBar: AppBar(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Hero(
+                tag: 'logo',
+                child: Container(
+                    height: screenSize.screenHeight * 7,
+                    child: Image.asset('images/media/logo.png')),
               ),
-              signedIn
-                  ? PopupMenuButton(
-                      itemBuilder: (BuildContext context) {
-                        return [
-                          PopupMenuItem(
-                            value: 'Profile',
-                            child: Text('Profile'),
-                          ),
-                          PopupMenuItem(
-                            value: 'Notes',
-                            child: Text('My Notes'),
-                          ),
-                          PopupMenuItem(
-                            value: 'Certificates',
-                            child: Text('My Certificates'),
-                          ),
-                          PopupMenuItem(
-                            value: 'Wishlist',
-                            child: Text('My Wishlist'),
-                          ),
-                          PopupMenuItem(
-                            value: 'Results',
-                            child: Text('My Results'),
-                          ),
-                          PopupMenuItem(
-                            value: 'Subscription',
-                            child: Text('Subscription'),
-                          )
-                        ];
-                      },
-                      onSelected: (value) {
-                        if (value == 'Profile') {
-                          signedIn
-                              ? Navigator.pushNamed(context, '/profile')
-                              : Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                  return Login(true);
-                                }));
-                        }
-                        if (value == 'Notes') {
-                          signedIn
-                              ? Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                  return SavedNotes();
-                                }))
-                              : Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                  return Login(true);
-                                }));
-                        }
-                        if (value == 'Certificates') {
-                          signedIn
-                              ? Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                  return CertificateScreen();
-                                }))
-                              : Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                  return Login(true);
-                                }));
-                        }
-                        if (value == 'Wishlist') {
-                          signedIn
-                              ? Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                  return WishlistScreen();
-                                }))
-                              : Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                  return Login(true);
-                                }));
-                        }
-                        if (value == 'Results') {
-                          signedIn
-                              ? Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                  return MyResultScreen();
-                                }))
-                              : Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                  return Login(true);
-                                }));
-                        }
-                        if (value == 'Subscription') {
-                          signedIn
-                              ? Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                  return BuySubscription();
-                                }))
-                              : Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                  return Login(true);
-                                }));
-                        }
-                      },
-                    )
-                  : GestureDetector(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return Login(true);
-                        }));
-                      },
-                      child: Icon(
-                        Icons.account_circle,
-                        size: screenSize.screenHeight * 6,
-                        color: Colors.white,
-                      )),
-              SizedBox(
-                width: screenSize.screenWidth * 3,
-              ),
+              Text("Sarvogyan",
+                  style: TextStyle(
+                      color: Theme.of(context).accentColor,
+                      fontSize: screenSize.screenHeight * 3)),
             ],
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Hero(
-                  tag: 'logo',
-                  child: Container(
-                      height: screenSize.screenHeight * 7,
-                      child: Image.asset('images/logo.png')),
-                ),
-                Text("Sarvogyan",
-                    style: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontSize: screenSize.screenHeight * 3)),
-              ],
-            ),
-            backgroundColor: Theme.of(context).primaryColor,
-            elevation: 5,
-            bottom: TabBar(
-              unselectedLabelColor: Theme.of(context).accentColor,
-              indicator: BoxDecoration(
-                borderRadius:
-                    BorderRadius.circular(screenSize.screenHeight * 5),
-                color: Theme.of(context).accentColor,
-              ),
-              tabs: <Widget>[
-                Tab(
-                  child: Container(
-                    child: CircleAvatar(
-                      radius: screenSize.screenHeight * 2.5,
-                      backgroundColor: Colors.white,
-                      child: Icon(
-                        Icons.search,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                  ),
-                ),
-                Tab(
-                  child: Container(
-                    child: CircleAvatar(
-                      radius: screenSize.screenHeight * 2.5,
-                      backgroundColor: Colors.white,
-                      child: Icon(
-                        Icons.favorite_rounded,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ),
-                ),
-                Tab(
-                  child: Container(
-                    child: CircleAvatar(
-                      radius: screenSize.screenHeight * 2.5,
-                      backgroundColor: Colors.white,
-                      child: Icon(
-                        Icons.library_books,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-                Tab(
-                  child: Container(
-                    child: CircleAvatar(
-                      radius: screenSize.screenHeight * 2.5,
-                      backgroundColor: Colors.white,
-                      child: Icon(
-                        Icons.border_color,
-                        color: Colors.blue,
-                      ),
-                    ),
-                  ),
-                ),
-                Tab(
-                  child: Container(
-                    child: CircleAvatar(
-                      radius: screenSize.screenHeight * 2.5,
-                      backgroundColor: Colors.white,
-                      child: Icon(
-                        Icons.description,
-                        color: Colors.green,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-              onTap: _onTapHandler,
-            ),
           ),
-          backgroundColor: Theme.of(context).accentColor,
-          body: TabBarView(children: [
-            SearchScreen(),
+          actions: [
+            SizedBox(
+              width: screenSize.screenWidth * 3,
+            ),
+            signedIn
+                ? PopupMenuButton(
+                    itemBuilder: (BuildContext context) {
+                      return [
+                        PopupMenuItem(
+                          value: 'Profile',
+                          child: Text('Profile'),
+                        ),
+                        PopupMenuItem(
+                          value: 'Notes',
+                          child: Text('My Notes'),
+                        ),
+                        PopupMenuItem(
+                          value: 'Certificates',
+                          child: Text('My Certificates'),
+                        ),
+                        PopupMenuItem(
+                          value: 'Wishlist',
+                          child: Text('My Wishlist'),
+                        ),
+                        PopupMenuItem(
+                          value: 'Results',
+                          child: Text('My Results'),
+                        ),
+                        PopupMenuItem(
+                          value: 'Subscription',
+                          child: Text('Subscription'),
+                        )
+                      ];
+                    },
+                    onSelected: (value) {
+                      if (value == 'Profile') {
+                        signedIn
+                            ? Navigator.pushNamed(context, '/profile')
+                            : Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                                return Login(true);
+                              }));
+                      }
+                      if (value == 'Notes') {
+                        signedIn
+                            ? Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                                return SavedNotes();
+                              }))
+                            : Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                                return Login(true);
+                              }));
+                      }
+                      if (value == 'Certificates') {
+                        signedIn
+                            ? Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                                return CertificateScreen();
+                              }))
+                            : Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                                return Login(true);
+                              }));
+                      }
+                      if (value == 'Wishlist') {
+                        signedIn
+                            ? Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                                return WishlistScreen();
+                              }))
+                            : Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                                return Login(true);
+                              }));
+                      }
+                      if (value == 'Results') {
+                        signedIn
+                            ? Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                                return MyResultScreen();
+                              }))
+                            : Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                                return Login(true);
+                              }));
+                      }
+                      if (value == 'Subscription') {
+                        signedIn
+                            ? Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                                return BuySubscription();
+                              }))
+                            : Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                                return Login(true);
+                              }));
+                      }
+                    },
+                  )
+                : GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return Login(true);
+                      }));
+                    },
+                    child: Icon(
+                      Icons.account_circle,
+                      size: screenSize.screenHeight * 6,
+                      color: Colors.white,
+                    )),
+            SizedBox(
+              width: screenSize.screenWidth * 3,
+            ),
+          ],
+          backgroundColor: Theme.of(context).primaryColor,
+          elevation: 5,
+        ),
+        body: PageView(
+          onPageChanged: (index) {
+            currentIndex = index;
+            setState(() {});
+          },
+          controller: pageController,
+          children: [
+            SearchCourse(),
             MyCourses(),
             AllCoursesScreen(sarvogyan, sarvogyan.children[0], 'images/media'),
             ExamCategScreen(
                 sarvogyan, "", sarvogyan.children[1], 'images/media'),
-            DocsScreen('/documents'),
-          ]),
+            DocsScreen('/documents')
+          ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          onTap: (page) {
+            setState(() {
+              currentIndex = page;
+            });
+            pageController.jumpToPage(page);
+          },
+          currentIndex: currentIndex,
+          selectedIconTheme:
+              IconThemeData(color: Theme.of(context).primaryColor),
+          unselectedIconTheme:
+              IconThemeData(color: Theme.of(context).accentColor),
+          unselectedLabelStyle: TextStyle(color: Colors.white),
+          backgroundColor: Colors.white,
+          unselectedItemColor: Colors.black,
+          items: [
+            BottomNavigationBarItem(
+              icon: Container(
+                child: CircleAvatar(
+                  radius: screenSize.screenHeight * 2.5,
+                  backgroundColor: currentIndex == 0
+                      ? Theme.of(context).primaryColor
+                      : Colors.white,
+                  child: Icon(
+                    Icons.search,
+                    color: currentIndex == 0 ? Colors.white : Colors.black,
+                  ),
+                ),
+              ),
+              label: "Search",
+            ),
+            BottomNavigationBarItem(
+                icon: Container(
+                  child: CircleAvatar(
+                    radius: screenSize.screenHeight * 2.5,
+                    backgroundColor: currentIndex == 1
+                        ? Theme.of(context).primaryColor
+                        : Colors.white,
+                    child: Icon(
+                      currentIndex == 1
+                          ? Icons.favorite
+                          : Icons.favorite_border,
+                      color: currentIndex == 1 ? Colors.white : Colors.black,
+                    ),
+                  ),
+                ),
+                label: 'My Courses'),
+            BottomNavigationBarItem(
+                icon: Container(
+                  child: CircleAvatar(
+                    radius: screenSize.screenHeight * 2.5,
+                    backgroundColor: currentIndex == 2
+                        ? Theme.of(context).primaryColor
+                        : Colors.white,
+                    child: Icon(
+                      currentIndex == 2
+                          ? Icons.library_books
+                          : Icons.library_books_outlined,
+                      color: currentIndex == 2 ? Colors.white : Colors.black,
+                    ),
+                  ),
+                ),
+                label: 'All Courses'),
+            BottomNavigationBarItem(
+                icon: Container(
+                  child: CircleAvatar(
+                    radius: screenSize.screenHeight * 2.5,
+                    backgroundColor: currentIndex == 3
+                        ? Theme.of(context).primaryColor
+                        : Colors.white,
+                    child: Icon(
+                      Icons.border_color,
+                      size: screenSize.screenHeight * 3,
+                      color: currentIndex == 3 ? Colors.white : Colors.black,
+                    ),
+                  ),
+                ),
+                label: 'Exams'),
+            BottomNavigationBarItem(
+                icon: Container(
+                  child: CircleAvatar(
+                    radius: screenSize.screenHeight * 2.5,
+                    backgroundColor: currentIndex == 4
+                        ? Theme.of(context).primaryColor
+                        : Colors.white,
+                    child: Icon(
+                      currentIndex == 4
+                          ? Icons.description
+                          : Icons.description_outlined,
+                      color: currentIndex == 4 ? Colors.white : Colors.black,
+                    ),
+                  ),
+                ),
+                label: 'E Books'),
+          ],
         ),
       ),
     );

@@ -9,6 +9,7 @@ import 'package:sarvogyan/Screens/profile/subscription/buySubscription.dart';
 import 'package:sarvogyan/Screens/course/courseRegistrationLoadingScreen.dart';
 import 'package:sarvogyan/Screens/userAuth/login.dart';
 import 'package:sarvogyan/components/Cards/ReusableButton.dart';
+import 'package:sarvogyan/components/Constants/constants.dart';
 import 'package:sarvogyan/components/Networking/networking.dart';
 import 'package:sarvogyan/components/sizeConfig.dart';
 import 'package:sarvogyan/lists/course_List.dart';
@@ -78,7 +79,7 @@ class _CourseSelectedState extends State<CourseSelected> {
         picture = widget.decodedData["picture"];
         pic = Image.network(picture);
       } else {
-        picture = 'images/logo.png';
+        picture = 'images/media/logo.png';
         pic = Image.asset(picture);
       }
       if (widget.decodedData["totalParts"] != null) {
@@ -115,7 +116,7 @@ class _CourseSelectedState extends State<CourseSelected> {
       print("get tg  details");
 
       name = 'Course Not Approved';
-      picture = 'images/logo.png';
+      picture = 'images/media/logo.png';
       pic = Image.asset(picture);
       teacherName = '';
       desc = '';
@@ -218,7 +219,8 @@ class _CourseSelectedState extends State<CourseSelected> {
                   decoration: BoxDecoration(
                     borderRadius:
                         BorderRadius.circular(screenSize.screenHeight * 3),
-                    border: Border.all(color: Colors.white, width: 1),
+                    border: Border.all(
+                        color: Theme.of(context).primaryColor, width: 1),
                   ),
                   height: screenSize.screenHeight * 5,
                   width: addedToWishList
@@ -227,28 +229,31 @@ class _CourseSelectedState extends State<CourseSelected> {
                   child: Material(
                     borderRadius:
                         BorderRadius.circular(screenSize.screenHeight * 3),
-                    child: addedToWishList
-                        ? Center(
-                            child: Text(
-                              'Remove from Wishlist',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: screenSize.screenHeight * 2),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: screenSize.screenWidth * 1),
+                      child: addedToWishList
+                          ? Center(
+                              child: Text(
+                                'Remove from Wishlist',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: screenSize.screenHeight * 1.6),
+                              ),
+                            )
+                          : Center(
+                              child: Text(
+                                'Add to wishlist',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: screenSize.screenHeight * 1.6),
+                              ),
                             ),
-                          )
-                        : Center(
-                            child: Text(
-                              'Add to wishlist',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: screenSize.screenHeight * 2),
-                            ),
-                          ),
-                    color: addedToWishList
-                        ? Colors.grey
-                        : Theme.of(context).primaryColor,
+                    ),
+                    color: addedToWishList ? Colors.grey : Colors.white,
                     elevation: 5,
                   ),
                 ),
@@ -328,7 +333,8 @@ class _CourseSelectedState extends State<CourseSelected> {
                                       child: ClipOval(
                                         child: SizedBox(
                                           child: FadeInImage.assetNetwork(
-                                              placeholder: 'images/logo.png',
+                                              placeholder:
+                                                  'images/media/logo.png',
                                               image: teacherPic),
                                         ),
                                       ),
@@ -499,20 +505,22 @@ class _CourseSelectedState extends State<CourseSelected> {
                             ),
                           ],
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: screenSize.screenWidth * 5),
-                          child: Text(
-                            "Preview",
-                            softWrap: true,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: screenSize.screenHeight * 3.5,
-                              fontFamily: "Roboto",
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                        widget.previewData.length > 0
+                            ? Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: screenSize.screenWidth * 5),
+                                child: Text(
+                                  "Preview",
+                                  softWrap: true,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: screenSize.screenHeight * 3.5,
+                                    fontFamily: "Roboto",
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              )
+                            : SizedBox(),
                         Container(
                           alignment: Alignment.center,
                           height: screenSize.screenHeight * 30,
@@ -549,7 +557,11 @@ class _CourseSelectedState extends State<CourseSelected> {
                                                 MaterialPageRoute(
                                                     builder: (context) {
                                               return CourseVideoScreen(
-                                                  id: link);
+                                                  id: link,
+                                                  name: name,
+                                                  desc: desc,
+                                                  previewData:
+                                                      widget.previewData);
                                             }));
                                           } else {
                                             Navigator.push(context,
@@ -564,18 +576,56 @@ class _CourseSelectedState extends State<CourseSelected> {
                                           }
                                         },
                                         child: Material(
-                                          color: Colors.white70,
+                                          borderRadius: BorderRadius.circular(
+                                              screenSize.screenHeight * 2),
+                                          color: ColorList[index % 4],
                                           elevation: 3,
                                           child: Container(
                                             alignment: Alignment.center,
                                             width: screenSize.screenWidth * 30,
                                             height:
-                                                screenSize.screenHeight * 20,
-                                            child: Center(
-                                                child: Text(
-                                              widget.previewData[index]['name'],
-                                              textAlign: TextAlign.center,
-                                            )),
+                                                screenSize.screenHeight * 22,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  widget.previewData[index]
+                                                              ['type'] !=
+                                                          'text'
+                                                      ? Icons.personal_video
+                                                      : Icons.description,
+                                                  size:
+                                                      screenSize.screenHeight *
+                                                          6,
+                                                  color: Colors.white,
+                                                ),
+                                                Container(
+                                                  height:
+                                                      screenSize.screenHeight *
+                                                          15,
+                                                  child: Padding(
+                                                    padding: EdgeInsets.symmetric(
+                                                        vertical: screenSize
+                                                                .screenHeight *
+                                                            1,
+                                                        horizontal: screenSize
+                                                                .screenWidth *
+                                                            1),
+                                                    child: Text(
+                                                      widget.previewData[index]
+                                                          ['name'],
+                                                      overflow:
+                                                          TextOverflow.clip,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),

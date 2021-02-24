@@ -54,7 +54,7 @@ class ReusableShowAnswerCard extends StatelessWidget {
                   Container(
                     width: screenSize.screenWidth * 75,
                     child: FadeInImage.assetNetwork(
-                      placeholder: 'images/logo.png',
+                      placeholder: 'images/media/logo.png',
                       image: this.questionLink,
                       fit: BoxFit.contain,
                     ),
@@ -62,7 +62,7 @@ class ReusableShowAnswerCard extends StatelessWidget {
                 ],
               )
             : Image.asset(
-                'images/logo.png',
+                'images/media/logo.png',
                 fit: BoxFit.contain,
               ),
       );
@@ -84,12 +84,12 @@ class ReusableShowAnswerCard extends StatelessWidget {
         width: screenSize.screenWidth * 95,
         child: (descriptionLink != null)
             ? FadeInImage.assetNetwork(
-                placeholder: 'images/logo.png',
+                placeholder: 'images/media/logo.png',
                 image: this.descriptionLink,
                 fit: BoxFit.contain,
               )
             : Image.asset(
-                'images/logo.png',
+                'images/media/logo.png',
                 fit: BoxFit.contain,
               ),
       );
@@ -150,6 +150,13 @@ class ReusableShowAnswerCard extends StatelessWidget {
                             horizontal: screenSize.screenWidth * 2,
                             vertical: screenSize.screenHeight * 1),
                         child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                                screenSize.screenHeight * 2),
+                            border: Border.all(
+                                color: Theme.of(context).primaryColor,
+                                width: 1),
+                          ),
                           width: screenSize.screenWidth * 95,
                           child: Material(
                             color: getOptionColor(1),
@@ -177,6 +184,13 @@ class ReusableShowAnswerCard extends StatelessWidget {
                             horizontal: screenSize.screenWidth * 2,
                             vertical: screenSize.screenHeight * 1),
                         child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                                screenSize.screenHeight * 2),
+                            border: Border.all(
+                                color: Theme.of(context).primaryColor,
+                                width: 1),
+                          ),
                           width: screenSize.screenWidth * 95,
                           child: Material(
                             color: getOptionColor(2),
@@ -204,6 +218,13 @@ class ReusableShowAnswerCard extends StatelessWidget {
                             horizontal: screenSize.screenWidth * 2,
                             vertical: screenSize.screenHeight * 1),
                         child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                                screenSize.screenHeight * 2),
+                            border: Border.all(
+                                color: Theme.of(context).primaryColor,
+                                width: 1),
+                          ),
                           width: screenSize.screenWidth * 95,
                           child: Material(
                             color: getOptionColor(3),
@@ -231,6 +252,13 @@ class ReusableShowAnswerCard extends StatelessWidget {
                             horizontal: screenSize.screenWidth * 2,
                             vertical: screenSize.screenHeight * 1),
                         child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                                screenSize.screenHeight * 2),
+                            border: Border.all(
+                                color: Theme.of(context).primaryColor,
+                                width: 1),
+                          ),
                           width: screenSize.screenWidth * 95,
                           child: Material(
                             color: getOptionColor(4),

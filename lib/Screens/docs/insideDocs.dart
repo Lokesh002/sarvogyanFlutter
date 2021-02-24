@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:developer';
+import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:dio/dio.dart';
 import 'package:ext_storage/ext_storage.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:sarvogyan/Screens/docs/pdfView/pdfViewer.dart';
 import 'package:sarvogyan/Screens/userAuth/login.dart';
 import 'package:sarvogyan/components/Cards/CertificateCard.dart';
 import 'package:sarvogyan/components/Cards/DocsCard.dart';
@@ -70,11 +72,7 @@ class _InsideDocsState extends State<InsideDocs> {
           downloadMessage = 'Downloading....  ${percentage.floor()}%';
           if (percentage == 100) {
             downloadComplete = true;
-            setState(() {
-              Fluttertoast.showToast(
-                  msg: "Go to Internal Storage/Downloads to check the file.",
-                  toastLength: Toast.LENGTH_LONG);
-            });
+            setState(() {});
           }
         });
       },
@@ -84,28 +82,15 @@ class _InsideDocsState extends State<InsideDocs> {
                   validateStatus: (status) {
                     return status < 500;
                   }));
-      File file = File(fullPath);
-      var raf = file.openSync(mode: FileMode.write);
-      raf.writeFromSync(response.data);
-      await raf.close();
+      Uint8List uint8list = response.data;
       Navigator.of(context).pop();
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return PDFViewer(uint8list, name);
+      }));
     } catch (e) {
       print(e);
     }
 
-//
-//    dio.download(url, '${dir.path}/kartikResume.pdf',
-//        onReceiveProgress: (actualbytes, totalbytes) {
-//      var percentage = (actualbytes / totalbytes) * 100;
-//
-//      setState(() {
-//        downloadMessage = 'Downoading....  ${percentage.floor()}%';
-//        if(percentage==100)
-    //{
-    //     downloadComplete=true;
-    //}
-//      });
-//    });
     downloadComplete = true;
   }
 
@@ -152,7 +137,7 @@ class _InsideDocsState extends State<InsideDocs> {
   }
 
   Widget showScreen() {
-    print('hello');
+    //print('hello');
     if (!isReady) {
       return Scaffold(
         backgroundColor: Color(0xffffffff),
@@ -199,7 +184,7 @@ class _InsideDocsState extends State<InsideDocs> {
                               button: ReusableButton(
                                   height: screenSize.screenHeight * 5,
                                   width: screenSize.screenWidth * 15,
-                                  content: "Download",
+                                  content: "View",
                                   onPress: () async {
                                     Reference stRef = storage.ref().child(
                                         widget.path +

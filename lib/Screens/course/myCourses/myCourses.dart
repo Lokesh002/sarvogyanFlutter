@@ -127,7 +127,7 @@ class _MyCoursesState extends State<MyCourses> {
                       alignment: AlignmentDirectional.bottomEnd,
                       children: <Widget>[
                         Container(
-                          height: screenSize.screenHeight * 80,
+                          height: screenSize.screenHeight * 78,
                           child: ListView.builder(
                               itemBuilder: (BuildContext cntxt, int index) {
                                 return ReusableCourseCard(

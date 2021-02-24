@@ -22,8 +22,10 @@ class _CourseSelectedLoadingScreenState
     var decodedData =
         await courseModel.getCourseDetails(widget.courseSelected.id);
     Networking networking = Networking();
-    var previewData = await networking.getData(
-        '/api/part/${decodedData['lessons'][decodedData['lessons'].length - 1]['lesson']}/details');
+    var previewData = decodedData['lessons'].length > 0
+        ? await networking.getData(
+            '/api/part/${decodedData['lessons'][decodedData['lessons'].length - 1]['lesson']}/details')
+        : [];
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
       print("hello world");
       print(decodedData);

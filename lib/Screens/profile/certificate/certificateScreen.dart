@@ -124,7 +124,7 @@ class _CertificateScreenState extends State<CertificateScreen> {
         await networking.getData('/api/document/getUserCertificates/' + userID);
     // log(data.toString());
     certificates = data['files'];
-    log(certificates[0].toString());
+    // log(certificates[0].toString());
     isReady = true;
     if (mounted) setState(() {});
   }

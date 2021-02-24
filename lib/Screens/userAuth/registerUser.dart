@@ -171,7 +171,7 @@ class _RegisterUserState extends State<RegisterUser> {
                           width: screenSize.screenWidth * 100,
                           height: screenSize.screenHeight * 25,
                           child: Image.asset(
-                            "images/logo.png",
+                            "images/media/logo.png",
                             fit: BoxFit.contain,
                           ),
                         ),

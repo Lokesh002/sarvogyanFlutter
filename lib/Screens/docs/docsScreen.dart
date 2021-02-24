@@ -20,7 +20,7 @@ import 'package:sarvogyan/utilities/sharedPref.dart';
 import 'package:sarvogyan/Screens/docs/insideDocs.dart';
 
 class DocsScreen extends StatefulWidget {
-  String path;
+  final String path;
   DocsScreen(this.path);
   @override
   _DocsScreenState createState() => _DocsScreenState();
@@ -157,7 +157,7 @@ class _DocsScreenState extends State<DocsScreen> {
                 alignment: AlignmentDirectional.bottomCenter,
                 children: <Widget>[
                   Container(
-                      height: screenSize.screenHeight * 80,
+                      height: screenSize.screenHeight * 78,
                       child: ListView.builder(
                           itemBuilder: (BuildContext cntxt, int index) {
                             return ReusableDocsCard(

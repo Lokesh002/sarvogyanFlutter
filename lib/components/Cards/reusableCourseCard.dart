@@ -49,8 +49,9 @@ class ReusableCourseCard extends StatelessWidget {
                       height: screenSize.screenWidth * 15,
                       child: (image != null)
                           ? FadeInImage.assetNetwork(
-                              placeholder: 'images/logo.png', image: this.image)
-                          : Image.asset('images/logo.png'),
+                              placeholder: 'images/media/logo.png',
+                              image: this.image)
+                          : Image.asset('images/media/logo.png'),
                     ),
 //                    Icon(
 //                      Icons.library_books,

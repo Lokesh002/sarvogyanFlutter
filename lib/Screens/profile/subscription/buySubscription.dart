@@ -57,6 +57,7 @@ class _BuySubscriptionState extends State<BuySubscription> {
   String subscription;
   Razorpay _razorpay;
   String acsTkn;
+  int balance;
   String OrderID;
   int addAmount;
   Future getSubscription(PaymentSuccessResponse response) async {
@@ -196,7 +197,7 @@ class _BuySubscriptionState extends State<BuySubscription> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    getData();
     _razorpay = Razorpay();
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
@@ -243,15 +244,50 @@ class _BuySubscriptionState extends State<BuySubscription> {
     return true;
   }
 
+  getData() async {
+    balance = await savedData.getBalance();
+  }
+
   Future<bool> sureDialog(BuildContext context) {
     return showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
           return new AlertDialog(
-            title: Text('Are you Sure?'),
+            title: Column(
+              children: [
+                Text('Are you Sure?'),
+                SizedBox(
+                  height: screenSize.screenHeight * 1,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Cost: '),
+                    Text(cost.toString()),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Balance: '),
+                    Text(balance.toString()),
+                  ],
+                ),
+                Divider(
+                  thickness: 1,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Remaining: '),
+                    Text((cost > balance ? cost - balance : 0).toString()),
+                  ],
+                )
+              ],
+            ),
             content: Container(
-              height: screenSize.screenHeight * 5,
+              height: screenSize.screenHeight * 1,
               width: screenSize.screenWidth * 60,
             ),
             contentPadding: EdgeInsets.all(10),
@@ -280,13 +316,23 @@ class _BuySubscriptionState extends State<BuySubscription> {
   }
 
   onPressBasic(int time) async {
+    if (time == 3) {
+      cost = 399;
+    } else if (time == 6) {
+      cost = 499;
+    } else if (time == 12) {
+      cost = 699;
+    }
     subscription = 'b';
     bool sure;
     this.time = time.toString();
     bool x = await shouldSubscribe(subscription);
     if (x) {
       await sureDialog(context).then((value) {
-        sure = value;
+        if (value != null)
+          sure = value;
+        else
+          sure = false;
       });
       if (sure) {
         showAlertDialog(context);
@@ -349,12 +395,12 @@ class _BuySubscriptionState extends State<BuySubscription> {
                       semanticsLabel: 'A red up arrow'),
                 ),
                 SizedBox(
-                  height: screenSize.screenHeight * 5,
+                  height: screenSize.screenHeight * 3,
                 ),
                 Container(
                   color: Theme.of(context).primaryColor,
                   width: screenSize.screenWidth * 100,
-                  height: screenSize.screenHeight * 55,
+                  height: screenSize.screenHeight * 58,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: <Widget>[
@@ -362,16 +408,16 @@ class _BuySubscriptionState extends State<BuySubscription> {
                         padding: const EdgeInsets.all(8.0),
                         child: ReusableOptionCard(
                           width: screenSize.screenWidth * 40,
-                          height: screenSize.screenHeight * 50,
+                          height: screenSize.screenHeight * 52,
                           elevation: 5,
-                          color: Colors.white70,
+                          color: Colors.white,
                           cardChild: Column(
                             children: <Widget>[
                               SizedBox(
                                 height: screenSize.screenHeight * 2,
                               ),
                               Image.asset(
-                                'images/logo.png',
+                                'images/media/logo.png',
                               ),
                               SizedBox(
                                 height: screenSize.screenHeight * 2,
@@ -404,13 +450,23 @@ class _BuySubscriptionState extends State<BuySubscription> {
                                 'Rs. 399',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: screenSize.screenHeight * 3,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Roboto"),
+                              ),
+                              Text(
+                                'Rs. 500',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    decoration: TextDecoration.lineThrough,
                                     color: Colors.black54,
                                     fontSize: screenSize.screenHeight * 2,
                                     fontWeight: FontWeight.normal,
                                     fontFamily: "Roboto"),
                               ),
                               SizedBox(
-                                height: screenSize.screenHeight * 2,
+                                height: screenSize.screenHeight * 1,
                               ),
                               ReusableButton(
                                 height: screenSize.screenHeight * 7,
@@ -430,14 +486,14 @@ class _BuySubscriptionState extends State<BuySubscription> {
                           width: screenSize.screenWidth * 40,
                           height: screenSize.screenHeight * 40,
                           elevation: 5,
-                          color: Colors.white70,
+                          color: Colors.white,
                           cardChild: Column(
                             children: <Widget>[
                               SizedBox(
                                 height: screenSize.screenHeight * 2,
                               ),
                               Image.asset(
-                                'images/logo.png',
+                                'images/media/logo.png',
                               ),
                               SizedBox(
                                 height: screenSize.screenHeight * 2,
@@ -470,6 +526,16 @@ class _BuySubscriptionState extends State<BuySubscription> {
                                 'Rs. 499',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: screenSize.screenHeight * 3,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Roboto"),
+                              ),
+                              Text(
+                                'Rs. 700',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    decoration: TextDecoration.lineThrough,
                                     color: Colors.black54,
                                     fontSize: screenSize.screenHeight * 2,
                                     fontWeight: FontWeight.normal,
@@ -496,14 +562,14 @@ class _BuySubscriptionState extends State<BuySubscription> {
                           width: screenSize.screenWidth * 40,
                           height: screenSize.screenHeight * 40,
                           elevation: 5,
-                          color: Colors.white70,
+                          color: Colors.white,
                           cardChild: Column(
                             children: <Widget>[
                               SizedBox(
                                 height: screenSize.screenHeight * 2,
                               ),
                               Image.asset(
-                                'images/logo.png',
+                                'images/media/logo.png',
                               ),
                               SizedBox(
                                 height: screenSize.screenHeight * 2,
@@ -533,10 +599,20 @@ class _BuySubscriptionState extends State<BuySubscription> {
                                 height: screenSize.screenHeight * 2,
                               ),
                               Text(
-                                'Rs. 999',
+                                'Rs. 699',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: screenSize.screenHeight * 3,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Roboto"),
+                              ),
+                              Text(
+                                'Rs. 1000',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: Colors.black54,
+                                    decoration: TextDecoration.lineThrough,
                                     fontSize: screenSize.screenHeight * 2,
                                     fontWeight: FontWeight.normal,
                                     fontFamily: "Roboto"),

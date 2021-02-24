@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sarvogyan/Screens/course/readCourseDocScreen.dart';
@@ -70,6 +71,7 @@ class _VideoScreenState extends State<VideoScreen> {
     if (_isPlayerReady && mounted && !_controller.value.isFullScreen) {
       setState(() {
         listVisible = true;
+
         playerState = _controller.value.playerState;
         videoMetaData = _controller.metadata;
       });
@@ -90,6 +92,7 @@ class _VideoScreenState extends State<VideoScreen> {
   @override
   void dispose() {
     _controller.dispose();
+
     pageController.dispose();
     super.dispose();
   }

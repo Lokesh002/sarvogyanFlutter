@@ -26,6 +26,7 @@ class _UpdatedExamScreenState extends State<UpdatedExamScreen> {
   List<Question> questionList;
   double x = 0.0;
   int currentPage = 0;
+  bool dialogShown = false;
   PageController pageViewController =
       PageController(viewportFraction: 1, keepPage: true);
   ScrollController scrollController = ScrollController();
@@ -63,6 +64,7 @@ class _UpdatedExamScreenState extends State<UpdatedExamScreen> {
       sub.onDone(() {
         print("Done");
         countDownTimer.cancel();
+
         submit();
         sub.cancel();
       });
@@ -112,7 +114,9 @@ class _UpdatedExamScreenState extends State<UpdatedExamScreen> {
     int score = 0;
     print('answer');
     print(answers);
-
+    if (dialogShown) {
+      Navigator.pop(context);
+    }
     //ACTUAL CODE GOES HERE
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
       return ResultScreen(answers, questionList, widget.exam);
@@ -195,6 +199,7 @@ class _UpdatedExamScreenState extends State<UpdatedExamScreen> {
           width: screenSize.screenWidth * 8,
           height: screenSize.screenHeight * 4,
           child: Material(
+            //elevation: 5,
             color: Colors.purpleAccent,
             child: Center(
               child: Text(
@@ -234,185 +239,204 @@ class _UpdatedExamScreenState extends State<UpdatedExamScreen> {
   }
 
   Future<String> showStatus(BuildContext context) {
+    dialogShown = true;
+    print('dialog opened');
     return showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return new AlertDialog(
-            title: Text('Status'),
-            content: Container(
-              height: screenSize.screenHeight * 80,
-              width: screenSize.screenWidth * 80,
-              child: Column(children: [
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: screenSize.screenWidth),
-                ),
-                Container(
-                  width: screenSize.screenWidth * 80,
-                  height: screenSize.screenHeight * 4,
-                  child: Row(
-                    children: [
-                      Padding(
+          return WillPopScope(
+            onWillPop: () {
+              dialogShown = false;
+              print('dialog closed');
+              Navigator.pop(context);
+              return;
+            },
+            child: new AlertDialog(
+              title: Text('Status'),
+              content: Container(
+                height: screenSize.screenHeight * 80,
+                width: screenSize.screenWidth * 80,
+                child: Column(children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: screenSize.screenWidth),
+                  ),
+                  Container(
+                    width: screenSize.screenWidth * 80,
+                    height: screenSize.screenHeight * 4,
+                    child: Row(
+                      children: [
+                        Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: screenSize.screenWidth * 2),
+                            child: getIcon('1', 1)),
+                        Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: screenSize.screenWidth * 2),
-                          child: getIcon('1', 1)),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: screenSize.screenWidth * 2),
-                        child: Text(
-                          'Not Visited',
-                          style:
-                              TextStyle(fontSize: screenSize.screenHeight * 2),
-                        ),
-                      )
-                    ],
+                          child: Text(
+                            'Not Visited',
+                            style: TextStyle(
+                                fontSize: screenSize.screenHeight * 2),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                Divider(
-                  thickness: 1,
-                ),
-                Container(
-                  width: screenSize.screenWidth * 80,
-                  height: screenSize.screenHeight * 4,
-                  child: Row(
-                    children: [
-                      Padding(
+                  Divider(
+                    thickness: 1,
+                  ),
+                  Container(
+                    width: screenSize.screenWidth * 80,
+                    height: screenSize.screenHeight * 4,
+                    child: Row(
+                      children: [
+                        Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: screenSize.screenWidth * 2),
+                            child: getIcon('1', 2)),
+                        Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: screenSize.screenWidth * 2),
-                          child: getIcon('1', 2)),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: screenSize.screenWidth * 2),
-                        child: Text(
-                          'Answered',
-                          style:
-                              TextStyle(fontSize: screenSize.screenHeight * 2),
-                        ),
-                      )
-                    ],
+                          child: Text(
+                            'Answered',
+                            style: TextStyle(
+                                fontSize: screenSize.screenHeight * 2),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                Divider(
-                  thickness: 1,
-                ),
-                Container(
-                  width: screenSize.screenWidth * 80,
-                  height: screenSize.screenHeight * 4,
-                  child: Row(
-                    children: [
-                      Padding(
+                  Divider(
+                    thickness: 1,
+                  ),
+                  Container(
+                    width: screenSize.screenWidth * 80,
+                    height: screenSize.screenHeight * 4,
+                    child: Row(
+                      children: [
+                        Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: screenSize.screenWidth * 2),
+                            child: getIcon('1', 3)),
+                        Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: screenSize.screenWidth * 2),
-                          child: getIcon('1', 3)),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: screenSize.screenWidth * 2),
-                        child: Text(
-                          'Not Answered',
-                          style:
-                              TextStyle(fontSize: screenSize.screenHeight * 2),
-                        ),
-                      )
-                    ],
+                          child: Text(
+                            'Not Answered',
+                            style: TextStyle(
+                                fontSize: screenSize.screenHeight * 2),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                Divider(
-                  thickness: 1,
-                ),
-                Container(
-                  width: screenSize.screenWidth * 80,
-                  height: screenSize.screenHeight * 4,
-                  child: Row(
-                    children: [
-                      Padding(
+                  Divider(
+                    thickness: 1,
+                  ),
+                  Container(
+                    width: screenSize.screenWidth * 80,
+                    height: screenSize.screenHeight * 4,
+                    child: Row(
+                      children: [
+                        Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: screenSize.screenWidth * 2),
+                            child: getIcon('1', 4)),
+                        Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: screenSize.screenWidth * 2),
-                          child: getIcon('1', 4)),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: screenSize.screenWidth * 2),
-                        child: Text(
-                          'Marked for review',
-                          style:
-                              TextStyle(fontSize: screenSize.screenHeight * 2),
-                        ),
-                      )
-                    ],
+                          child: Text(
+                            'Marked for review',
+                            style: TextStyle(
+                                fontSize: screenSize.screenHeight * 2),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                Divider(
-                  thickness: 1,
-                ),
-                Container(
-                  width: screenSize.screenWidth * 80,
-                  height: screenSize.screenHeight * 4,
-                  child: Row(
-                    children: [
-                      Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: screenSize.screenWidth * 2),
-                          child: getIcon('1', 5)),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: screenSize.screenWidth * 2),
-                        child: Text(
-                          'Answered and Marked for Review',
-                          style: TextStyle(
-                              fontSize: screenSize.screenHeight * 1.5),
-                        ),
-                      )
-                    ],
+                  Divider(
+                    thickness: 1,
                   ),
-                ),
-                Divider(
-                  thickness: 1,
-                ),
-                Container(
-                  width: screenSize.screenWidth * 80,
-                  height: screenSize.screenHeight * 36,
-                  child: ListView(
-                    children: [
-                      Container(
-                        width: screenSize.screenWidth * 80,
-                        height: screenSize.screenHeight * 36,
-                        child: GridView.count(
-                          // Create a grid with 2 columns. If you change the scrollDirection to
-                          // horizontal, this produces 2 rows.
-                          crossAxisCount: 6,
-                          // Generate 100 widgets that display their index in the List.
-                          children: List.generate(widget.questionList.length,
-                              (index) {
-                            return Center(
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: screenSize.screenWidth * 0.5,
-                                    vertical: screenSize.screenHeight * 0.3),
-                                child: GestureDetector(
-                                    onTap: () {
-                                      print(answers[(index + 1).toString()]);
-                                      pageViewController.jumpToPage(index);
-                                      Navigator.pop(context);
-                                    },
-                                    child: getIcon((index + 1).toString(),
-                                        getIconType((index + 1).toString()))),
-                              ),
-                            );
-                          }),
-                        ),
-                      ),
-                    ],
+                  Container(
+                    width: screenSize.screenWidth * 80,
+                    height: screenSize.screenHeight * 7,
+                    child: Row(
+                      children: [
+                        Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: screenSize.screenWidth * 2),
+                            child: getIcon('1', 5)),
+                        Container(
+                          width: screenSize.screenWidth * 55,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: screenSize.screenWidth * 2),
+                            child: Text(
+                              'Answered and Marked for Review',
+                              style: TextStyle(
+                                  fontSize: screenSize.screenHeight * 2),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ]),
+                  Divider(
+                    thickness: 1,
+                  ),
+                  Text(
+                    'Questions: ',
+                    style: TextStyle(fontSize: screenSize.screenHeight * 2),
+                  ),
+                  Container(
+                    width: screenSize.screenWidth * 80,
+                    height: screenSize.screenHeight * 36,
+                    child: ListView(
+                      children: [
+                        Container(
+                          width: screenSize.screenWidth * 80,
+                          height: screenSize.screenHeight * 36,
+                          child: GridView.count(
+                            // Create a grid with 2 columns. If you change the scrollDirection to
+                            // horizontal, this produces 2 rows.
+                            crossAxisCount: 6,
+                            // Generate 100 widgets that display their index in the List.
+                            children: List.generate(widget.questionList.length,
+                                (index) {
+                              return Center(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: screenSize.screenWidth * 0.5,
+                                      vertical: screenSize.screenHeight * 0.3),
+                                  child: GestureDetector(
+                                      onTap: () {
+                                        print(answers[(index + 1).toString()]);
+                                        pageViewController.jumpToPage(index);
+                                        Navigator.pop(context);
+                                      },
+                                      child: getIcon((index + 1).toString(),
+                                          getIconType((index + 1).toString()))),
+                                ),
+                              );
+                            }),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ]),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                    child: Text('Done'),
+                    onPressed: () {
+                      dialogShown = false;
+                      print('dialog closed');
+                      Navigator.pop(context);
+                    }),
+              ],
             ),
-            actions: <Widget>[
-              FlatButton(
-                  child: Text('Done'),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  }),
-            ],
           );
         });
   }
@@ -640,16 +664,19 @@ class _UpdatedExamScreenState extends State<UpdatedExamScreen> {
                                       .jumpToPage(currentPage - 1);
                               });
                             },
-                            child: Container(
-                              color: Colors.black54,
-                              //height: screenSize.screenHeight * 20,
-                              width: screenSize.screenWidth * 20,
-                              height: screenSize.screenHeight * 5,
-                              child: Center(
-                                  child: Text(
-                                "< Prev",
-                                style: TextStyle(color: Colors.white),
-                              )),
+                            child: Material(
+                              elevation: 5,
+                              child: Container(
+                                color: Colors.black54,
+                                //height: screenSize.screenHeight * 20,
+                                width: screenSize.screenWidth * 20,
+                                height: screenSize.screenHeight * 5,
+                                child: Center(
+                                    child: Text(
+                                  "< Prev",
+                                  style: TextStyle(color: Colors.white),
+                                )),
+                              ),
                             ),
                           ),
                         ),
@@ -661,16 +688,19 @@ class _UpdatedExamScreenState extends State<UpdatedExamScreen> {
                               if (currentPage + 1 < questionList.length)
                                 pageViewController.jumpToPage(currentPage + 1);
                             },
-                            child: Container(
-                              color: Colors.black54,
-                              //height: screenSize.screenHeight * 20,
-                              width: screenSize.screenWidth * 20,
-                              height: screenSize.screenHeight * 5,
-                              child: Center(
-                                  child: Text(
-                                "Next >",
-                                style: TextStyle(color: Colors.white),
-                              )),
+                            child: Material(
+                              elevation: 5,
+                              child: Container(
+                                color: Colors.black54,
+                                //height: screenSize.screenHeight * 20,
+                                width: screenSize.screenWidth * 20,
+                                height: screenSize.screenHeight * 5,
+                                child: Center(
+                                    child: Text(
+                                  "Next >",
+                                  style: TextStyle(color: Colors.white),
+                                )),
+                              ),
                             ),
                           ),
                         ),
@@ -686,16 +716,19 @@ class _UpdatedExamScreenState extends State<UpdatedExamScreen> {
                           if (widget.exam.examType == 'timed') sub.cancel();
                           submit();
                         },
-                        child: Container(
-                          color: Theme.of(context).primaryColor,
-                          //height: screenSize.screenHeight * 20,
-                          width: screenSize.screenWidth * 20,
-                          height: screenSize.screenHeight * 8,
-                          child: Center(
-                              child: Text(
-                            "Submit",
-                            style: TextStyle(color: Colors.white),
-                          )),
+                        child: Material(
+                          elevation: 5,
+                          child: Container(
+                            color: Theme.of(context).primaryColor,
+                            //height: screenSize.screenHeight * 20,
+                            width: screenSize.screenWidth * 20,
+                            height: screenSize.screenHeight * 6,
+                            child: Center(
+                                child: Text(
+                              "Submit",
+                              style: TextStyle(color: Colors.white),
+                            )),
+                          ),
                         ),
                       ),
                     ),

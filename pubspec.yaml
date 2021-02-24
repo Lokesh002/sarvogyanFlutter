@@ -57,6 +57,9 @@ dependencies:
   gcloud: ^0.7.3
   googleapis_auth: ^0.2.12+1
   flutter_treeview: ^0.7.1+1
+  native_pdf_view: ^3.9.0
+
+
 
 dev_dependencies:
   flutter_test:

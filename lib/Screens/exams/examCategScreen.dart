@@ -77,7 +77,7 @@ class _ExamCategScreenState extends State<ExamCategScreen> {
                 ),
                 Container(
                   width: screenSize.screenWidth * 100,
-                  height: screenSize.screenHeight * 75,
+                  height: screenSize.screenHeight * 74,
                   child: GridView.count(
                     // Create a grid with 2 columns. If you change the scrollDirection to
                     // horizontal, this produces 2 rows.

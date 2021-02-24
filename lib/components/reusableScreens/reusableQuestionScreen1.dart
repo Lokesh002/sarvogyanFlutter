@@ -135,7 +135,7 @@ class _ReusableQuestionScreen1State extends State<ReusableQuestionScreen1> {
                                     : 'Q${widget.questionNo}. ${widget.question}',
                                 softWrap: true,
                                 style: TextStyle(
-                                    fontSize: screenSize.screenHeight * 2.5,
+                                    fontSize: screenSize.screenHeight * 2,
                                     fontWeight: FontWeight.bold),
                               ),
                               Visibility(visible: pic, child: getpic()),
@@ -178,8 +178,7 @@ class _ReusableQuestionScreen1State extends State<ReusableQuestionScreen1> {
                                       child: Text(
                                     "A. ${widget.option1}",
                                     style: TextStyle(
-                                        fontSize:
-                                            screenSize.screenHeight * 2.5),
+                                        fontSize: screenSize.screenHeight * 2),
                                   )),
                                   height: screenSize.screenHeight * 6,
                                 )
@@ -223,8 +222,7 @@ class _ReusableQuestionScreen1State extends State<ReusableQuestionScreen1> {
                                       child: Text(
                                     "B. ${widget.option2}",
                                     style: TextStyle(
-                                        fontSize:
-                                            screenSize.screenHeight * 2.5),
+                                        fontSize: screenSize.screenHeight * 2),
                                   )),
                                   height: screenSize.screenHeight * 6,
                                 )
@@ -268,8 +266,7 @@ class _ReusableQuestionScreen1State extends State<ReusableQuestionScreen1> {
                                       child: Text(
                                     "C. ${widget.option3}",
                                     style: TextStyle(
-                                        fontSize:
-                                            screenSize.screenHeight * 2.5),
+                                        fontSize: screenSize.screenHeight * 2),
                                   )),
                                   height: screenSize.screenHeight * 6,
                                 )
@@ -313,8 +310,7 @@ class _ReusableQuestionScreen1State extends State<ReusableQuestionScreen1> {
                                       child: Text(
                                     "D. ${widget.option4}",
                                     style: TextStyle(
-                                        fontSize:
-                                            screenSize.screenHeight * 2.5),
+                                        fontSize: screenSize.screenHeight * 2),
                                   )),
                                   height: screenSize.screenHeight * 6,
                                 ),
@@ -351,33 +347,41 @@ class _ReusableQuestionScreen1State extends State<ReusableQuestionScreen1> {
                                 child: (markedQuestions[
                                             (widget.questionNo).toString()] !=
                                         true)
-                                    ? Container(
-                                        //height: screenSize.screenHeight * 20,
-                                        width: screenSize.screenWidth * 20,
-                                        height: screenSize.screenHeight * 8,
-                                        decoration: BoxDecoration(
-                                          color: Colors.purpleAccent,
+                                    ? Material(
+                                        elevation: 5,
+                                        child: Container(
+                                          //height: screenSize.screenHeight * 20,
+                                          width: screenSize.screenWidth * 20,
+                                          height: screenSize.screenHeight * 6,
+                                          decoration: BoxDecoration(
+                                            color: Colors.purpleAccent,
+                                          ),
+                                          child: Center(
+                                              child: Text(
+                                            "Mark for review",
+                                            textAlign: TextAlign.center,
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )),
                                         ),
-                                        child: Center(
-                                            child: Text(
-                                          "Mark for review",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(color: Colors.white),
-                                        )),
                                       )
-                                    : Container(
-                                        //height: screenSize.screenHeight * 20,
-                                        width: screenSize.screenWidth * 20,
-                                        height: screenSize.screenHeight * 8,
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey,
+                                    : Material(
+                                        elevation: 5,
+                                        child: Container(
+                                          //height: screenSize.screenHeight * 20,
+                                          width: screenSize.screenWidth * 20,
+                                          height: screenSize.screenHeight * 6,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey,
+                                          ),
+                                          child: Center(
+                                              child: Text(
+                                            "Unmark question",
+                                            textAlign: TextAlign.center,
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )),
                                         ),
-                                        child: Center(
-                                            child: Text(
-                                          "Unmark question",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(color: Colors.white),
-                                        )),
                                       ),
                               ),
                             ),

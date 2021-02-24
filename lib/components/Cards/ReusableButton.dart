@@ -20,19 +20,20 @@ class ReusableButton extends StatelessWidget {
     return MaterialButton(
       onPressed: onPress,
       shape: RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(screenSize.screenHeight * 3),
-          side: BorderSide(color: Theme.of(context).primaryColor)),
+        borderRadius: new BorderRadius.circular(screenSize.screenHeight * 3),
+        side: BorderSide(color: Theme.of(context).primaryColor),
+      ),
       child: Text(
         content,
         style: TextStyle(
-            color: Colors.white,
+            color: Theme.of(context).primaryColor,
             fontSize: screenSize.screenHeight * 2,
             fontFamily: "Roboto"),
       ),
       elevation: elev,
       height: height,
       minWidth: width,
-      color: Theme.of(context).primaryColor,
+      color: Colors.white,
     );
   }
 }

@@ -73,7 +73,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: screenSize.screenHeight * 2.5,
+                  color: Colors.black,
+                  fontSize: screenSize.screenHeight * 2,
                 ),
               ),
               Container(
@@ -82,18 +83,23 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   value,
                   softWrap: true,
                   style: TextStyle(
-                      fontSize: screenSize.screenHeight * 2,
+                      fontSize: screenSize.screenHeight * 1.7,
                       color: Theme.of(context).primaryColor),
                 ),
               ),
             ],
           ),
-          MaterialButton(
-              onPressed: onPress,
-              child: Text("EDIT"),
-              color: Theme.of(context).primaryColor,
+          ReusableButton(
+              onPress: onPress,
+              content: "EDIT",
               height: screenSize.screenHeight * 5,
-              minWidth: screenSize.screenWidth * 25)
+              width: screenSize.screenWidth * 25)
+//          MaterialButton(
+//              onPressed: onPress,
+//              child: Text("EDIT"),
+//              color: Theme.of(context).primaryColor,
+//              height: screenSize.screenHeight * 5,
+//              minWidth: screenSize.screenWidth * 25)
         ],
       ),
     );
@@ -137,9 +143,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 width: screenSize.screenWidth * 100,
                 height: screenSize.screenHeight * 25,
                 child: (profileImage == null)
-                    ? Image.asset('images/logo.png')
+                    ? Image.asset('images/media/logo.png')
                     : FadeInImage.assetNetwork(
-                        placeholder: 'images/logo.png', image: profileImage),
+                        placeholder: 'images/media/logo.png',
+                        image: profileImage),
               ),
               SizedBox(
                 height: screenSize.screenHeight * 2,
@@ -152,7 +159,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       child: Text(
                         "Update Profile",
                         style: TextStyle(
-                          color: Theme.of(context).primaryColor,
                           fontSize: screenSize.screenHeight * 3.5,
                           fontFamily: "Montserrat",
                           fontWeight: FontWeight.normal,
@@ -268,7 +274,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           Text(
                             'Category:',
                             style: TextStyle(
-                              fontSize: screenSize.screenHeight * 2.5,
+                              fontSize: screenSize.screenHeight * 2,
                             ),
                           ),
                           SizedBox(

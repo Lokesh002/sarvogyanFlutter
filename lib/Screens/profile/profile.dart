@@ -92,7 +92,7 @@ class _ProfileViewState extends State<ProfileView> {
 //  Future<Widget> getImage() async {
 //    photo = await savedData.getProfileImage();
 //    if (photo == null)
-//      return Image.asset('images/logo.png');
+//      return Image.asset('images/flogo.png');
 //    else
 //      return Image.network(photo);
 //  }
@@ -176,7 +176,7 @@ class _ProfileViewState extends State<ProfileView> {
               "$name: ",
               style: TextStyle(
                 color: Colors.black,
-                fontSize: screenSize.screenHeight * 2,
+                fontSize: screenSize.screenHeight * 1.7,
                 fontFamily: "Roboto",
               ),
             ),
@@ -186,7 +186,7 @@ class _ProfileViewState extends State<ProfileView> {
           children: <Widget>[
             Container(
               width: screenSize.screenWidth * 50,
-              height: screenSize.screenHeight * 2,
+              height: screenSize.screenHeight * 2.5,
               child: ListView(
                 reverse: true,
                 scrollDirection: Axis.horizontal,
@@ -195,7 +195,7 @@ class _ProfileViewState extends State<ProfileView> {
                     value.toString(),
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: screenSize.screenHeight * 2,
+                      fontSize: screenSize.screenHeight * 1.7,
                       fontFamily: "Roboto",
                     ),
                   ),
@@ -245,9 +245,9 @@ class _ProfileViewState extends State<ProfileView> {
                                   width: screenSize.screenWidth * 35,
                                   height: screenSize.screenWidth * 35,
                                   child: (photo == null || photo == '')
-                                      ? Image.asset('images/logo.png')
+                                      ? Image.asset('images/flogo.png')
                                       : FadeInImage.assetNetwork(
-                                          placeholder: 'images/logo.png',
+                                          placeholder: 'images/flogo.png',
                                           image: photo),
                                 ),
                               ),

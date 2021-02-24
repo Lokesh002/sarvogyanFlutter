@@ -17,7 +17,12 @@ const kNumberTextStyle = TextStyle(
 const kLabelTextStyle = TextStyle(
   color: Colors.white,
 );
-
+const ColorList = [
+  Color(0x3F0A0E21),
+  Color(0x3FFE0167),
+  Color(0x3F55C893),
+  Color(0x3F2E7ABD)
+];
 const String ipAddress =
     'https://us-central1-sarvogyan-course-platform.cloudfunctions.net/';
 
