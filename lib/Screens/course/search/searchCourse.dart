@@ -83,7 +83,7 @@ class _SearchCourseState extends State<SearchCourse> {
       return Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(top: screenSize.screenHeight * 30),
+            padding: EdgeInsets.only(top: screenSize.screenHeight * 5),
             child: SpinKitWanderingCubes(
               color: Theme.of(context).primaryColor,
               shape: BoxShape.circle,

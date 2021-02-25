@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sarvogyan/Screens/course/search/searchCourse.dart';
-import 'package:sarvogyan/Screens/course/search/searchExam.dart';
+import 'file:///D:/Projects/Flutter/sarvogyan/sarvogyan/lib/obsoletePages/searchExam.dart';
 
 class SearchScreen extends StatefulWidget {
   @override

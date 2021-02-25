@@ -11,6 +11,68 @@ class NavDrawer {
     this.fromScreen = screen;
   }
 
+  String getCourseImage(int index) {
+    switch (index) {
+      case 0:
+        return 'schoolIcon.png';
+        break;
+      case 1:
+        return 'collegeIcon.png';
+        break;
+      case 2:
+        return 'professionalIcon.png';
+        break;
+      case 3:
+        return 'vocationalIcon.png';
+        break;
+      default:
+        return 'collegeBlack.png';
+    }
+  }
+
+  String getExamImage(int index) {
+    switch (index) {
+      case 0:
+        return 'enggIcon.png';
+        break;
+      case 1:
+        return 'enggIcon.png';
+        break;
+      case 2:
+        return 'managementIcon.png';
+        break;
+      case 3:
+        return 'govtIcon.png';
+        break;
+      case 4:
+        return 'govtIcon.png';
+        break;
+      case 5:
+        return 'govtIcon.png';
+        break;
+      case 6:
+        return 'enggIcon.png';
+        break;
+      case 7:
+        return 'managementIcon.png';
+        break;
+      case 8:
+        return 'managementIcon.png';
+        break;
+      case 9:
+        return 'govtIcon.png';
+        break;
+      case 10:
+        return 'managementIcon.png';
+        break;
+      case 11:
+        return 'enggIcon.png';
+        break;
+      default:
+        return 'collegeBlack.png';
+    }
+  }
+
   Widget getNavDrawer(var context, CourseTreeNode sarvogyan) {
     SizeConfig screenSize = SizeConfig(context);
     return Drawer(
@@ -26,7 +88,7 @@ class NavDrawer {
               children: [
                 Container(
                     width: screenSize.screenWidth * 100,
-                    height: screenSize.screenHeight * 20,
+                    height: screenSize.screenHeight * 17,
                     child: Image.asset(
                       'images/flogoBig.png',
                       fit: BoxFit.contain,
@@ -55,8 +117,22 @@ class NavDrawer {
                         return Column(
                           children: [
                             ListTile(
-                              title: Text(
-                                  sarvogyan.children[0].children[index].value),
+                              title: Row(
+                                children: [
+                                  SizedBox(
+                                    width: screenSize.screenWidth * 2,
+                                  ),
+                                  Image.asset(
+                                    'images/media/${getCourseImage(index)}',
+                                    height: screenSize.screenHeight * 4,
+                                  ),
+                                  SizedBox(
+                                    width: screenSize.screenWidth * 2,
+                                  ),
+                                  Text(sarvogyan
+                                      .children[0].children[index].value),
+                                ],
+                              ),
                               onTap: () {
                                 if (fromScreen == 'homeScreen') {
                                   Navigator.push(context,
@@ -89,7 +165,7 @@ class NavDrawer {
                           0,
                           screenSize.screenHeight * 2.5,
                           0,
-                          screenSize.screenHeight * 2.5)),
+                          screenSize.screenHeight)),
                 ),
                 Divider(
                   thickness: 1,
@@ -110,8 +186,22 @@ class NavDrawer {
                         return Column(
                           children: [
                             ListTile(
-                              title: Text(
-                                  sarvogyan.children[1].children[index].value),
+                              title: Row(
+                                children: [
+                                  SizedBox(
+                                    width: screenSize.screenWidth * 2,
+                                  ),
+                                  Image.asset(
+                                    'images/media/${getExamImage(index)}',
+                                    height: screenSize.screenHeight * 4,
+                                  ),
+                                  SizedBox(
+                                    width: screenSize.screenWidth * 2,
+                                  ),
+                                  Text(sarvogyan
+                                      .children[1].children[index].value),
+                                ],
+                              ),
                               onTap: () {
                                 if (fromScreen == 'homeScreen') {
                                   Navigator.push(context,
@@ -142,7 +232,7 @@ class NavDrawer {
                           0,
                           screenSize.screenHeight * 2.5,
                           0,
-                          screenSize.screenHeight * 2.5)),
+                          screenSize.screenHeight)),
                 ),
               ],
             ),

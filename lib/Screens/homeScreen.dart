@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sarvogyan/Screens/course/ListloadingScreen.dart';
 import 'package:sarvogyan/Screens/course/allCoursesScreen.dart';
-import 'package:sarvogyan/Screens/course/search/seachScreen.dart';
+import 'file:///D:/Projects/Flutter/sarvogyan/sarvogyan/lib/obsoletePages/seachScreen.dart';
 import 'package:sarvogyan/Screens/course/search/searchCourse.dart';
 
 import 'package:sarvogyan/Screens/docs/docsScreen.dart';
@@ -44,9 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
   SavedData savedData = SavedData();
 
   getSignedInStatus() async {
-    // print(signedIn);
     signedIn = await savedData.getLoggedIn();
-    //  print(signedIn);
+    pageController.jumpToPage(currentIndex);
+    setState(() {});
     if (signedIn == null) {
       signedIn = false;
     }
@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  int currentIndex = 0;
+  int currentIndex = 2;
   @override
   void initState() {
     // TODO: implement initState
@@ -66,7 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   PageController pageController = new PageController();
-
   @override
   void dispose() {
     pageController.dispose();
@@ -280,7 +279,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                label: 'My Courses'),
+                label: 'My Course'),
             BottomNavigationBarItem(
                 icon: Container(
                   child: CircleAvatar(

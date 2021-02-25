@@ -235,7 +235,7 @@ class _MyAppState extends State<CourseVideoScreen>
                                   child: Material(
                                     borderRadius: BorderRadius.circular(
                                         screenSize.screenHeight * 2),
-                                    color: ColorList[index % 4],
+                                    color: Colors.white,
                                     elevation: 3,
                                     child: Container(
                                       alignment: Alignment.center,
@@ -245,13 +245,19 @@ class _MyAppState extends State<CourseVideoScreen>
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          Icon(
-                                            widget.previewData[index]['type'] !=
-                                                    'text'
-                                                ? Icons.personal_video
-                                                : Icons.description,
-                                            size: screenSize.screenHeight * 6,
-                                            color: Colors.white,
+                                          CircleAvatar(
+                                            child: Icon(
+                                              widget.previewData[index]
+                                                          ['type'] !=
+                                                      'text'
+                                                  ? Icons.personal_video
+                                                  : Icons.description,
+                                              size: screenSize.screenHeight * 6,
+                                              color: Colors.white,
+                                            ),
+                                            backgroundColor:
+                                                ColorList[index % 4],
+                                            radius: screenSize.screenHeight * 4,
                                           ),
                                           Container(
                                             height:
@@ -270,7 +276,7 @@ class _MyAppState extends State<CourseVideoScreen>
                                                 overflow: TextOverflow.clip,
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
-                                                    color: Colors.white),
+                                                    color: Colors.black),
                                               ),
                                             ),
                                           ),

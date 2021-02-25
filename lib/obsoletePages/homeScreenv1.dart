@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sarvogyan/Screens/course/ListloadingScreen.dart';
 import 'package:sarvogyan/Screens/course/allCoursesScreen.dart';
-import 'package:sarvogyan/Screens/course/search/seachScreen.dart';
+import 'file:///D:/Projects/Flutter/sarvogyan/sarvogyan/lib/obsoletePages/seachScreen.dart';
 import 'package:sarvogyan/Screens/course/search/searchCourse.dart';
 
 import 'package:sarvogyan/Screens/docs/docsScreen.dart';

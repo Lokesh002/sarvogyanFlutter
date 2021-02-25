@@ -578,7 +578,7 @@ class _CourseSelectedState extends State<CourseSelected> {
                                         child: Material(
                                           borderRadius: BorderRadius.circular(
                                               screenSize.screenHeight * 2),
-                                          color: ColorList[index % 4],
+                                          color: Colors.white,
                                           elevation: 3,
                                           child: Container(
                                             alignment: Alignment.center,
@@ -589,21 +589,28 @@ class _CourseSelectedState extends State<CourseSelected> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                Icon(
-                                                  widget.previewData[index]
-                                                              ['type'] !=
-                                                          'text'
-                                                      ? Icons.personal_video
-                                                      : Icons.description,
-                                                  size:
+                                                CircleAvatar(
+                                                  child: Icon(
+                                                    widget.previewData[index]
+                                                                ['type'] !=
+                                                            'text'
+                                                        ? Icons.personal_video
+                                                        : Icons.description,
+                                                    size: screenSize
+                                                            .screenHeight *
+                                                        6,
+                                                    color: Colors.white,
+                                                  ),
+                                                  backgroundColor:
+                                                      ColorList[index % 4],
+                                                  radius:
                                                       screenSize.screenHeight *
-                                                          6,
-                                                  color: Colors.white,
+                                                          4,
                                                 ),
                                                 Container(
                                                   height:
                                                       screenSize.screenHeight *
-                                                          15,
+                                                          13,
                                                   child: Padding(
                                                     padding: EdgeInsets.symmetric(
                                                         vertical: screenSize
@@ -611,7 +618,7 @@ class _CourseSelectedState extends State<CourseSelected> {
                                                             1,
                                                         horizontal: screenSize
                                                                 .screenWidth *
-                                                            1),
+                                                            2),
                                                     child: Text(
                                                       widget.previewData[index]
                                                           ['name'],
@@ -620,7 +627,7 @@ class _CourseSelectedState extends State<CourseSelected> {
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
-                                                          color: Colors.white),
+                                                          color: Colors.black),
                                                     ),
                                                   ),
                                                 ),
