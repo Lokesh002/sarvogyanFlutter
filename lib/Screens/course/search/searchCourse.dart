@@ -330,15 +330,21 @@ class _SearchCourseState extends State<SearchCourse> {
                               (choice == 'Course') ? getCourses() : getExam();
                             }
                           },
-                          child: CircleAvatar(
-                            backgroundColor: Theme.of(context).primaryColor,
-                            radius: screenSize.screenHeight * 3,
+                          child: Material(
+                            elevation: 5,
+                            borderRadius: BorderRadius.circular(
+                              screenSize.screenHeight * 2.8,
+                            ),
                             child: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: screenSize.screenHeight * 2.8,
-                              child: Icon(
-                                Icons.search,
-                                color: Theme.of(context).primaryColor,
+                              backgroundColor: Theme.of(context).primaryColor,
+                              radius: screenSize.screenHeight * 3,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: screenSize.screenHeight * 2.8,
+                                child: Icon(
+                                  Icons.search,
+                                  color: Theme.of(context).primaryColor,
+                                ),
                               ),
                             ),
                           ),

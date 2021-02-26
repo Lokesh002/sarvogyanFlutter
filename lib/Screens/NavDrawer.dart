@@ -36,10 +36,10 @@ class NavDrawer {
         return 'enggIcon.png';
         break;
       case 1:
-        return 'enggIcon.png';
+        return 'medicalIcon.png';
         break;
       case 2:
-        return 'managementIcon.png';
+        return 'lawIcon.png';
         break;
       case 3:
         return 'govtIcon.png';
@@ -54,7 +54,7 @@ class NavDrawer {
         return 'enggIcon.png';
         break;
       case 7:
-        return 'managementIcon.png';
+        return 'enggIcon.png';
         break;
       case 8:
         return 'managementIcon.png';
@@ -63,7 +63,7 @@ class NavDrawer {
         return 'govtIcon.png';
         break;
       case 10:
-        return 'managementIcon.png';
+        return 'govtIcon.png';
         break;
       case 11:
         return 'enggIcon.png';

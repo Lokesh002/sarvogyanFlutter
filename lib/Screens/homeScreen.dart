@@ -95,7 +95,8 @@ class _HomeScreenState extends State<HomeScreen> {
               Text("Sarvogyan",
                   style: TextStyle(
                       color: Theme.of(context).accentColor,
-                      fontSize: screenSize.screenHeight * 3)),
+                      textBaseline: TextBaseline.ideographic,
+                      fontSize: screenSize.screenHeight * 2.5)),
             ],
           ),
           actions: [
