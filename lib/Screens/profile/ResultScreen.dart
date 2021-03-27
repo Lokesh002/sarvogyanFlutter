@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -67,6 +68,15 @@ class _ResultScreenState extends State<ResultScreen> {
       var decodedData = convert.jsonDecode(response1.body);
       total = decodedData["total"];
       score = decodedData["marks"];
+      FirebaseAnalytics().logEvent(name: 'Exam_Completed', parameters: {
+        'examId': widget.exam.examId,
+        'examName': widget.exam.examName,
+        'examType': widget.exam.examType,
+        'totalQuestions': widget.exam.totalQuestions,
+        'examTime': widget.exam.examTime,
+        'score': score,
+        'totalMarks': total
+      });
 
       isReady = true;
       setState(() {});
@@ -74,29 +84,6 @@ class _ResultScreenState extends State<ResultScreen> {
       print(response1.statusCode);
       print(response1.reasonPhrase);
     }
-
-//    String url =
-//        'https://us-central1-sarvogyan-course-platform.cloudfunctions.net/api/exam/setResults';
-//    http.Response response = await http.post(url,
-//        headers: {
-//          "Content-Type": "application/json",
-//          "x-auth-token": authAccessToken
-//        },
-//        body: convert.jsonEncode({
-//          'exam_id': widget.examId,
-//          'totalMarks': widget.totalQues,
-//          'marks': widget.score
-//        }));
-//
-//    if (response.statusCode == 200) {
-//      var decodedData = convert.jsonDecode(response.body);
-//
-//      print(decodedData);
-//      isReady = true;
-//      setState(() {});
-//    } else {
-//      print(response.statusCode);
-//    }
   }
 
   Widget showScreen() {

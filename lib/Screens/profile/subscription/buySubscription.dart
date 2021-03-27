@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -21,6 +22,8 @@ import 'package:sarvogyan/utilities/userData.dart';
 import 'package:sarvogyan/utilities/sharedPref.dart';
 
 class BuySubscription extends StatefulWidget {
+  final data;
+  BuySubscription(this.data);
   @override
   _BuySubscriptionState createState() => _BuySubscriptionState();
 }
@@ -79,6 +82,32 @@ class _BuySubscriptionState extends State<BuySubscription> {
       Fluttertoast.showToast(msg: "Bought Subscription");
       await savedData.setUserSubsLevel(subscription);
       print(await savedData.getUserSubsLevel());
+
+      String Uid = await savedData.getUserId();
+
+      String userName = await savedData.getName();
+      String age = await savedData.getAge();
+      if (widget.data == null) {
+        FirebaseAnalytics()
+            .logEvent(name: 'Bought_Subscription_from_HomeScreen', parameters: {
+          'time': time,
+          'cost': cost,
+          'userId': Uid,
+          'name': userName,
+          'age': age,
+        });
+      } else {
+        FirebaseAnalytics()
+            .logEvent(name: 'Bought_Subscription_from_Course', parameters: {
+          'time': time,
+          'cost': cost,
+          'userId': Uid,
+          'name': userName,
+          'age': age,
+          'courseId': widget.data['id'],
+          'courseName': widget.data['name']
+        });
+      }
       time = null;
       if (response != null) await getBalance(response);
     } else {
@@ -95,64 +124,35 @@ class _BuySubscriptionState extends State<BuySubscription> {
         headers: {"Content-Type": "application/json", "x-auth-token": acsTkn},
         body: convert.jsonEncode({'amount': totalAmount}));
     print('amount:' + totalAmount.toString());
-    if (response2.statusCode == 200) {
-      print(response2.statusCode);
 
+    if (response2.statusCode == 200) {
       String data = response2.body;
       var decodedData = convert.jsonDecode(data);
       OrderID = decodedData['id'];
+      String phoneno = await savedData.getPhone();
+      String email = await savedData.getEmail();
       print('api order: ' + OrderID);
+      var options = {
+        'key': 'rzp_live_c6cRqluwJOv6by',
+        'amount': totalAmount * 100,
+        'name': 'Sarvogyan',
+        'description': 'Test Payment',
+        'prefill': {
+          'contact': phoneno != null ? phoneno : '',
+          'email': email != null ? email : ''
+        },
+        'external': {'wallets': []},
+        'order_id': OrderID,
+      };
+      try {
+        _razorpay.open(options);
+      } catch (e) {
+        debugPrint(e);
+      }
     } else {
       print(response2.statusCode);
+      Fluttertoast.showToast(msg: 'Cannot connect to server!');
     }
-
-    var options = {
-      'key': 'rzp_live_c6cRqluwJOv6by',
-      'amount': totalAmount * 100,
-      'name': 'Sarvogyan',
-      'description': 'Test Payment',
-      'prefill': {'contact': '', 'email': ''},
-      'external': {'wallets': []},
-      'order_id': OrderID,
-    };
-    try {
-      _razorpay.open(options);
-    } catch (e) {
-      debugPrint(e);
-    }
-  }
-
-  Future<String> timeDialog(BuildContext context) {
-    String time;
-    return showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return new AlertDialog(
-            title: Text('Enter months of subscription'),
-            content: Container(
-              height: 85,
-              child: Column(children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: TextField(
-                    onChanged: (value) {
-                      time = value;
-                    },
-                  ),
-                ),
-              ]),
-            ),
-            contentPadding: EdgeInsets.all(10),
-            actions: <Widget>[
-              FlatButton(
-                  child: Text('Done'),
-                  onPressed: () {
-                    Navigator.pop(context, time);
-                  }),
-            ],
-          );
-        });
   }
 
   Future getBalance(PaymentSuccessResponse response1) async {
@@ -210,6 +210,8 @@ class _BuySubscriptionState extends State<BuySubscription> {
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
+    Navigator.pop(context);
+
     Fluttertoast.showToast(
         msg: "Failure :" + response.code.toString() + ' - ' + response.message);
   }
@@ -633,87 +635,6 @@ class _BuySubscriptionState extends State<BuySubscription> {
                         ),
                       ),
                     ],
-                  ),
-                ),
-                Visibility(
-                  visible: false,
-                  child: ReusableButton(
-                    height: screenSize.screenHeight * 10,
-                    width: screenSize.screenWidth * 60,
-                    content: "Basic Subscription",
-                    onPress: () async {
-                      subscription = 'b';
-
-                      bool x = await shouldSubscribe(subscription);
-                      if (x) {
-                        await timeDialog(context).then((value) {
-                          time = value;
-                        });
-                        int balance = await savedData.getBalance();
-                        if (balance < cost) {
-                          int remaining = cost - balance;
-                          addAmount = remaining;
-                          await openCheckout(remaining);
-                        } else {
-                          await getSubscription(null);
-                        }
-                      } else {
-                        String level = await savedData.getUserSubsLevel();
-                        String lev;
-                        if (level == 'a') {
-                          lev = "Free user";
-                        } else if (level == 'b') {
-                          lev = "Basic user";
-                        } else if (level == 'c') {
-                          lev = "Premium user";
-                        } else {
-                          lev = "Unauthorized";
-                        }
-                        Fluttertoast.showToast(
-                            msg: "Already a " + lev + " subscriber.");
-                      }
-                    },
-                  ),
-                ),
-                Visibility(
-                  visible: false,
-                  child: ReusableButton(
-                    height: screenSize.screenHeight * 10,
-                    width: screenSize.screenWidth * 60,
-                    content: "Premium Subscription",
-                    onPress: () async {
-                      subscription = 'c';
-                      bool x = await shouldSubscribe(subscription);
-                      print(x);
-                      if (x) {
-                        await timeDialog(context).then((value) {
-                          time = value;
-                        });
-                        int balance = await savedData.getBalance();
-
-                        if (balance < cost) {
-                          int remaining = cost - balance;
-                          addAmount = remaining;
-                          await openCheckout(remaining);
-                        } else {
-                          await getSubscription(null);
-                        }
-                      } else {
-                        String level = await savedData.getUserSubsLevel();
-                        String lev;
-                        if (level == 'a') {
-                          lev = "Free user";
-                        } else if (level == 'b') {
-                          lev = "Basic user";
-                        } else if (level == 'c') {
-                          lev = "Premium user";
-                        } else {
-                          lev = "Unauthorized";
-                        }
-                        Fluttertoast.showToast(
-                            msg: "Already a " + lev + " subscriber.");
-                      }
-                    },
                   ),
                 ),
               ],

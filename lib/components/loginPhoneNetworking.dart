@@ -50,6 +50,7 @@ class LoginPhoneNetworking {
         var decodedData = convert.jsonDecode(data);
         print("decoded user data: " + decodedData.toString());
         print(decodedData["subscription"]);
+        await savedData.setLoggedIn(true);
         await savedData.setUserSubsLevel(decodedData['subscription']);
         await savedData.setAccessToken(accessToken);
         await savedData.setUserName(decodedData["name"]);

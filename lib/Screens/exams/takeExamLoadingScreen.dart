@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -19,6 +20,13 @@ class _TakeExamLoadingScreenState extends State<TakeExamLoadingScreen> {
 
   void getQues() async {
     print(widget.exam.examId);
+    FirebaseAnalytics().logEvent(name: 'Exam_Started', parameters: {
+      'examId': widget.exam.examId,
+      'examName': widget.exam.examName,
+      'examType': widget.exam.examType,
+      'totalQuestions': widget.exam.totalQuestions,
+      'examTime': widget.exam.examTime,
+    });
     GetExamQuestions getExamQuestions = GetExamQuestions(widget.exam.examId);
     questionList = await getExamQuestions.getQuestions();
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {

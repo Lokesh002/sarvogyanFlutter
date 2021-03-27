@@ -17,8 +17,8 @@ import 'package:flutter_youtube/flutter_youtube.dart';
 import 'package:sarvogyan/Screens/course/readCourseDocScreen.dart';
 
 class CourseViewScreen extends StatefulWidget {
-  var decodedData;
-  List<Lessons> lessonsList;
+  final decodedData;
+  final List<Lessons> lessonsList;
   CourseViewScreen(this.decodedData, this.lessonsList);
   @override
   _CourseViewScreenState createState() => _CourseViewScreenState();
@@ -30,20 +30,55 @@ class _CourseViewScreenState extends State<CourseViewScreen> {
   List<Lessons> lessList;
   SizeConfig screenSize;
   PageController pageController = new PageController();
-
+  List<Lessons> docsList = List<Lessons>();
   int currentIndex = 0;
-
   Widget getIcon(String partType) {
-    if (partType == 'video' || partType == 'Video')
+    if (partType.toLowerCase() == 'video')
       return Icon(
         Icons.video_library,
         color: Theme.of(context).primaryColor,
+        size: screenSize.screenWidth * 6,
       );
     else
       return Icon(
         Icons.library_books,
         color: Theme.of(context).primaryColor,
+        size: screenSize.screenWidth * 6,
       );
+  }
+
+  void getData() {
+    decData = widget.decodedData;
+    lessList = widget.lessonsList;
+
+    for (int i = 0; i < lessList.length; i++) {
+      Lessons lessonDoc = Lessons();
+      List<Parts> partsList = List<Parts>();
+      bool istrue = false;
+      for (int j = 0; j < lessList[i].lessonParts.length; j++) {
+        if (lessList[i].lessonParts[j].partType.toLowerCase() != 'video') {
+          Parts part = Parts();
+          part.partType = lessList[i].lessonParts[j].partType;
+          part.partName = lessList[i].lessonParts[j].partName;
+          part.partId = lessList[i].lessonParts[j].partId;
+          part.partLessonId = lessList[i].lessonParts[j].partLessonId;
+          part.partContent = lessList[i].lessonParts[j].partContent;
+          part.partNo = lessList[i].lessonParts[j].partNo;
+          partsList.add(part);
+          istrue = true;
+        }
+      }
+      if (istrue) {
+        lessonDoc.lessonParts = partsList;
+        lessonDoc.lessonNo = lessList[i].lessonNo;
+        lessonDoc.lessonName = lessList[i].lessonName;
+        lessonDoc.lessonId = lessList[i].lessonId;
+        lessonDoc.lessonDesc = lessList[i].lessonDesc;
+        lessonDoc.lessonTeacher = lessList[i].lessonTeacher;
+        lessonDoc.lessonCourseId = lessList[i].lessonCourseId;
+        docsList.add(lessonDoc);
+      }
+    }
   }
 
   Widget getCourseView() {
@@ -65,8 +100,8 @@ class _CourseViewScreenState extends State<CourseViewScreen> {
                         left: screenSize.screenWidth * 3,
                         right: screenSize.screenWidth * 3),
                     child: Text(
-                        (index1 + 1).toString() +
-                            " " +
+                        lessList[index1].lessonNo +
+                            '. ' +
                             lessList[index1].lessonName,
                         style: TextStyle(color: Colors.white)),
                   ),
@@ -85,7 +120,11 @@ class _CourseViewScreenState extends State<CourseViewScreen> {
               shrinkWrap: true,
               physics: ClampingScrollPhysics(),
               itemBuilder: (context, index2) {
-                if (lessList[index1].lessonParts[index2].partType == 'video') {
+                if (lessList[index1]
+                        .lessonParts[index2]
+                        .partType
+                        .toLowerCase() ==
+                    'video') {
                   return Column(
                     children: <Widget>[
                       SizedBox(
@@ -115,10 +154,10 @@ class _CourseViewScreenState extends State<CourseViewScreen> {
                                     Container(
                                       width: screenSize.screenWidth * 70,
                                       child: Text(
-                                        (index1 + 1).toString() +
-                                            "." +
-                                            (index2 + 1).toString() +
-                                            " " +
+                                        lessList[index1]
+                                                .lessonParts[index2]
+                                                .partNo +
+                                            ' ' +
                                             lessList[index1]
                                                 .lessonParts[index2]
                                                 .partName,
@@ -139,10 +178,11 @@ class _CourseViewScreenState extends State<CourseViewScreen> {
                         ),
                         onTap: () {
                           print(lessList[index1].lessonParts[index2].partType);
-                          if (lessList[index1].lessonParts[index2].partType ==
-                                  'video' ||
-                              lessList[index1].lessonParts[index2].partType ==
-                                  'Video') {
+                          if (lessList[index1]
+                                  .lessonParts[index2]
+                                  .partType
+                                  .toLowerCase() ==
+                              'video') {
 //                              String videoURL = lessList[index1]
 //                                  .lessonParts[index2]
 //                                  .partContent;
@@ -178,7 +218,10 @@ class _CourseViewScreenState extends State<CourseViewScreen> {
 //                                videoId: id,
 //                              );
                           } else {
-                            if (lessList[index1].lessonParts[index2].partType ==
+                            if (lessList[index1]
+                                    .lessonParts[index2]
+                                    .partType
+                                    .toLowerCase() ==
                                 'text') {
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (context) {
@@ -212,6 +255,7 @@ class _CourseViewScreenState extends State<CourseViewScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getData();
   }
 
   @override
@@ -224,10 +268,6 @@ class _CourseViewScreenState extends State<CourseViewScreen> {
   @override
   Widget build(BuildContext context) {
     screenSize = SizeConfig(context);
-    final x = screenSize.screenHeight * 50;
-    print(widget.decodedData["name"]);
-    decData = widget.decodedData;
-    lessList = widget.lessonsList;
     print('the name is');
 
     return Scaffold(
@@ -276,7 +316,7 @@ class _CourseViewScreenState extends State<CourseViewScreen> {
           controller: pageController,
           children: [
             getCourseView(),
-            Docs(lessList),
+            Docs(docsList),
             Exams(widget.decodedData),
             MakeNotes(widget.decodedData),
             AskDoubts(widget.decodedData),

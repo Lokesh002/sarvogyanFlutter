@@ -11,6 +11,7 @@ import 'package:sarvogyan/components/phoneCheck.dart';
 import 'package:sarvogyan/components/registerUserNetworking.dart';
 import 'package:sarvogyan/components/sizeConfig.dart';
 import 'package:sarvogyan/lists/allCoursesList.dart';
+import 'package:sarvogyan/utilities/sharedPref.dart';
 
 class RegisterThroughPhone extends StatefulWidget {
   @override
@@ -20,7 +21,7 @@ class RegisterThroughPhone extends StatefulWidget {
 class _RegisterThroughPhoneState extends State<RegisterThroughPhone> {
   SizeConfig screenSize;
   bool uploading = false;
-
+  SavedData savedData = SavedData();
   String smsOTP;
   String verificationId;
   String errorMessage = '';
@@ -146,9 +147,13 @@ class _RegisterThroughPhoneState extends State<RegisterThroughPhone> {
                         Container(
                           width: screenSize.screenWidth * 100,
                           height: screenSize.screenHeight * 25,
-                          child: Image.asset(
-                            "images/media/logo.png",
-                            fit: BoxFit.contain,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                top: screenSize.screenHeight * 2),
+                            child: Image.asset(
+                              "images/flogo.png",
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -700,6 +705,8 @@ class _RegisterThroughPhoneState extends State<RegisterThroughPhone> {
 
                     Navigator.pop(context);
                     signedIn = true;
+                    savedData.setLoggedIn(true);
+
                     //Navigator.pop(context);
                     if (tag == "School Student") {
                       setState(() {
@@ -724,9 +731,8 @@ class _RegisterThroughPhoneState extends State<RegisterThroughPhone> {
                         setState(() {});
                       });
                     }
-//                    auth.signOut();
-//                    _auth.signOut();
                     signedIn = true;
+                    savedData.setLoggedIn(true);
                   } else {
                     setState(() {
                       clearTextInput();

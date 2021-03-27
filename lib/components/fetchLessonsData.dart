@@ -35,17 +35,18 @@ class FetchLessons {
         lessons.lessonName = lesson[i]['name'];
         lessons.lessonTeacher = lesson[i]['teacher'];
         lessons.lessonDesc = lesson[i]['description'];
+        lessons.lessonNo = (i + 1).toString();
         List lParts = lesson[i]['parts'];
         for (int j = 0; j < lParts.length; j++) {
           Parts parts = Parts();
 
           parts.partName = lParts[j]['name'];
-          parts.partId = lParts[j]['part_id'];
+          parts.partId = lParts[j]['id'];
 
           parts.partType = lParts[j]['type'];
           parts.partContent = lParts[j]['content'];
           parts.partLessonId = lParts[j]['lesson_id'];
-
+          parts.partNo = '${(i + 1).toString()}.${(j + 1).toString()}';
           lessons.lessonParts.add(parts);
         }
 
@@ -69,6 +70,7 @@ class Parts {
   String partLessonId;
   String partType;
   String partId;
+  String partNo;
 }
 
 class Lessons {
@@ -78,4 +80,5 @@ class Lessons {
   String lessonDesc;
   String lessonId;
   List<Parts> lessonParts = List<Parts>();
+  String lessonNo;
 }

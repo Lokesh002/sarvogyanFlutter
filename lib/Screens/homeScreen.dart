@@ -1,9 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sarvogyan/Screens/course/ListloadingScreen.dart';
 import 'package:sarvogyan/Screens/course/allCoursesScreen.dart';
-import 'file:///D:/Projects/Flutter/sarvogyan/sarvogyan/lib/obsoletePages/seachScreen.dart';
 import 'package:sarvogyan/Screens/course/search/searchCourse.dart';
 
 import 'package:sarvogyan/Screens/docs/docsScreen.dart';
@@ -22,6 +22,8 @@ import 'package:sarvogyan/components/sizeConfig.dart';
 import 'package:sarvogyan/lists/allCategory_list.dart';
 import 'package:sarvogyan/lists/allCoursesList.dart';
 import 'package:sarvogyan/utilities/sharedPref.dart';
+import 'package:sarvogyan/Screens/profile/wishlistDialog.dart';
+import 'package:sarvogyan/Screens/course/premiumCourse.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -50,8 +52,51 @@ class _HomeScreenState extends State<HomeScreen> {
     if (signedIn == null) {
       signedIn = false;
     }
+    print('hahha');
+    print(signedIn);
     if (mounted) {
       setState(() {});
+    }
+  }
+
+  Future<dynamic> showWishList(BuildContext context) {
+    // getSignedInStatus();
+    print(signedIn);
+    if (signedIn) {
+      print('dialog opened');
+      return showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return WillPopScope(
+              onWillPop: () {
+                //  dialogShown = false;
+                print('dialog closed');
+                Navigator.pop(context);
+                return;
+              },
+              child: new AlertDialog(
+                title: Text('WishList'),
+                content: Container(
+                  height: screenSize.screenHeight * 90,
+                  width: screenSize.screenWidth * 100,
+                  child: WishlistDialog(),
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                      child: Text('Skip'),
+                      onPressed: () {
+                        //dialogShown = false;
+                        print('dialog closed');
+                        Navigator.pop(context);
+                      }),
+                ],
+              ),
+            );
+          });
+    } else {
+      print('Not signed in right now');
+      return null;
     }
   }
 
@@ -63,6 +108,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
     sarvogyan = getCourseClass.process();
     _selectedIndex = _defaultIndex;
+    getData();
+  }
+
+  getData() async {
+    await getSignedInStatus();
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) async => await showWishList(context));
   }
 
   PageController pageController = new PageController();
@@ -75,8 +127,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   SizeConfig screenSize;
   @override
+  void didChangeDependencies() async {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    getSignedInStatus();
     screenSize = SizeConfig(context);
     return WillPopScope(
       onWillPop: onWillPop,
@@ -103,8 +160,36 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               width: screenSize.screenWidth * 3,
             ),
-            signedIn
-                ? PopupMenuButton(
+            GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return SearchCourse();
+                  }));
+                },
+                child: Icon(Icons.search)),
+            SizedBox(
+              width: screenSize.screenWidth * 2,
+            ),
+            StreamBuilder<User>(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.active) {
+                  User user = snapshot.data;
+                  if (user == null) {
+                    return GestureDetector(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return Login(true);
+                          }));
+                        },
+                        child: Icon(
+                          Icons.account_circle,
+                          size: screenSize.screenHeight * 6,
+                          color: Colors.white,
+                        ));
+                  }
+                  return PopupMenuButton(
                     itemBuilder: (BuildContext context) {
                       return [
                         PopupMenuItem(
@@ -190,7 +275,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         signedIn
                             ? Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                                return BuySubscription();
+                                return BuySubscription(null);
                               }))
                             : Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
@@ -198,19 +283,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               }));
                       }
                     },
-                  )
-                : GestureDetector(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return Login(true);
-                      }));
-                    },
-                    child: Icon(
-                      Icons.account_circle,
-                      size: screenSize.screenHeight * 6,
-                      color: Colors.white,
-                    )),
+                  );
+                } else {
+                  return Icon(
+                    Icons.add,
+                    size: screenSize.screenHeight * 6,
+                    color: Colors.white,
+                  );
+                }
+              },
+            ),
             SizedBox(
               width: screenSize.screenWidth * 3,
             ),
@@ -225,7 +307,7 @@ class _HomeScreenState extends State<HomeScreen> {
           },
           controller: pageController,
           children: [
-            SearchCourse(),
+            PremiumCourse(),
             MyCourses(),
             AllCoursesScreen(sarvogyan, sarvogyan.children[0], 'images/media'),
             ExamCategScreen(
@@ -258,12 +340,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       ? Theme.of(context).primaryColor
                       : Colors.white,
                   child: Icon(
-                    Icons.search,
+                    Icons.local_police,
                     color: currentIndex == 0 ? Colors.white : Colors.black,
                   ),
                 ),
               ),
-              label: "Search",
+              label: "Certification",
             ),
             BottomNavigationBarItem(
                 icon: Container(

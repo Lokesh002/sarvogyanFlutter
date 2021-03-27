@@ -16,6 +16,7 @@ import 'package:sarvogyan/components/registerUserNetworking.dart';
 import 'package:sarvogyan/components/updateProfileSupport.dart';
 import 'package:sarvogyan/lists/allCoursesList.dart';
 import 'package:sarvogyan/Screens/userAuth/registerThroughPhone.dart';
+import 'package:sarvogyan/utilities/sharedPref.dart';
 
 class RegisterUser extends StatefulWidget {
   @override
@@ -46,7 +47,7 @@ class _RegisterUserState extends State<RegisterUser> {
   String smsOTP;
   String verificationId;
   String errorMessage = '';
-
+  SavedData savedData = SavedData();
   FirebaseAuth auth = FirebaseAuth.instance;
   UserCredential result;
 
@@ -157,7 +158,7 @@ class _RegisterUserState extends State<RegisterUser> {
           );
 
     return Scaffold(
-      resizeToAvoidBottomPadding: true,
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       body: Stack(
         children: [
@@ -170,9 +171,13 @@ class _RegisterUserState extends State<RegisterUser> {
                         Container(
                           width: screenSize.screenWidth * 100,
                           height: screenSize.screenHeight * 25,
-                          child: Image.asset(
-                            "images/media/logo.png",
-                            fit: BoxFit.contain,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                top: screenSize.screenHeight * 2),
+                            child: Image.asset(
+                              "images/flogo.png",
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -792,7 +797,6 @@ class _RegisterUserState extends State<RegisterUser> {
 
                 this.result.user.linkWithCredential(credential);
                 print('process flow');
-                //AuthResult result = await auth.signInWithCredential(credential);
 
                 print('process flow');
                 User user = result.user;
@@ -821,10 +825,11 @@ class _RegisterUserState extends State<RegisterUser> {
                   int status = await loginPhoneNetworking.postData();
                   if (status == 200) {
                     Fluttertoast.showToast(msg: "Login Successfully");
-                    //FirebaseAuth.instance.signOut();
 
                     Navigator.pop(context);
                     signedIn = true;
+                    savedData.setLoggedIn(true);
+
                     //Navigator.pop(context);
                     if (tag == "School Student") {
                       setState(() {
@@ -850,9 +855,8 @@ class _RegisterUserState extends State<RegisterUser> {
                         setState(() {});
                       });
                     }
-//                    auth.signOut();
-//                    _auth.signOut();
                     signedIn = true;
+                    savedData.setLoggedIn(true);
                   } else {
                     setState(() {
                       clearTextInput();

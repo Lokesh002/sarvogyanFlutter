@@ -40,6 +40,8 @@ class _VideoScreenState extends State<VideoScreen> {
   YoutubeMetaData videoMetaData;
   bool _isPlayerReady = false;
   List lessonList;
+  List<Lessons> docsList = List<Lessons>();
+  List<Lessons> lessList = List<Lessons>();
 
   PageController pageController = new PageController();
 
@@ -65,6 +67,7 @@ class _VideoScreenState extends State<VideoScreen> {
 
     videoMetaData = const YoutubeMetaData();
     playerState = PlayerState.unknown;
+    getData();
   }
 
   void listener() {
@@ -107,17 +110,61 @@ class _VideoScreenState extends State<VideoScreen> {
     return Theme.of(context).accentColor;
   }
 
-  Widget getIcon(String partType) {
-    if (partType == 'video' || partType == 'Video')
+  Widget getIcon(String partType, int index1, int index2) {
+    if (partType.toLowerCase() == 'video')
       return Icon(
         Icons.video_library,
-        color: Theme.of(context).primaryColor,
+        color: index1 == widget.index1
+            ? index2 == widget.index2
+                ? Colors.white
+                : Theme.of(context).primaryColor
+            : Theme.of(context).primaryColor,
+        size: screenSize.screenWidth * 6,
       );
     else
       return Icon(
         Icons.library_books,
-        color: Theme.of(context).primaryColor,
+        color: index1 == widget.index1
+            ? index2 == widget.index2
+                ? Colors.white
+                : Theme.of(context).primaryColor
+            : Theme.of(context).primaryColor,
+        size: screenSize.screenWidth * 6,
       );
+  }
+
+  void getData() {
+    // decData = widget.decodedData;
+    lessList = widget.lessonList;
+
+    for (int i = 0; i < lessList.length; i++) {
+      Lessons lessonDoc = Lessons();
+      List<Parts> partsList = List<Parts>();
+      bool istrue = false;
+      for (int j = 0; j < lessList[i].lessonParts.length; j++) {
+        if (lessList[i].lessonParts[j].partType.toLowerCase() != 'video') {
+          Parts part = Parts();
+          part.partType = lessList[i].lessonParts[j].partType;
+          part.partName = lessList[i].lessonParts[j].partName;
+          part.partId = lessList[i].lessonParts[j].partId;
+          part.partLessonId = lessList[i].lessonParts[j].partLessonId;
+          part.partContent = lessList[i].lessonParts[j].partContent;
+          part.partNo = lessList[i].lessonParts[j].partNo;
+          partsList.add(part);
+          istrue = true;
+        }
+      }
+      if (istrue) {
+        lessonDoc.lessonParts = partsList;
+        lessonDoc.lessonNo = lessList[i].lessonNo;
+        lessonDoc.lessonName = lessList[i].lessonName;
+        lessonDoc.lessonId = lessList[i].lessonId;
+        lessonDoc.lessonDesc = lessList[i].lessonDesc;
+        lessonDoc.lessonTeacher = lessList[i].lessonTeacher;
+        lessonDoc.lessonCourseId = lessList[i].lessonCourseId;
+        docsList.add(lessonDoc);
+      }
+    }
   }
 
   Widget videoBody(var player) {
@@ -167,8 +214,8 @@ class _VideoScreenState extends State<VideoScreen> {
                         width: screenSize.screenWidth * 84,
                         child: Center(
                           child: Text(
-                              (index1 + 1).toString() +
-                                  " " +
+                              widget.lessonList[index1].lessonNo +
+                                  ". " +
                                   widget.lessonList[index1].lessonName,
                               style: TextStyle(color: Colors.white)),
                         ),
@@ -185,116 +232,132 @@ class _VideoScreenState extends State<VideoScreen> {
                       itemCount: widget.lessonList[index1].lessonParts.length,
                       shrinkWrap: true,
                       physics: ClampingScrollPhysics(),
-                      itemBuilder: (cotxt, index2) {
-                        return Column(
-                          children: <Widget>[
-                            SizedBox(
-                              height: screenSize.screenHeight * 1,
-                            ),
-                            GestureDetector(
-                              child: ReusableOptionCard(
-                                cardChild: Center(
-                                    child: Container(
-                                  height: screenSize.screenHeight * 10,
-                                  width: screenSize.screenWidth * 84,
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: screenSize.screenWidth * 2),
-                                    child: Center(
-                                      child: Row(
-                                        children: <Widget>[
-                                          SizedBox(
-                                            width: screenSize.screenWidth * 2,
-                                          ),
-                                          getIcon(widget.lessonList[index1]
-                                              .lessonParts[index2].partType),
-                                          SizedBox(
-                                            width: screenSize.screenWidth * 2,
-                                          ),
-                                          Container(
-                                            width: screenSize.screenWidth * 70,
-                                            child: Text(
-                                              (index1 + 1).toString() +
-                                                  "." +
-                                                  (index2 + 1).toString() +
-                                                  " " +
-                                                  widget
-                                                      .lessonList[index1]
-                                                      .lessonParts[index2]
-                                                      .partName,
-                                              style: TextStyle(
-                                                  color: Colors.black),
+                      itemBuilder: (contxt, index2) {
+                        if (widget
+                                .lessonList[index1].lessonParts[index2].partType
+                                .toLowerCase() ==
+                            'video') {
+                          return Column(
+                            children: <Widget>[
+                              SizedBox(
+                                height: screenSize.screenHeight * 1,
+                              ),
+                              GestureDetector(
+                                child: ReusableOptionCard(
+                                  cardChild: Center(
+                                      child: Container(
+                                    height: screenSize.screenHeight * 10,
+                                    width: screenSize.screenWidth * 84,
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal:
+                                              screenSize.screenWidth * 2),
+                                      child: Center(
+                                        child: Row(
+                                          children: <Widget>[
+                                            SizedBox(
+                                              width: screenSize.screenWidth * 2,
                                             ),
-                                          ),
-                                        ],
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                            getIcon(
+                                                widget
+                                                    .lessonList[index1]
+                                                    .lessonParts[index2]
+                                                    .partType,
+                                                index1,
+                                                index2),
+                                            SizedBox(
+                                              width: screenSize.screenWidth * 2,
+                                            ),
+                                            Container(
+                                              width:
+                                                  screenSize.screenWidth * 70,
+                                              child: Text(
+                                                widget
+                                                        .lessonList[index1]
+                                                        .lessonParts[index2]
+                                                        .partNo +
+                                                    " " +
+                                                    widget
+                                                        .lessonList[index1]
+                                                        .lessonParts[index2]
+                                                        .partName,
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                          ],
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                )),
-                                elevation: index1 == widget.index1
-                                    ? index2 == widget.index2
-                                        ? 0
-                                        : 5
-                                    : 5,
-                                color: getColor(index1, index2),
-                                width: screenSize.screenWidth * 84,
-                                height: screenSize.screenHeight * 7,
-                              ),
-                              onTap: () {
-                                print(widget.lessonList[index1]
-                                    .lessonParts[index2].partType);
-                                if (widget.lessonList[index1]
-                                            .lessonParts[index2].partType ==
-                                        'video' ||
-                                    widget.lessonList[index1]
-                                            .lessonParts[index2].partType ==
-                                        'Video') {
-                                  String videoURL = widget.lessonList[index1]
-                                      .lessonParts[index2].partContent;
-                                  String e = 'embed/';
-                                  String id = videoURL.substring(
-                                      videoURL.indexOf(e) + e.length,
-                                      videoURL.length);
-                                  String name = widget.lessonList[index1]
-                                      .lessonParts[index2].partName;
-                                  Navigator.pushReplacement(context,
-                                      MaterialPageRoute(
-                                    builder: (context) {
-                                      return VideoScreen(
-                                          index1: index1,
-                                          index2: index2,
-                                          name: name,
-                                          id: id,
-                                          decData: widget.decData,
-                                          lessonList: widget.lessonList);
-                                    },
-                                  ));
-
-//
-                                } else {
+                                  )),
+                                  elevation: index1 == widget.index1
+                                      ? index2 == widget.index2
+                                          ? 0
+                                          : 5
+                                      : 5,
+                                  color: getColor(index1, index2),
+                                  width: screenSize.screenWidth * 84,
+                                  height: screenSize.screenHeight * 7,
+                                ),
+                                onTap: () {
+                                  print(widget.lessonList[index1]
+                                      .lessonParts[index2].partType);
                                   if (widget.lessonList[index1]
-                                          .lessonParts[index2].partType ==
-                                      'text') {
+                                          .lessonParts[index2].partType
+                                          .toLowerCase() ==
+                                      'video') {
+                                    String videoURL = widget.lessonList[index1]
+                                        .lessonParts[index2].partContent;
+                                    String e = 'embed/';
+                                    String id = videoURL.substring(
+                                        videoURL.indexOf(e) + e.length,
+                                        videoURL.length);
+                                    String name = widget.lessonList[index1]
+                                        .lessonParts[index2].partName;
                                     Navigator.pushReplacement(context,
                                         MaterialPageRoute(
                                       builder: (context) {
-                                        return ReadCourseDocScreen(
-                                            widget
-                                                .lessonList[index1]
-                                                .lessonParts[index2]
-                                                .partContent,
-                                            widget.lessonList[index1]
-                                                .lessonParts[index2].partName);
+                                        return VideoScreen(
+                                            index1: index1,
+                                            index2: index2,
+                                            name: name,
+                                            id: id,
+                                            decData: widget.decData,
+                                            lessonList: widget.lessonList);
                                       },
                                     ));
+
+//
+                                  } else {
+                                    if (widget.lessonList[index1]
+                                            .lessonParts[index2].partType
+                                            .toLowerCase() ==
+                                        'text') {
+                                      Navigator.pushReplacement(context,
+                                          MaterialPageRoute(
+                                        builder: (context) {
+                                          return ReadCourseDocScreen(
+                                              widget
+                                                  .lessonList[index1]
+                                                  .lessonParts[index2]
+                                                  .partContent,
+                                              widget
+                                                  .lessonList[index1]
+                                                  .lessonParts[index2]
+                                                  .partName);
+                                        },
+                                      ));
+                                    }
                                   }
-                                }
-                              },
-                            ),
-                          ],
-                        );
+                                },
+                              ),
+                            ],
+                          );
+                        } else {
+                          return null;
+                        }
                       },
                     ),
                   ],
@@ -377,7 +440,7 @@ class _VideoScreenState extends State<VideoScreen> {
             controller: pageController,
             children: [
               videoBody(player),
-              Docs(widget.lessonList),
+              Docs(docsList),
               Exams(widget.decData),
               MakeNotes(widget.decData),
               AskDoubts(widget.decData),

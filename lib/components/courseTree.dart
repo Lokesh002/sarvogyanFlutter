@@ -31,24 +31,7 @@ class GetCourseClass {
   CourseTreeNode process() {
     CourseTreeNode sarvogyan = CourseTreeNode("Sarvogyan");
     CourseTreeNode Courses = CourseTreeNode("Courses");
-//    CourseTreeNode School = CourseTreeNode("School");
-//    CourseTreeNode HigherEducation = CourseTreeNode("Higher Education");
-//    CourseTreeNode Professional = CourseTreeNode("Professional");
-//    CourseTreeNode VocationalSkills = CourseTreeNode("Vocational Skills");
     CourseTreeNode Exams = CourseTreeNode("Exams");
-//    CourseTreeNode JEE = CourseTreeNode("JEE");
-//    CourseTreeNode NEET = CourseTreeNode("NEET");
-//    CourseTreeNode CLAT = CourseTreeNode("CLAT");
-//    CourseTreeNode NDA = CourseTreeNode("NDA");
-//    CourseTreeNode UPSC = CourseTreeNode("UPSC");
-//    CourseTreeNode SSC = CourseTreeNode("SSC");
-//    CourseTreeNode GATE = CourseTreeNode("GATE");
-//    CourseTreeNode SAT = CourseTreeNode("SAT");
-//    CourseTreeNode GMAT = CourseTreeNode("GMAT");
-//    CourseTreeNode Banking = CourseTreeNode("Banking");
-//    CourseTreeNode Teaching = CourseTreeNode("Teaching");
-//    CourseTreeNode IITJAM = CourseTreeNode("IITJAM");
-
     sarvogyan.addChild(sarvogyan, Courses);
     sarvogyan.addChild(sarvogyan, Exams);
     Courses.addChild(Courses, CourseTreeNode("School"));

@@ -33,7 +33,7 @@ dependencies:
   youtube_player_flutter: ^7.0.0+5
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  flutter_svg: ^0.18.1
+  flutter_svg: ^0.19.3
   fluttertoast:
   shared_preferences: ^0.5.7+3
   razorpay_flutter: 1.2.2
@@ -57,9 +57,10 @@ dependencies:
   gcloud: ^0.7.3
   googleapis_auth: ^0.2.12+1
   flutter_treeview: ^0.7.1+1
-  native_pdf_view: ^3.9.0
+  native_pdf_view: ^3.9.1
 
-
+dependency_overrides:
+  extended_image: 1.5.0-dev
 
 dev_dependencies:
   flutter_test:

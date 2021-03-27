@@ -89,9 +89,47 @@ class NavDrawer {
                 Container(
                     width: screenSize.screenWidth * 100,
                     height: screenSize.screenHeight * 17,
-                    child: Image.asset(
-                      'images/flogoBig.png',
-                      fit: BoxFit.contain,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'images/flogoBig.png',
+                          fit: BoxFit.contain,
+                          height: screenSize.screenHeight * 10,
+                        ),
+                        SizedBox(
+                          height: screenSize.screenHeight * 2,
+                        ),
+                        Container(
+                          height: screenSize.screenHeight * 5,
+                          width: screenSize.screenWidth * 100,
+                          //  color: Colors.pink[100],
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                  screenSize.screenHeight * 2),
+                              border: Border.all(
+                                color: Colors.black,
+                                width: 1,
+                              )),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white70,
+                                borderRadius: BorderRadius.circular(
+                                  screenSize.screenHeight * 2,
+                                )),
+                            child: Row(
+                              children: [
+                                SizedBox(width: screenSize.screenWidth * 4),
+                                Icon(Icons.live_tv,
+                                    color: Colors.black,
+                                    size: screenSize.screenHeight * 3),
+                                SizedBox(width: screenSize.screenWidth * 4),
+                                Text("Live Lectures coming soon!!!")
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     )),
               ],
             ),

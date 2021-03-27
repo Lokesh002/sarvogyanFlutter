@@ -87,7 +87,7 @@ class _LoginState extends State<Login> {
                 width: screenSize.screenWidth * 100,
                 height: screenSize.screenHeight * 25,
                 child: Image.asset(
-                  "images/media/logo.png",
+                  "images/flogo.png",
                   fit: BoxFit.fitHeight,
                 ),
               ),
@@ -217,6 +217,8 @@ class _LoginState extends State<Login> {
                             int aT = await loginUserNetworking.postData();
                             if (aT == 200) {
                               //loggedIn = true;
+                              signedIn = true;
+                              savedData.setLoggedIn(true);
                               Fluttertoast.showToast(msg: "Login Successfully");
                               if (widget.fromAllCourses) {
                                 Navigator.pop(context);

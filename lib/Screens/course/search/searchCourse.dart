@@ -37,12 +37,50 @@ class _SearchCourseState extends State<SearchCourse> {
   bool visible = false;
   bool isReady = false;
   List<CourseData> listofCourses = List<CourseData>();
-  getCourses() async {
+
+  getCertiCourses(var courses) {
+    List newCourseList = List();
+    if (courses != null) {
+      for (int i = 0; i < courses.length; i++) {
+        if (courses[i]['subscription'] == 'c') {
+          newCourseList.add(courses[i]);
+        }
+      }
+
+      return newCourseList;
+    }
+    return newCourseList;
+  }
+
+  getBasicCourses(var courses) {
+    List newCourseList = List();
+    if (courses != null) {
+      for (int i = 0; i < courses.length; i++) {
+        if (courses[i]['subscription'] != 'c') {
+          newCourseList.add(courses[i]);
+        }
+      }
+
+      return newCourseList;
+    }
+    return newCourseList;
+  }
+
+  getCourses(String courseType) async {
     Networking networking = Networking();
-    var courses = await networking.postData("api/search/searchCourse",
-        {"searchQuery": query.trimLeft().trimRight()});
+
+    var courses = await networking.postData("api/search/searchCourse", {
+      "searchQuery": courseType == 'normal'
+          ? query.trimLeft().trimRight()
+          : ('$query').trim()
+    });
     print("hefh");
-    print(courses);
+    log(courses.toString());
+    if (courseType != 'normal') {
+      courses = getCertiCourses(courses);
+    } else {
+      courses = getBasicCourses(courses);
+    }
     if (courses != null) {
       var clist = Course_List(courses);
       //Navigator.pop(context);
@@ -93,7 +131,7 @@ class _SearchCourseState extends State<SearchCourse> {
         ],
       );
     } else {
-      return (choice == 'Course')
+      return (choice != 'Exam')
           ? (listofCourses.length == 0
               ? Container(
                   child: Column(
@@ -119,7 +157,7 @@ class _SearchCourseState extends State<SearchCourse> {
                   ),
                 )
               : Container(
-                  height: screenSize.screenHeight * 67,
+                  height: screenSize.screenHeight * 68,
                   child: ListView.builder(
                       itemBuilder: (BuildContext cntxt, int index) {
                         return ReusableCourseCard(
@@ -148,7 +186,7 @@ class _SearchCourseState extends State<SearchCourse> {
                 ))
           : (listOfExam.length != 0)
               ? Container(
-                  height: screenSize.screenHeight * 67,
+                  height: screenSize.screenHeight * 68,
                   child: ListView.builder(
                       itemBuilder: (BuildContext cntxt, int index) {
                         return ReusableExamCard(
@@ -223,6 +261,9 @@ class _SearchCourseState extends State<SearchCourse> {
     screenSize = SizeConfig(context);
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Search'),
+      ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
@@ -264,6 +305,10 @@ class _SearchCourseState extends State<SearchCourse> {
                                 DropdownMenuItem(
                                   child: Text('Course'),
                                   value: 'Course',
+                                ),
+                                DropdownMenuItem(
+                                  child: Text('Certification Courses'),
+                                  value: 'CertificationCourse',
                                 ),
                                 DropdownMenuItem(
                                   child: Text('Exam'),
@@ -327,7 +372,11 @@ class _SearchCourseState extends State<SearchCourse> {
                                 isReady = false;
                                 visible = true;
                               });
-                              (choice == 'Course') ? getCourses() : getExam();
+                              (choice == 'Course')
+                                  ? getCourses('normal')
+                                  : (choice == 'CertificationCourse')
+                                      ? getCourses('premium')
+                                      : getExam();
                             }
                           },
                           child: Material(

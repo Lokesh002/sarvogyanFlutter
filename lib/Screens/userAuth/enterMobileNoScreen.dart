@@ -16,6 +16,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sarvogyan/components/loginPhoneNetworking.dart';
 import 'package:sarvogyan/lists/allCoursesList.dart';
 import 'package:sarvogyan/utilities/userData.dart';
+import 'package:sarvogyan/utilities/sharedPref.dart';
 
 class EnterMobileNoScreen extends StatefulWidget {
   final bool fromAllCourses;
@@ -57,6 +58,7 @@ class _EnterMobileNoScreenState extends State<EnterMobileNoScreen> {
     super.initState();
   }
 
+  SavedData savedData = SavedData();
   @override
   void dispose() {
     // TODO: implement dispose
@@ -89,7 +91,6 @@ class _EnterMobileNoScreenState extends State<EnterMobileNoScreen> {
     Future<bool> verified;
     FirebaseAuth _auth = FirebaseAuth.instance;
     _auth.verifyPhoneNumber(
-        //autoRetrievedSmsCodeForTesting: ,
         phoneNumber: phone,
         timeout: Duration(seconds: 30),
         verificationCompleted: (AuthCredential credential) async {},
@@ -135,9 +136,9 @@ class _EnterMobileNoScreenState extends State<EnterMobileNoScreen> {
                 if (status == 200) {
                   Fluttertoast.showToast(msg: "Login Successfully");
                   log(FirebaseAuth.instance.currentUser.uid);
-                  //FirebaseAuth.instance.signOut();
                   Navigator.pop(context);
                   signedIn = true;
+                  await savedData.setLoggedIn(true);
                   if (widget.fromAllCourses) {
                     Navigator.pop(context);
                     Navigator.pushReplacementNamed(context, '/homeScreen');
@@ -196,9 +197,13 @@ class _EnterMobileNoScreenState extends State<EnterMobileNoScreen> {
                     Container(
                       width: screenSize.screenWidth * 100,
                       height: screenSize.screenHeight * 30,
-                      child: Image.asset(
-                        "images/media/logo.png",
-                        fit: BoxFit.fitHeight,
+                      child: Padding(
+                        padding:
+                            EdgeInsets.only(top: screenSize.screenHeight * 5),
+                        child: Image.asset(
+                          "images/flogo.png",
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
                     SizedBox(

@@ -3,15 +3,11 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:sarvogyan/Screens/profile/SavedNotes.dart';
 
-import 'package:sarvogyan/Screens/profile/addMoney/applyCouponCode.dart';
-import 'package:sarvogyan/Screens/profile/certificate/certificateScreen.dart';
-import 'package:sarvogyan/Screens/profile/subscription/buySubscription.dart';
 import 'package:sarvogyan/Screens/profile/updateProfile/updateProfile.dart';
-import 'package:sarvogyan/Screens/userAuth/EnterBoardClassScreen.dart';
+
 import 'package:sarvogyan/Screens/userAuth/login.dart';
-import 'package:sarvogyan/Screens/profile/myResultScreen.dart';
+
 import 'package:sarvogyan/lists/allCoursesList.dart';
 
 import 'package:sarvogyan/utilities/userData.dart';

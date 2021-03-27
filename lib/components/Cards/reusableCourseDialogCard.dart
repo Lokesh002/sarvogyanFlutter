@@ -4,7 +4,7 @@ import 'package:sarvogyan/components/Cards/ReusableCard.dart';
 import 'package:sarvogyan/components/Cards/courseCard.dart';
 import 'package:sarvogyan/components/sizeConfig.dart';
 
-class ReusableCourseCard extends StatelessWidget {
+class ReusableCourseDialogCard extends StatelessWidget {
   final String courseName;
   final String subscription;
   final String teacher;
@@ -13,7 +13,7 @@ class ReusableCourseCard extends StatelessWidget {
   final Color color;
   final String image;
   final int lessons;
-  ReusableCourseCard(
+  ReusableCourseDialogCard(
       {this.courseName,
       this.subscription,
       this.teacher,
@@ -31,22 +31,22 @@ class ReusableCourseCard extends StatelessWidget {
       child: Row(
         children: <Widget>[
           SizedBox(
-            width: screenSize.screenWidth * 2.5,
+            width: screenSize.screenWidth * 0.5,
           ),
           Column(
             children: <Widget>[
               CourseCard(
                 color: this.color,
-                width: screenSize.screenWidth * 95,
+                width: screenSize.screenWidth * 62,
                 // height: screenSize.screenHeight * 10,
                 cardChild: Row(
                   children: <Widget>[
                     SizedBox(
-                      width: screenSize.screenWidth * 5,
+                      width: screenSize.screenWidth * 3,
                     ),
                     SizedBox(
-                      width: screenSize.screenWidth * 15,
-                      height: screenSize.screenWidth * 15,
+                      width: screenSize.screenWidth * 10,
+                      height: screenSize.screenWidth * 10,
                       child: (image != null)
                           ? FadeInImage.assetNetwork(
                               placeholder: 'images/media/logo.png',
@@ -54,23 +54,23 @@ class ReusableCourseCard extends StatelessWidget {
                           : Image.asset('images/media/logo.png'),
                     ),
                     SizedBox(
-                      width: screenSize.screenWidth * 3,
+                      width: screenSize.screenWidth * 1,
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         SizedBox(
-                          height: screenSize.screenHeight * 2.3,
+                          height: screenSize.screenHeight * 1.5,
                         ),
                         Container(
-                          width: screenSize.screenWidth * 70,
+                          width: screenSize.screenWidth * 47,
                           child: Text(
                             '$courseName',
                             overflow: TextOverflow.clip,
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: screenSize.screenHeight * 2.3,
+                                fontSize: screenSize.screenHeight * 1.8,
                                 fontWeight: FontWeight.w300),
                           ),
                         ),
@@ -80,7 +80,7 @@ class ReusableCourseCard extends StatelessWidget {
                         Text(
                           '$subscription',
                           style: TextStyle(
-                            fontSize: screenSize.screenHeight * 1.7,
+                            fontSize: screenSize.screenHeight * 1.5,
                             color: Colors.blueGrey,
                           ),
                         ),
@@ -91,13 +91,13 @@ class ReusableCourseCard extends StatelessWidget {
                             ? Text(
                                 teacher != null ? 'Teacher: $teacher' : '',
                                 style: TextStyle(
-                                  fontSize: screenSize.screenHeight * 1.7,
+                                  fontSize: screenSize.screenHeight * 1.5,
                                   color: Colors.black26,
                                 ),
                               )
                             : SizedBox(),
                         SizedBox(
-                          height: screenSize.screenHeight * 2,
+                          height: screenSize.screenHeight * 1,
                         ),
                       ],
                     ),
@@ -105,7 +105,7 @@ class ReusableCourseCard extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: screenSize.screenHeight * 2,
+                height: screenSize.screenHeight * 1,
               )
             ],
           ),

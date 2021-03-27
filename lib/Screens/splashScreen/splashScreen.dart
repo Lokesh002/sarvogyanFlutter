@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sarvogyan/components/sizeConfig.dart';
 import 'dart:async';
 import 'package:flutter/widgets.dart';
+import 'package:sarvogyan/lists/allCoursesList.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -9,12 +10,9 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  //SavedData savedData = SavedData();
-
   @override
   void initState() {
     super.initState();
-
     Timer(Duration(seconds: 3), () {
       Navigator.pushReplacementNamed(context, '/homeScreen');
     });

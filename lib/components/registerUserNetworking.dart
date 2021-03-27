@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:http/http.dart' as http;
 import 'package:sarvogyan/utilities/sharedPref.dart';
 import 'dart:convert' as convert;
@@ -55,12 +56,23 @@ class RegisterUserNetworking {
             "password": password,
             "token": FirebaseAccessToken,
           }));
+
       if (response.statusCode == 200) {
         String data = response.body;
         var decodedData = convert.jsonDecode(data);
         accessToken = decodedData["msg"];
         print("msg: $accessToken");
 
+        FirebaseAnalytics().logEvent(name: 'User Registered', parameters: {
+          'name': name,
+          'email': email,
+          'address': address,
+          'phone': phoneNo,
+          'age': age,
+          'id': UId,
+          'tag': tag,
+          'isStudent': isStudent
+        });
         print(
             "the details are: $name has $email and $phoneNo with age $age and address: $address");
         return response.statusCode;
@@ -99,10 +111,21 @@ class RegisterUserNetworking {
           }));
       if (response.statusCode == 200) {
         String data = response.body;
+
         var decodedData = convert.jsonDecode(data);
         accessToken = decodedData["msg"];
         print("msg: $accessToken");
 
+        FirebaseAnalytics()
+            .logEvent(name: 'User Registered Through Phone', parameters: {
+          'name': name,
+          'address': address,
+          'phone': phoneNo,
+          'age': age,
+          'id': UId,
+          'tag': tag,
+          'isStudent': isStudent
+        });
         print(
             "the details are: $name has $email and $phoneNo with age $age and address: $address");
         return response.statusCode;

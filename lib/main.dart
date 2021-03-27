@@ -1,9 +1,10 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sarvogyan/Screens/chooseColor.dart';
 import 'package:sarvogyan/Screens/course/ListloadingScreen.dart';
-import 'file:///D:/Projects/Flutter/sarvogyan/sarvogyan/lib/obsoletePages/seachScreen.dart';
 import 'package:sarvogyan/Screens/exams/examListLoadingScreen.dart';
 import 'package:sarvogyan/Screens/homeScreen.dart';
 import 'package:sarvogyan/Screens/profile/profile.dart';
@@ -38,15 +39,19 @@ class _MyAppState extends State<MyApp> {
     await Firebase.initializeApp();
   }
 
+  final FirebaseAnalytics analytics = FirebaseAnalytics();
+  FirebaseAnalyticsObserver getObserver() =>
+      FirebaseAnalyticsObserver(analytics: analytics);
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    // getColr();
+
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Sarvogyan',
       theme: ThemeData(
 //          primaryColor: primaryColor,
 //          accentColor: accentColor,
@@ -54,6 +59,9 @@ class _MyAppState extends State<MyApp> {
           accentColor: Color(0xffffffff),
           backgroundColor: Colors.white),
       initialRoute: '/',
+      navigatorObservers: [
+        FirebaseAnalyticsObserver(analytics: analytics),
+      ],
       themeMode: ThemeMode.light,
       routes: <String, WidgetBuilder>{
         '/': (context) => SplashScreen(),
@@ -63,9 +71,7 @@ class _MyAppState extends State<MyApp> {
         '/filterLoadingScreen': (context) => FilterLoadingScreen(),
         '/ExamLoadingScreen': (context) => ExamListLoadingScreen(),
         '/changeColour': (context) => ChangeColour(),
-        //'/enterOtp': (context) => EnterOtpScreen(),
         '/homeScreen': (context) => HomeScreen(),
-        '/searchCourses': (context) => SearchScreen(),
       },
     );
   }

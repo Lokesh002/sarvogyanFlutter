@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -174,7 +175,6 @@ class _CourseSelectedState extends State<CourseSelected> {
   }
 
   ScrollController scrollController = ScrollController();
-
   @override
   Widget build(BuildContext context) {
     getDetails();
@@ -201,6 +201,7 @@ class _CourseSelectedState extends State<CourseSelected> {
                       'api/user/wishlist',
                       {'course_id': widget.decodedData['id']},
                       await savedData.getAccessToken());
+
                   log(decData.toString());
                   setState(() {
                     if (addedToWishList)
@@ -211,6 +212,7 @@ class _CourseSelectedState extends State<CourseSelected> {
                     else
                       setState(() {
                         addedToWishList = true;
+
                         Fluttertoast.showToast(msg: 'Added to Wishlist');
                       });
                   });
@@ -405,7 +407,8 @@ class _CourseSelectedState extends State<CourseSelected> {
                                               Navigator.push(context,
                                                   MaterialPageRoute(
                                                       builder: (context) {
-                                                return BuySubscription();
+                                                return BuySubscription(
+                                                    widget.decodedData);
                                               }));
                                             }
                                           } else {

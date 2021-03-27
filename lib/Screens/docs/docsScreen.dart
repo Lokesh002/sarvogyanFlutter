@@ -16,6 +16,7 @@ import 'package:sarvogyan/components/Cards/ReusableButton.dart';
 import 'package:sarvogyan/components/docsSupport.dart';
 import 'package:sarvogyan/components/getAllDocs.dart';
 import 'package:sarvogyan/components/sizeConfig.dart';
+import 'package:sarvogyan/lists/allCoursesList.dart';
 import 'package:sarvogyan/utilities/sharedPref.dart';
 import 'package:sarvogyan/Screens/docs/insideDocs.dart';
 
@@ -57,7 +58,8 @@ class _DocsScreenState extends State<DocsScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (mounted) getDocsList(widget.path);
+
+    if (mounted && signedIn) getDocsList(widget.path);
     getPermission();
   }
 
@@ -96,17 +98,90 @@ class _DocsScreenState extends State<DocsScreen> {
   }
 
   Widget ShowScreen() {
-    // print(isReady.toString());
-    if (isReady == false) {
-      return Scaffold(
-        backgroundColor: Color(0xffffffff),
-        body: SpinKitWanderingCubes(
-          color: Theme.of(context).primaryColor,
-          shape: BoxShape.circle,
-          size: 100.0,
-        ),
-      );
-    } else if (accessTKN == null) {
+    if (signedIn) {
+      if (isReady == false) {
+        return Scaffold(
+          backgroundColor: Color(0xffffffff),
+          body: SpinKitWanderingCubes(
+            color: Theme.of(context).primaryColor,
+            shape: BoxShape.circle,
+            size: 100.0,
+          ),
+        );
+      } else if (allDocs.length != 0) {
+        return Scaffold(
+          backgroundColor: Theme.of(context).backgroundColor,
+          body: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  height: screenSize.screenHeight * 1,
+                ),
+                Stack(
+                  alignment: AlignmentDirectional.bottomCenter,
+                  children: <Widget>[
+                    Container(
+                        height: screenSize.screenHeight * 78,
+                        child: ListView.builder(
+                            itemBuilder: (BuildContext cntxt, int index) {
+                              return ReusableDocsCard(
+                                docName: allDocs[index].name,
+                                //icon: Icon(Icons.folder),
+                                isFolder: allDocs[index].isFolder,
+                                color: Theme.of(context).backgroundColor,
+                                onTap: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return InsideDocs(widget.path +
+                                        '/' +
+                                        allDocs[index].name +
+                                        '/');
+                                  }));
+                                },
+                                button: SizedBox(),
+                              );
+                            },
+                            itemCount: allDocs.length,
+                            padding: EdgeInsets.fromLTRB(
+                                0, screenSize.screenHeight * 2.5, 0, 0
+                                //screenSize.screenHeight * 15)),
+                                ))),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      } else {
+        return Scaffold(
+          body: Container(
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: screenSize.screenHeight * 10,
+                ),
+                Container(
+                  height: screenSize.screenHeight * 20,
+                  child: SvgPicture.asset('svg/noCourses.svg',
+                      semanticsLabel: 'A red up arrow'),
+                ),
+                SizedBox(
+                  height: screenSize.screenHeight * 5,
+                ),
+                Text(
+                  "No E Books Present",
+                ),
+                SizedBox(
+                  height: screenSize.screenHeight * 20,
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+    } else {
       return Scaffold(
         body: Container(
           child: Column(
@@ -138,52 +213,6 @@ class _DocsScreenState extends State<DocsScreen> {
                 width: screenSize.screenWidth * 30,
                 content: "Login",
               )
-            ],
-          ),
-        ),
-      );
-    } else if (allDocs.length != 0) {
-      return Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
-        body: Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(
-                height: screenSize.screenHeight * 1,
-              ),
-              Stack(
-                alignment: AlignmentDirectional.bottomCenter,
-                children: <Widget>[
-                  Container(
-                      height: screenSize.screenHeight * 78,
-                      child: ListView.builder(
-                          itemBuilder: (BuildContext cntxt, int index) {
-                            return ReusableDocsCard(
-                              docName: allDocs[index].name,
-                              //icon: Icon(Icons.folder),
-                              isFolder: allDocs[index].isFolder,
-                              color: Theme.of(context).backgroundColor,
-                              onTap: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return InsideDocs(widget.path +
-                                      '/' +
-                                      allDocs[index].name +
-                                      '/');
-                                }));
-                              },
-                              button: SizedBox(),
-                            );
-                          },
-                          itemCount: allDocs.length,
-                          padding: EdgeInsets.fromLTRB(
-                              0, screenSize.screenHeight * 2.5, 0, 0
-                              //screenSize.screenHeight * 15)),
-                              ))),
-                ],
-              ),
             ],
           ),
         ),
